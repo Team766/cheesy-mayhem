@@ -216,10 +216,10 @@ func (arena *Arena) LoadMatch(match *model.Match) error {
 	if err != nil {
 		return err
 	}
-	// err = arena.assignTeam(match.Red3, "R3")
-	// if err != nil {
-	// 	return err
-	// }
+	err = arena.assignTeam(match.Red3, "R3")
+	if err != nil {
+		return err
+	}
 	err = arena.assignTeam(match.Blue1, "B1")
 	if err != nil {
 		return err
