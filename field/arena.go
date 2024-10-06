@@ -371,10 +371,10 @@ func (arena *Arena) ResetMatch() error {
 	arena.matchAborted = false
 	arena.AllianceStations["R1"].Bypass = false
 	arena.AllianceStations["R2"].Bypass = false
-	arena.AllianceStations["R3"].Bypass = false
+	arena.AllianceStations["R3"].Bypass = true
 	arena.AllianceStations["B1"].Bypass = false
 	arena.AllianceStations["B2"].Bypass = false
-	arena.AllianceStations["B3"].Bypass = false
+	arena.AllianceStations["B3"].Bypass = true
 	arena.MuteMatchSounds = false
 	return nil
 }
