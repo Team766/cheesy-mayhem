@@ -216,10 +216,10 @@ func (arena *Arena) LoadMatch(match *model.Match) error {
 	if err != nil {
 		return err
 	}
-	err = arena.assignTeam(match.Red3, "R3")
-	if err != nil {
-		return err
-	}
+	// err = arena.assignTeam(match.Red3, "R3")
+	// if err != nil {
+	// 	return err
+	// }
 	err = arena.assignTeam(match.Blue1, "B1")
 	if err != nil {
 		return err
@@ -699,7 +699,7 @@ func (arena *Arena) checkCanStartMatch() error {
 		return fmt.Errorf("Cannot start match while there is a match still in progress or with results pending.")
 	}
 
-	err := arena.checkAllianceStationsReady("R1", "R2", "R3", "B1", "B2", "B3")
+	err := arena.checkAllianceStationsReady("R1", "R2", "B1", "B2")
 	if err != nil {
 		return err
 	}

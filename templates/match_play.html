@@ -76,7 +76,6 @@
         </div>
         {{template "matchPlayTeam" dict "team" .Match.Blue1 "color" "B" "position" 1 "data" .}}
         {{template "matchPlayTeam" dict "team" .Match.Blue2 "color" "B" "position" 2 "data" .}}
-        {{template "matchPlayTeam" dict "team" .Match.Blue3 "color" "B" "position" 3 "data" .}}
         {{if eq .Match.Type "elimination" }}
           <div>
             <b>Alliance {{.Match.ElimBlueAlliance}}</b>
@@ -94,7 +93,6 @@
           <div class="col-lg-2" data-toggle="tooltip" title="Robot">Rbt</div>
           <div class="col-lg-2" data-toggle="tooltip" title="Bypass/Disable">Byp</div>
         </div>
-        {{template "matchPlayTeam" dict "team" .Match.Red3 "color" "R" "position" 3 "data" .}}
         {{template "matchPlayTeam" dict "team" .Match.Red2 "color" "R" "position" 2 "data" .}}
         {{template "matchPlayTeam" dict "team" .Match.Red1 "color" "R" "position" 1 "data" .}}
         {{if eq .Match.Type "elimination" }}

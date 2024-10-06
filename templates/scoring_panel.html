@@ -14,7 +14,7 @@
       <div>Exited Initiation Line?</div>
       <div>Endgame Status</div>
     </div>
-    {{range $i := seq 3}}
+    {{range $i := seq 2}}
       <div>
         <div id="team{{$i}}" class="team robot-field"></div>
         <div id="exitedInitiationLine{{$i}}" class="boolean robot-field" onclick="handleClick('{{$i}}');">
