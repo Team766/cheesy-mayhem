@@ -371,10 +371,10 @@ func (arena *Arena) ResetMatch() error {
 	arena.matchAborted = false
 	arena.AllianceStations["R1"].Bypass = false
 	arena.AllianceStations["R2"].Bypass = false
-	arena.AllianceStations["R3"].Bypass = false
+	arena.AllianceStations["R3"].Bypass = true
 	arena.AllianceStations["B1"].Bypass = false
 	arena.AllianceStations["B2"].Bypass = false
-	arena.AllianceStations["B3"].Bypass = false
+	arena.AllianceStations["B3"].Bypass = true
 	arena.MuteMatchSounds = false
 	return nil
 }
@@ -699,7 +699,7 @@ func (arena *Arena) checkCanStartMatch() error {
 		return fmt.Errorf("Cannot start match while there is a match still in progress or with results pending.")
 	}
 
-	err := arena.checkAllianceStationsReady("R1", "R2", "R3", "B1", "B2", "B3")
+	err := arena.checkAllianceStationsReady("R1", "R2", "B1", "B2")
 	if err != nil {
 		return err
 	}
