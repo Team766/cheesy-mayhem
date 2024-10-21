@@ -4,12 +4,13 @@
 package field
 
 import (
+	"testing"
+	"time"
+
 	"github.com/Team254/cheesy-arena-lite/game"
 	"github.com/Team254/cheesy-arena-lite/model"
 	"github.com/Team254/cheesy-arena-lite/tournament"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"time"
 )
 
 func TestAssignTeam(t *testing.T) {
@@ -63,14 +64,12 @@ func TestArenaCheckCanStartMatch(t *testing.T) {
 	}
 	arena.AllianceStations["R1"].Bypass = true
 	arena.AllianceStations["R2"].Bypass = true
-	arena.AllianceStations["R3"].Bypass = true
 	arena.AllianceStations["B1"].Bypass = true
-	arena.AllianceStations["B2"].Bypass = true
 	err = arena.checkCanStartMatch()
 	if assert.NotNil(t, err) {
 		assert.Contains(t, err.Error(), "Cannot start match until all robots are connected or bypassed")
 	}
-	arena.AllianceStations["B3"].Bypass = true
+	arena.AllianceStations["B2"].Bypass = true
 	assert.Nil(t, arena.checkCanStartMatch())
 
 	// Check PLC constraints.
@@ -359,16 +358,14 @@ func TestMatchStartRobotLinkEnforcement(t *testing.T) {
 	}
 	arena.AllianceStations["R1"].Bypass = true
 	arena.AllianceStations["R2"].Bypass = true
-	arena.AllianceStations["R3"].Bypass = true
 	arena.AllianceStations["B1"].Bypass = true
 	arena.AllianceStations["B2"].Bypass = true
-	arena.AllianceStations["B3"].Bypass = true
-	arena.AllianceStations["B3"].Estop = true
+	arena.AllianceStations["B2"].Estop = true
 	err = arena.StartMatch()
 	if assert.NotNil(t, err) {
 		assert.Contains(t, err.Error(), "while an emergency stop is active")
 	}
-	arena.AllianceStations["B3"].Estop = false
+	arena.AllianceStations["B2"].Estop = false
 	err = arena.StartMatch()
 	assert.Nil(t, err)
 }
