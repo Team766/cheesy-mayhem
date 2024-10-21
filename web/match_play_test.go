@@ -6,6 +6,10 @@ package web
 import (
 	"bytes"
 	"fmt"
+	"log"
+	"testing"
+	"time"
+
 	"github.com/Team254/cheesy-arena-lite/field"
 	"github.com/Team254/cheesy-arena-lite/game"
 	"github.com/Team254/cheesy-arena-lite/model"
@@ -14,9 +18,6 @@ import (
 	gorillawebsocket "github.com/gorilla/websocket"
 	"github.com/mitchellh/mapstructure"
 	"github.com/stretchr/testify/assert"
-	"log"
-	"testing"
-	"time"
 )
 
 func TestMatchPlay(t *testing.T) {
@@ -73,10 +74,8 @@ func TestMatchPlayLoad(t *testing.T) {
 	assert.Equal(t, 200, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), "101")
 	assert.Contains(t, recorder.Body.String(), "102")
-	assert.Contains(t, recorder.Body.String(), "103")
 	assert.Contains(t, recorder.Body.String(), "104")
 	assert.Contains(t, recorder.Body.String(), "105")
-	assert.Contains(t, recorder.Body.String(), "106")
 
 	// Load a test match.
 	recorder = web.getHttpResponse("/match_play/0/load")
@@ -253,10 +252,8 @@ func TestMatchPlayWebsocketCommands(t *testing.T) {
 	assert.Contains(t, readWebsocketError(t, ws), "Cannot start match")
 	web.arena.AllianceStations["R1"].Bypass = true
 	web.arena.AllianceStations["R2"].Bypass = true
-	web.arena.AllianceStations["R3"].Bypass = true
 	web.arena.AllianceStations["B1"].Bypass = true
 	web.arena.AllianceStations["B2"].Bypass = true
-	web.arena.AllianceStations["B3"].Bypass = true
 	ws.Write("startMatch", nil)
 	readWebsocketType(t, ws, "arenaStatus")
 	readWebsocketType(t, ws, "eventStatus")
