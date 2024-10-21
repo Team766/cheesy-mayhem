@@ -53,10 +53,11 @@ package web
 
 import (
 	"encoding/json"
-	"github.com/Team254/cheesy-arena-lite/field"
-	"github.com/Team254/cheesy-arena-lite/game"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/Team254/cheesy-arena-lite/field"
+	"github.com/Team254/cheesy-arena-lite/game"
 )
 
 type jsonAllianceScore struct {
@@ -71,18 +72,18 @@ type jsonScore struct {
 }
 
 func (web *Web) getScoresHandler(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(jsonScore{
-		Red: jsonAllianceScore{
-			Auto:    web.arena.RedScore.AutoPoints,
-			Teleop:  web.arena.RedScore.TeleopPoints,
-			Endgame: web.arena.RedScore.EndgamePoints,
-		},
-		Blue: jsonAllianceScore{
-			Auto:    web.arena.BlueScore.AutoPoints,
-			Teleop:  web.arena.BlueScore.TeleopPoints,
-			Endgame: web.arena.BlueScore.EndgamePoints,
-		},
-	})
+	// json.NewEncoder(w).Encode(jsonScore{
+	// 	Red: jsonAllianceScore{
+	// 		Auto:    web.arena.RedScore.AutoPoints,
+	// 		Teleop:  web.arena.RedScore.TeleopPoints,
+	// 		Endgame: web.arena.RedScore.EndgamePoints,
+	// 	},
+	// 	Blue: jsonAllianceScore{
+	// 		Auto:    web.arena.BlueScore.AutoPoints,
+	// 		Teleop:  web.arena.BlueScore.TeleopPoints,
+	// 		Endgame: web.arena.BlueScore.EndgamePoints,
+	// 	},
+	// })
 }
 
 func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
@@ -105,11 +106,11 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		web.arena.BlueScore = new(game.Score)
 	}
 
-	web.arena.RedScore.AutoPoints += scores.Red.Auto
-	web.arena.RedScore.TeleopPoints += scores.Red.Teleop
-	web.arena.RedScore.EndgamePoints += scores.Red.Endgame
-	web.arena.BlueScore.AutoPoints += scores.Blue.Auto
-	web.arena.BlueScore.TeleopPoints += scores.Blue.Teleop
-	web.arena.BlueScore.EndgamePoints += scores.Blue.Endgame
+	// web.arena.RedScore.AutoPoints += scores.Red.Auto
+	// web.arena.RedScore.TeleopPoints += scores.Red.Teleop
+	// web.arena.RedScore.EndgamePoints += scores.Red.Endgame
+	// web.arena.BlueScore.AutoPoints += scores.Blue.Auto
+	// web.arena.BlueScore.TeleopPoints += scores.Blue.Teleop
+	// web.arena.BlueScore.EndgamePoints += scores.Blue.Endgame
 	web.arena.RealtimeScoreNotifier.Notify()
 }

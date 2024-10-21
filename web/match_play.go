@@ -7,6 +7,13 @@ package web
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"sort"
+	"strconv"
+	"time"
+
 	"github.com/Team254/cheesy-arena-lite/bracket"
 	"github.com/Team254/cheesy-arena-lite/field"
 	"github.com/Team254/cheesy-arena-lite/game"
@@ -15,12 +22,6 @@ import (
 	"github.com/Team254/cheesy-arena-lite/websocket"
 	"github.com/gorilla/mux"
 	"github.com/mitchellh/mapstructure"
-	"io"
-	"log"
-	"net/http"
-	"sort"
-	"strconv"
-	"time"
 )
 
 type MatchPlayListItem struct {
@@ -377,13 +378,13 @@ func (web *Web) matchPlayWebsocketHandler(w http.ResponseWriter, r *http.Request
 			web.arena.MatchLoadNotifier.Notify()
 			continue
 		case "updateRealtimeScore":
-			args := data.(map[string]interface{})
-			web.arena.BlueScore.AutoPoints = int(args["blueAuto"].(float64))
-			web.arena.RedScore.AutoPoints = int(args["redAuto"].(float64))
-			web.arena.BlueScore.TeleopPoints = int(args["blueTeleop"].(float64))
-			web.arena.RedScore.TeleopPoints = int(args["redTeleop"].(float64))
-			web.arena.BlueScore.EndgamePoints = int(args["blueEndgame"].(float64))
-			web.arena.RedScore.EndgamePoints = int(args["redEndgame"].(float64))
+			// args := data.(map[string]interface{})
+			// web.arena.BlueScore.AutoPoints = int(args["blueAuto"].(float64))
+			// web.arena.RedScore.AutoPoints = int(args["redAuto"].(float64))
+			// web.arena.BlueScore.TeleopPoints = int(args["blueTeleop"].(float64))
+			// web.arena.RedScore.TeleopPoints = int(args["redTeleop"].(float64))
+			// web.arena.BlueScore.EndgamePoints = int(args["blueEndgame"].(float64))
+			// web.arena.RedScore.EndgamePoints = int(args["redEndgame"].(float64))
 			web.arena.RealtimeScoreNotifier.Notify()
 		default:
 			ws.WriteError(fmt.Sprintf("Invalid message type '%s'.", messageType))

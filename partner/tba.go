@@ -11,11 +11,12 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/model"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/Team254/cheesy-arena-lite/model"
 )
 
 const (
@@ -317,12 +318,8 @@ func (client *TbaClient) PublishMatches(database *model.Database) error {
 				return err
 			}
 			if matchResult != nil {
-				redScoreSummary = matchResult.RedScore.AutoPoints +
-					matchResult.RedScore.TeleopPoints +
-					matchResult.RedScore.EndgamePoints
-				blueScoreSummary = matchResult.BlueScore.AutoPoints +
-					matchResult.BlueScore.TeleopPoints +
-					matchResult.BlueScore.EndgamePoints
+				redScoreSummary = matchResult.RedScore.TotalPoints(matchResult.BlueScore.Penalties())
+				blueScoreSummary = matchResult.BlueScore.TotalPoints(matchResult.RedScore.Penalties())
 				redScore = &redScoreSummary
 				blueScore = &blueScoreSummary
 			}
