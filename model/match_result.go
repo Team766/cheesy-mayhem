@@ -19,7 +19,7 @@ type MatchResult struct {
 }
 
 // Returns a new match result object with empty slices instead of nil.
-func NewMatchxResult() *MatchResult {
+func NewMatchResult() *MatchResult {
 	matchResult := new(MatchResult)
 	matchResult.RedScore = new(game.Score)
 	matchResult.BlueScore = new(game.Score)
