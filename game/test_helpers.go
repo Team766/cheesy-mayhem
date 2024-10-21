@@ -6,19 +6,11 @@
 package game
 
 func TestScore1() *Score {
-	return &Score{
-		AutoPoints:    45,
-		TeleopPoints:  80,
-		EndgamePoints: 30,
-	}
+	return &Score{}
 }
 
 func TestScore2() *Score {
-	return &Score{
-		AutoPoints:    15,
-		TeleopPoints:  40,
-		EndgamePoints: 25,
-	}
+	return &Score{}
 }
 
 func TestRanking1() *Ranking {
