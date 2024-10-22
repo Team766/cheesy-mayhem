@@ -9,6 +9,7 @@ type ScoreSummary struct {
 	AutoPoints    int
 	TeleopPoints  int
 	EndgamePoints int
+	OppPenalties  int
 	Score         int
 }
 
