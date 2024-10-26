@@ -4,8 +4,9 @@
 package model
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetNonexistentMatchResult(t *testing.T) {
@@ -27,7 +28,7 @@ func TestMatchResultCrud(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, matchResult, matchResult2)
 
-	matchResult.BlueScore.EndgamePoints = 1234
+	matchResult.BlueScore.Parked = [2]bool{true, true}
 	assert.Nil(t, db.UpdateMatchResult(matchResult))
 	matchResult2, err = db.GetMatchResultForMatch(254)
 	assert.Nil(t, err)

@@ -4,10 +4,11 @@
 package game
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAddScoreSummary(t *testing.T) {
@@ -20,15 +21,15 @@ func TestAddScoreSummary(t *testing.T) {
 
 	// Add a loss.
 	rankingFields.AddScoreSummary(redSummary, blueSummary)
-	assert.Equal(t, RankingFields{2, 45, 30, 80, 0.9451961492941164, 1, 0, 0, 1}, rankingFields)
+	assert.Equal(t, RankingFields{2, 30, 35, 40, 0.9451961492941164, 1, 0, 0, 1}, rankingFields)
 
 	// Add a win.
 	rankingFields.AddScoreSummary(blueSummary, redSummary)
-	assert.Equal(t, RankingFields{2, 60, 55, 120, 0.24496508529377975, 1, 1, 0, 2}, rankingFields)
+	assert.Equal(t, RankingFields{2, 53, 50, 58, 0.24496508529377975, 1, 1, 0, 2}, rankingFields)
 
 	// Add a tie.
 	rankingFields.AddScoreSummary(redSummary, redSummary)
-	assert.Equal(t, RankingFields{3, 105, 85, 200, 0.6559562651954052, 1, 1, 1, 3}, rankingFields)
+	assert.Equal(t, RankingFields{3, 83, 85, 98, 0.6559562651954052, 1, 1, 1, 3}, rankingFields)
 }
 
 func TestSortRankings(t *testing.T) {

@@ -7,35 +7,35 @@ package game
 
 func TestScore1() *Score {
 	return &Score{
-		Taxi: [2]AutonTaxiStatus{AutonTaxiNone, AutonTaxiFull},
+		Taxi: [2]AutonTaxiStatus{AutonTaxiPartial, AutonTaxiFull},
 		Shelf: Shelf{
 			AutonBottomShelfCubes:  2,
 			AutonTopShelfCubes:     1,
 			TeleopBottomShelfCubes: 4,
-			TeleopTopShelfCubes:    2,
+			TeleopTopShelfCubes:    4,
 		},
 		Hamper:       4,
 		Parked:       [2]bool{true, false},
 		GoldenCube:   false,
-		OppFouls:     1,
-		OppTechFouls: 0,
+		OppFouls:     0,
+		OppTechFouls: 2,
 	}
 }
 
 func TestScore2() *Score {
 	return &Score{
-		Taxi: [2]AutonTaxiStatus{AutonTaxiFull, AutonTaxiPartial},
+		Taxi: [2]AutonTaxiStatus{AutonTaxiNone, AutonTaxiPartial},
 		Shelf: Shelf{
 			AutonBottomShelfCubes:  0,
 			AutonTopShelfCubes:     2,
 			TeleopBottomShelfCubes: 2,
-			TeleopTopShelfCubes:    8,
+			TeleopTopShelfCubes:    1,
 		},
 		Hamper:       2,
 		Parked:       [2]bool{false, false},
 		GoldenCube:   true,
-		OppFouls:     0,
-		OppTechFouls: 2,
+		OppFouls:     1,
+		OppTechFouls: 0,
 	}
 }
 
