@@ -25,7 +25,7 @@ type Score struct {
 	Taxi         [2]AutonTaxiStatus
 	Shelf        Shelf
 	Hamper       int
-	Parked       [2]bool
+	Park         [2]bool
 	GoldenCube   bool
 	OppFouls     int
 	OppTechFouls int
@@ -38,6 +38,8 @@ const (
 	AutonTaxiPartial
 	AutonTaxiFull
 )
+
+var AutonTaxiValues = []AutonTaxiStatus{AutonTaxiNone, AutonTaxiPartial, AutonTaxiFull}
 
 type Shelf struct {
 	AutonTopShelfCubes     int
@@ -76,6 +78,15 @@ func (score *Score) EndgamePoints() int {
 		points += EndgameHamperBasePoints
 		points += (score.Hamper - 1) * EndgameHamperStackPoints
 	}
+
+	if score.Park[0] {
+		points += EndgameParkPoints
+	}
+
+	if score.Park[1] {
+		points += EndgameParkPoints
+	}
+
 	return points
 }
 
@@ -105,7 +116,7 @@ func (score *Score) Equals(other *Score) bool {
 	if score.Taxi != other.Taxi ||
 		!score.Shelf.Equals(&other.Shelf) ||
 		score.Hamper != other.Hamper ||
-		score.Parked != other.Parked ||
+		score.Park != other.Park ||
 		score.GoldenCube != other.GoldenCube ||
 		score.OppFouls != other.OppFouls ||
 		score.OppTechFouls != other.OppTechFouls {
