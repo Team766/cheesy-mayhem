@@ -62,10 +62,21 @@ import (
 	"github.com/Team254/cheesy-arena-lite/game"
 )
 
+type jsonShelf struct {
+	AutonBottomShelf  int `json:"auton_bottom"`
+	AutonTopShelf     int `json:"auton_top"`
+	TeleopBottomShelf int `json:"teleop_bottom"`
+	TeleopTopShelf    int `json:"teleop_top"`
+}
+
 type jsonAllianceScore struct {
-	// Auto    int `json:"auto"`
-	// Teleop  int `json:"teleop"`
-	// Endgame int `json:"endgame"`
+	Taxi       [2]int    `json:"taxi"`
+	Shelf      jsonShelf `json:"shelf"`
+	Hamper     int       `json:"hamper"`
+	Park       [2]bool   `json:"park"`
+	GoldenCube bool      `json:"golden_cube"`
+	Foul       int       `json:"foul"`
+	TechFoul   int       `json:"tech_foul"`
 }
 
 type jsonScore struct {
@@ -74,18 +85,36 @@ type jsonScore struct {
 }
 
 func (web *Web) getScoresHandler(w http.ResponseWriter, r *http.Request) {
-	// json.NewEncoder(w).Encode(jsonScore{
-	// 	Red: jsonAllianceScore{
-	// 		Auto:    web.arena.RedScore.AutoPoints,
-	// 		Teleop:  web.arena.RedScore.TeleopPoints,
-	// 		Endgame: web.arena.RedScore.EndgamePoints,
-	// 	},
-	// 	Blue: jsonAllianceScore{
-	// 		Auto:    web.arena.BlueScore.AutoPoints,
-	// 		Teleop:  web.arena.BlueScore.TeleopPoints,
-	// 		Endgame: web.arena.BlueScore.EndgamePoints,
-	// 	},
-	// })
+	json.NewEncoder(w).Encode(jsonScore{
+		Red: jsonAllianceScore{
+			Taxi: [2]int{int(web.arena.RedScore.Taxi[0]), int(web.arena.RedScore.Taxi[1])},
+			Shelf: jsonShelf{
+				AutonBottomShelf:  web.arena.RedScore.Shelf.AutonBottomShelfCubes,
+				AutonTopShelf:     web.arena.RedScore.Shelf.AutonTopShelfCubes,
+				TeleopBottomShelf: web.arena.RedScore.Shelf.TeleopBottomShelfCubes,
+				TeleopTopShelf:    web.arena.RedScore.Shelf.TeleopTopShelfCubes,
+			},
+			Hamper:     web.arena.RedScore.Hamper,
+			Park:       [2]bool{web.arena.RedScore.Park[0], web.arena.RedScore.Park[1]},
+			GoldenCube: web.arena.RedScore.GoldenCube,
+			Foul:       web.arena.BlueScore.OppFouls,
+			TechFoul:   web.arena.BlueScore.OppTechFouls,
+		},
+		Blue: jsonAllianceScore{
+			Taxi: [2]int{int(web.arena.BlueScore.Taxi[0]), int(web.arena.BlueScore.Taxi[1])},
+			Shelf: jsonShelf{
+				AutonBottomShelf:  web.arena.BlueScore.Shelf.AutonBottomShelfCubes,
+				AutonTopShelf:     web.arena.BlueScore.Shelf.AutonTopShelfCubes,
+				TeleopBottomShelf: web.arena.BlueScore.Shelf.TeleopBottomShelfCubes,
+				TeleopTopShelf:    web.arena.BlueScore.Shelf.TeleopTopShelfCubes,
+			},
+			Hamper:     web.arena.BlueScore.Hamper,
+			Park:       [2]bool{web.arena.BlueScore.Park[0], web.arena.BlueScore.Park[1]},
+			GoldenCube: web.arena.BlueScore.GoldenCube,
+			Foul:       web.arena.RedScore.OppFouls,
+			TechFoul:   web.arena.RedScore.OppTechFouls,
+		},
+	})
 }
 
 func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {

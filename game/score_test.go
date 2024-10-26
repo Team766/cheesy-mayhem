@@ -29,6 +29,21 @@ func TestScoreSummary(t *testing.T) {
 	assert.Equal(t, 5, blueSummary.OppPenalties)
 }
 
+func TestScorePoints(t *testing.T) {
+	score1 := TestScore1()
+	score2 := TestScore2()
+
+	assert.Equal(t, 30, score1.AutoPoints())
+	assert.Equal(t, 23, score2.AutoPoints())
+
+	assert.Equal(t, 40, score1.TeleopPoints())
+	assert.Equal(t, 18, score2.TeleopPoints())
+
+	assert.Equal(t, 37, score1.EndgamePoints())
+	assert.Equal(t, 15, score2.EndgamePoints())
+
+}
+
 func TestScoreEquals(t *testing.T) {
 	score1 := TestScore1()
 	score2 := TestScore1()
