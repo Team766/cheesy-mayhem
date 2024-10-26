@@ -17,16 +17,16 @@ func TestScoreSummary(t *testing.T) {
 	blueScore := TestScore2()
 
 	redSummary := redScore.Summarize()
-	assert.Equal(t, 27, redSummary.AutoPoints)
-	assert.Equal(t, 26, redSummary.TeleopPoints)
+	assert.Equal(t, 30, redSummary.AutoPoints)
+	assert.Equal(t, 40, redSummary.TeleopPoints)
 	assert.Equal(t, 35, redSummary.EndgamePoints)
-	assert.Equal(t, 5, redSummary.OppPenalties)
+	assert.Equal(t, 30, redSummary.OppPenalties)
 
 	blueSummary := blueScore.Summarize()
-	assert.Equal(t, 30, blueSummary.AutoPoints)
-	assert.Equal(t, 67, blueSummary.TeleopPoints)
+	assert.Equal(t, 23, blueSummary.AutoPoints)
+	assert.Equal(t, 18, blueSummary.TeleopPoints)
 	assert.Equal(t, 15, blueSummary.EndgamePoints)
-	assert.Equal(t, 30, blueSummary.OppPenalties)
+	assert.Equal(t, 5, blueSummary.OppPenalties)
 }
 
 func TestScoreEquals(t *testing.T) {
@@ -61,6 +61,7 @@ func TestScoreJson(t *testing.T) {
 	if err != nil {
 		fmt.Println(json)
 	}
-	assert.Equal(t, string(json),
-		"{\"Taxi\":[0,2],\"Shelf\":{\"AutonTopShelfCubes\":1,\"AutonBottomShelfCubes\":2,\"TeleopTopShelfCubes\":2,\"TeleopBottomShelfCubes\":4},\"Hamper\":4,\"Parked\":[true,false],\"GoldenCube\":false,\"OppFouls\":1,\"OppTechFouls\":0}")
+	assert.Equal(t,
+		"{\"Taxi\":[1,2],\"Shelf\":{\"AutonTopShelfCubes\":1,\"AutonBottomShelfCubes\":2,\"TeleopTopShelfCubes\":4,\"TeleopBottomShelfCubes\":4},\"Hamper\":4,\"Parked\":[true,false],\"GoldenCube\":false,\"OppFouls\":0,\"OppTechFouls\":2}",
+		string(json))
 }

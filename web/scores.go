@@ -5,6 +5,8 @@
 
 /*
 
+TODO: update all of this.
+
 API Docs
 
 JSON Schema:
@@ -61,9 +63,9 @@ import (
 )
 
 type jsonAllianceScore struct {
-	Auto    int `json:"auto"`
-	Teleop  int `json:"teleop"`
-	Endgame int `json:"endgame"`
+	// Auto    int `json:"auto"`
+	// Teleop  int `json:"teleop"`
+	// Endgame int `json:"endgame"`
 }
 
 type jsonScore struct {

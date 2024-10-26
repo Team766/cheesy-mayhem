@@ -138,7 +138,11 @@ func TestCommitMatch(t *testing.T) {
 	assert.Nil(t, web.arena.Database.CreateMatch(match))
 	matchResult = model.NewMatchResult()
 	matchResult.MatchId = match.Id
-	matchResult.BlueScore = &game.Score{AutoPoints: 10}
+	matchResult.BlueScore = &game.Score{
+		Shelf: game.Shelf{
+			AutonBottomShelfCubes: 1,
+		},
+	}
 	err = web.commitMatchScore(match, matchResult, true)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, matchResult.PlayNumber)
@@ -147,7 +151,11 @@ func TestCommitMatch(t *testing.T) {
 
 	matchResult = model.NewMatchResult()
 	matchResult.MatchId = match.Id
-	matchResult.RedScore = &game.Score{AutoPoints: 20}
+	matchResult.RedScore = &game.Score{
+		Shelf: game.Shelf{
+			AutonBottomShelfCubes: 2,
+		},
+	}
 	err = web.commitMatchScore(match, matchResult, true)
 	assert.Nil(t, err)
 	assert.Equal(t, 2, matchResult.PlayNumber)
