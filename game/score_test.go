@@ -4,7 +4,6 @@
 package game
 
 import (
-	"fmt"
 	"testing"
 
 	"encoding/json"
@@ -73,9 +72,8 @@ func TestScoreEquals(t *testing.T) {
 func TestScoreJson(t *testing.T) {
 	score := TestScore1()
 	json, err := json.Marshal(score)
-	if err != nil {
-		fmt.Println(json)
-	}
+
+	assert.True(t, err == nil)
 	assert.Equal(t,
 		"{\"Taxi\":[1,2],\"Shelf\":{\"AutonTopShelfCubes\":1,\"AutonBottomShelfCubes\":2,\"TeleopTopShelfCubes\":4,\"TeleopBottomShelfCubes\":4},\"Hamper\":4,\"Park\":[true,false],\"GoldenCube\":false,\"OppFouls\":0,\"OppTechFouls\":2}",
 		string(json))
