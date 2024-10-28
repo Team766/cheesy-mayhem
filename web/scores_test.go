@@ -85,6 +85,7 @@ func TestPatchScores(t *testing.T) {
 	assert.Equal(t, 400, recorder.Code)
 	assert.Equal(t, "Score cannot be updated in this match state\n", recorder.Body.String())
 
+	// FIXME: update these tests after adding support for PATCH
 	// score1 := game.TestScore1()
 	// score2 := game.TestScore2()
 	// web.arena.RedScore.AutoPoints = score1.AutoPoints
@@ -127,6 +128,7 @@ func TestPutScores(t *testing.T) {
 	assert.Equal(t, 400, recorder.Code)
 	assert.Equal(t, "Score cannot be updated in this match state\n", recorder.Body.String())
 
+	// FIXME: update these tests after adding support for PUT
 	// score1 := game.TestScore1()
 	// score2 := game.TestScore2()
 	// web.arena.RedScore.AutoPoints = score1.AutoPoints

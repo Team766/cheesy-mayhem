@@ -137,6 +137,7 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		web.arena.BlueScore = new(game.Score)
 	}
 
+	// FIXME: update this logic
 	// web.arena.RedScore.AutoPoints += scores.Red.Auto
 	// web.arena.RedScore.TeleopPoints += scores.Red.Teleop
 	// web.arena.RedScore.EndgamePoints += scores.Red.Endgame
