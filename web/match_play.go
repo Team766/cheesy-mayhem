@@ -378,6 +378,7 @@ func (web *Web) matchPlayWebsocketHandler(w http.ResponseWriter, r *http.Request
 			web.arena.MatchLoadNotifier.Notify()
 			continue
 		case "updateRealtimeScore":
+			// FIXME: add support for new data model
 			// args := data.(map[string]interface{})
 			// web.arena.BlueScore.AutoPoints = int(args["blueAuto"].(float64))
 			// web.arena.RedScore.AutoPoints = int(args["redAuto"].(float64))
