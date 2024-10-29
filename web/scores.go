@@ -187,11 +187,5 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 	if _, ok := scoresMap["blue"]; ok {
 	}
 
-	// web.arena.RedScore.AutoPoints += scores.Red.Auto
-	// web.arena.RedScore.TeleopPoints += scores.Red.Teleop
-	// web.arena.RedScore.EndgamePoints += scores.Red.Endgame
-	// web.arena.BlueScore.AutoPoints += scores.Blue.Auto
-	// web.arena.BlueScore.TeleopPoints += scores.Blue.Teleop
-	// web.arena.BlueScore.EndgamePoints += scores.Blue.Endgame
 	web.arena.RealtimeScoreNotifier.Notify()
 }
