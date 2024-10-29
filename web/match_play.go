@@ -86,8 +86,8 @@ func (web *Web) matchPlayHandler(w http.ResponseWriter, r *http.Request) {
 		Match                 *model.Match
 		RedOffFieldTeams      []int
 		BlueOffFieldTeams     []int
-		RedScore              *game.Score
-		BlueScore             *game.Score
+		RedScore              *game.ScoreSummary
+		BlueScore             *game.ScoreSummary
 		AllowSubstitution     bool
 		IsReplay              bool
 		SavedMatchType        string
@@ -101,8 +101,8 @@ func (web *Web) matchPlayHandler(w http.ResponseWriter, r *http.Request) {
 		web.arena.CurrentMatch,
 		redOffFieldTeams,
 		blueOffFieldTeams,
-		web.arena.RedScore,
-		web.arena.BlueScore,
+		web.arena.RedScore.Summarize(),
+		web.arena.BlueScore.Summarize(),
 		web.arena.CurrentMatch.ShouldAllowSubstitution(),
 		isReplay,
 		web.arena.SavedMatch.CapitalizedType(),
@@ -377,16 +377,6 @@ func (web *Web) matchPlayWebsocketHandler(w http.ResponseWriter, r *http.Request
 			web.arena.CurrentMatch.DisplayName = name
 			web.arena.MatchLoadNotifier.Notify()
 			continue
-		case "updateRealtimeScore":
-			// FIXME: add support for new data model
-			// args := data.(map[string]interface{})
-			// web.arena.BlueScore.AutoPoints = int(args["blueAuto"].(float64))
-			// web.arena.RedScore.AutoPoints = int(args["redAuto"].(float64))
-			// web.arena.BlueScore.TeleopPoints = int(args["blueTeleop"].(float64))
-			// web.arena.RedScore.TeleopPoints = int(args["redTeleop"].(float64))
-			// web.arena.BlueScore.EndgamePoints = int(args["blueEndgame"].(float64))
-			// web.arena.RedScore.EndgamePoints = int(args["redEndgame"].(float64))
-			web.arena.RealtimeScoreNotifier.Notify()
 		default:
 			ws.WriteError(fmt.Sprintf("Invalid message type '%s'.", messageType))
 			continue
