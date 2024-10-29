@@ -133,6 +133,7 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 
 	var scoresMap map[string]interface{}
 
+	// ick - is there a way to parse into the struct - and tell which fields are explicitly filled?
 	json.Unmarshal(reqBody, &scoresMap)
 	json.Unmarshal(reqBody, &scores)
 
