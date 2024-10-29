@@ -5,15 +5,14 @@
 
 /*
 
-TODO: update all of this.
+FIXME: update all of this.
 
 API Docs
 
 JSON Schema:
 
 {
-   “red”: {“auto”: 99, “teleop”: 99, “endgame": 99},
-   “blue”: {“auto”: 99, “teleop”: 99, “endgame": 99}
+	FIXME
 }
 
 GET http://10.0.100.5/api/scores
@@ -28,7 +27,7 @@ parts are optional. Anything missing is set to zero.
 Example:
 
 {
-   “red”: {“auto”: 10}
+	FIXME
 }
 
 Red teleop and endgame are set to zero as well as all blue scores.
@@ -42,10 +41,10 @@ request body are left untouched.
 Example:
 
 {
-   “red”: {“auto”: 10},
-   "blue": {"teleop": -5}
+	FIXME
 }
 
+FIXME
 10 is added to red auto. Red teleop and endgame are left untouched.
 5 is subtracted from blue teleop. Blue auto and endgame are left untouched.
 
@@ -55,6 +54,7 @@ package web
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -130,6 +130,10 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		handleWebErr(w, err)
 		return
 	}
+
+	var scoresMap map[string]interface{}
+
+	json.Unmarshal(reqBody, &scoresMap)
 	json.Unmarshal(reqBody, &scores)
 
 	if r.Method == "PUT" {
@@ -138,6 +142,43 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// FIXME: update this logic
+	if red, ok := scoresMap["red"].(map[string]interface{}); ok {
+		fmt.Println(red)
+		fmt.Println("Updating red score")
+		if _, ok := red["taxi"]; ok {
+			fmt.Println("Updating taxi status")
+			web.arena.RedScore.Taxi = [2]game.AutonTaxiStatus{game.AutonTaxiStatus(scores.Red.Taxi[0]), game.AutonTaxiStatus(scores.Red.Taxi[1])}
+		}
+
+		if _, ok := red["shelf"]; ok {
+			fmt.Println("Updating shelf status")
+
+			web.arena.RedScore.Shelf = game.Shelf{
+				AutonBottomShelfCubes:  scores.Red.Shelf.AutonBottomShelf,
+				AutonTopShelfCubes:     scores.Red.Shelf.AutonTopShelf,
+				TeleopBottomShelfCubes: scores.Red.Shelf.TeleopBottomShelf,
+				TeleopTopShelfCubes:    scores.Red.Shelf.TeleopTopShelf,
+			}
+		}
+
+		if _, ok := red["golden_cube"]; ok {
+			fmt.Println("Updating golden_cube status")
+
+			web.arena.RedScore.GoldenCube = scores.Red.GoldenCube
+		}
+
+		if _, ok := scoresMap["hamper"]; ok {
+			fmt.Println("Updating hamper status")
+
+			web.arena.RedScore.Hamper = scores.Red.Hamper
+		}
+
+		// TODO: add support for penalties
+	}
+
+	if _, ok := scoresMap["blue"]; ok {
+	}
+
 	// web.arena.RedScore.AutoPoints += scores.Red.Auto
 	// web.arena.RedScore.TeleopPoints += scores.Red.Teleop
 	// web.arena.RedScore.EndgamePoints += scores.Red.Endgame
