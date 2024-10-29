@@ -143,6 +143,8 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 
 	// FIXME: update this logic
 	if red, ok := scoresMap["red"].(map[string]interface{}); ok {
+		// TODO: remove printlns
+		// TODO: refactor below so code can be reused across red, blue portions of json
 		fmt.Println(red)
 		fmt.Println("Updating red score")
 		if _, ok := red["taxi"]; ok {
@@ -167,10 +169,16 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 			web.arena.RedScore.GoldenCube = scores.Red.GoldenCube
 		}
 
-		if _, ok := scoresMap["hamper"]; ok {
+		if _, ok := red["hamper"]; ok {
 			fmt.Println("Updating hamper status")
 
 			web.arena.RedScore.Hamper = scores.Red.Hamper
+		}
+
+		if _, ok := red["park"]; ok {
+			fmt.Println("Updating park status")
+
+			web.arena.RedScore.Park = scores.Red.Park
 		}
 
 		// TODO: add support for penalties
