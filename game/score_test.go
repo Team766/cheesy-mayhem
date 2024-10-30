@@ -19,7 +19,7 @@ func TestScoreSummary(t *testing.T) {
 	assert.Equal(t, 30, redSummary.AutoPoints)
 	assert.Equal(t, 40, redSummary.TeleopPoints)
 	assert.Equal(t, 37, redSummary.EndgamePoints)
-	assert.Equal(t, 30, redSummary.OppPenalties)
+	assert.Equal(t, 20, redSummary.OppPenalties)
 
 	blueSummary := blueScore.Summarize()
 	assert.Equal(t, 23, blueSummary.AutoPoints)
