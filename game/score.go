@@ -15,7 +15,7 @@ const (
 	EndgameHamperBasePoints  = 5
 	EndgameHamperStackPoints = 10
 	FoulPoints               = 5
-	TechFoulPoints           = 15
+	TechFoulPoints           = 10
 )
 
 // would be const if go supported const arrays
@@ -106,7 +106,7 @@ func (score *Score) Summarize() *ScoreSummary {
 	summary.TeleopPoints = score.TeleopPoints()
 	summary.EndgamePoints = score.EndgamePoints()
 	summary.OppPenalties = score.OppPenalties()
-	summary.Score = summary.AutoPoints + summary.TeleopPoints + summary.EndgamePoints + summary.OppPenalties
+	summary.Score = score.TotalPoints()
 
 	return summary
 }

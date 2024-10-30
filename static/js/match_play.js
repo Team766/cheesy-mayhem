@@ -267,6 +267,7 @@ var handleMatchTime = function(data) {
 };
 
 // Handles a websocket message to update the match score.
+// TODO: fix this when we address PLANE-234
 var handleRealtimeScore = function(data) {
   $("#redScore").text(data.Red.ScoreSummary.Score);
   $("#blueScore").text(data.Blue.ScoreSummary.Score);
