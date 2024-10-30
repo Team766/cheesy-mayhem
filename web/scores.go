@@ -84,36 +84,65 @@ type jsonScore struct {
 	Blue jsonAllianceScore `json:"blue"`
 }
 
+func getJsonForScore(score *game.Score, fouls int, techFouls int) jsonAllianceScore {
+	return jsonAllianceScore{
+		Taxi: [2]int{int(score.Taxi[0]), int(score.Taxi[1])},
+		Shelf: jsonShelf{
+			AutonBottomShelf:  score.Shelf.AutonBottomShelfCubes,
+			AutonTopShelf:     score.Shelf.AutonTopShelfCubes,
+			TeleopBottomShelf: score.Shelf.TeleopBottomShelfCubes,
+			TeleopTopShelf:    score.Shelf.TeleopTopShelfCubes,
+		},
+		Hamper:     score.Hamper,
+		Park:       [2]bool{score.Park[0], score.Park[1]},
+		GoldenCube: score.GoldenCube,
+		Foul:       fouls,
+		TechFoul:   techFouls,
+	}
+}
+
+func getTaxiFromJsonField(taxi [2]int) [2]game.AutonTaxiStatus {
+	return [2]game.AutonTaxiStatus{game.AutonTaxiStatus(taxi[0]), game.AutonTaxiStatus(taxi[1])}
+}
+
+func getShelfFromJsonField(shelf jsonShelf) game.Shelf {
+	return game.Shelf{
+		AutonBottomShelfCubes:  shelf.AutonBottomShelf,
+		AutonTopShelfCubes:     shelf.AutonTopShelf,
+		TeleopBottomShelfCubes: shelf.TeleopBottomShelf,
+		TeleopTopShelfCubes:    shelf.TeleopTopShelf,
+	}
+}
+
+func updateScoreFromJson(json jsonAllianceScore, scoreMap map[string]interface{}, score *game.Score) {
+	fmt.Println(json)
+	if _, ok := scoreMap["taxi"]; ok {
+		score.Taxi = getTaxiFromJsonField(json.Taxi)
+	}
+
+	if _, ok := scoreMap["shelf"]; ok {
+		score.Shelf = getShelfFromJsonField(json.Shelf)
+	}
+
+	if _, ok := scoreMap["golden_cube"]; ok {
+		score.GoldenCube = json.GoldenCube
+	}
+
+	if _, ok := scoreMap["hamper"]; ok {
+		score.Hamper = json.Hamper
+	}
+
+	if _, ok := scoreMap["park"]; ok {
+		score.Park = json.Park
+	}
+
+	// TODO: add support for penalties
+}
+
 func (web *Web) getScoresHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(jsonScore{
-		Red: jsonAllianceScore{
-			Taxi: [2]int{int(web.arena.RedScore.Taxi[0]), int(web.arena.RedScore.Taxi[1])},
-			Shelf: jsonShelf{
-				AutonBottomShelf:  web.arena.RedScore.Shelf.AutonBottomShelfCubes,
-				AutonTopShelf:     web.arena.RedScore.Shelf.AutonTopShelfCubes,
-				TeleopBottomShelf: web.arena.RedScore.Shelf.TeleopBottomShelfCubes,
-				TeleopTopShelf:    web.arena.RedScore.Shelf.TeleopTopShelfCubes,
-			},
-			Hamper:     web.arena.RedScore.Hamper,
-			Park:       [2]bool{web.arena.RedScore.Park[0], web.arena.RedScore.Park[1]},
-			GoldenCube: web.arena.RedScore.GoldenCube,
-			Foul:       web.arena.BlueScore.OppFouls,
-			TechFoul:   web.arena.BlueScore.OppTechFouls,
-		},
-		Blue: jsonAllianceScore{
-			Taxi: [2]int{int(web.arena.BlueScore.Taxi[0]), int(web.arena.BlueScore.Taxi[1])},
-			Shelf: jsonShelf{
-				AutonBottomShelf:  web.arena.BlueScore.Shelf.AutonBottomShelfCubes,
-				AutonTopShelf:     web.arena.BlueScore.Shelf.AutonTopShelfCubes,
-				TeleopBottomShelf: web.arena.BlueScore.Shelf.TeleopBottomShelfCubes,
-				TeleopTopShelf:    web.arena.BlueScore.Shelf.TeleopTopShelfCubes,
-			},
-			Hamper:     web.arena.BlueScore.Hamper,
-			Park:       [2]bool{web.arena.BlueScore.Park[0], web.arena.BlueScore.Park[1]},
-			GoldenCube: web.arena.BlueScore.GoldenCube,
-			Foul:       web.arena.RedScore.OppFouls,
-			TechFoul:   web.arena.RedScore.OppTechFouls,
-		},
+		Red:  getJsonForScore(web.arena.RedScore, web.arena.BlueScore.OppFouls, web.arena.BlueScore.OppTechFouls),
+		Blue: getJsonForScore(web.arena.BlueScore, web.arena.RedScore.OppFouls, web.arena.RedScore.OppTechFouls),
 	})
 }
 
@@ -144,49 +173,13 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 
 	// FIXME: update this logic
 	if red, ok := scoresMap["red"].(map[string]interface{}); ok {
-		// TODO: remove printlns
-		// TODO: refactor below so code can be reused across red, blue portions of json
-		fmt.Println(red)
-		fmt.Println("Updating red score")
-		if _, ok := red["taxi"]; ok {
-			fmt.Println("Updating taxi status")
-			web.arena.RedScore.Taxi = [2]game.AutonTaxiStatus{game.AutonTaxiStatus(scores.Red.Taxi[0]), game.AutonTaxiStatus(scores.Red.Taxi[1])}
-		}
-
-		if _, ok := red["shelf"]; ok {
-			fmt.Println("Updating shelf status")
-
-			web.arena.RedScore.Shelf = game.Shelf{
-				AutonBottomShelfCubes:  scores.Red.Shelf.AutonBottomShelf,
-				AutonTopShelfCubes:     scores.Red.Shelf.AutonTopShelf,
-				TeleopBottomShelfCubes: scores.Red.Shelf.TeleopBottomShelf,
-				TeleopTopShelfCubes:    scores.Red.Shelf.TeleopTopShelf,
-			}
-		}
-
-		if _, ok := red["golden_cube"]; ok {
-			fmt.Println("Updating golden_cube status")
-
-			web.arena.RedScore.GoldenCube = scores.Red.GoldenCube
-		}
-
-		if _, ok := red["hamper"]; ok {
-			fmt.Println("Updating hamper status")
-
-			web.arena.RedScore.Hamper = scores.Red.Hamper
-		}
-
-		if _, ok := red["park"]; ok {
-			fmt.Println("Updating park status")
-
-			web.arena.RedScore.Park = scores.Red.Park
-		}
-
-		// TODO: add support for penalties
+		updateScoreFromJson(scores.Red, red, web.arena.RedScore)
 	}
 
-	if _, ok := scoresMap["blue"]; ok {
+	if blue, ok := scoresMap["blue"].(map[string]interface{}); ok {
+		updateScoreFromJson(scores.Blue, blue, web.arena.BlueScore)
 	}
 
+	// TODO: return current scores?
 	web.arena.RealtimeScoreNotifier.Notify()
 }
