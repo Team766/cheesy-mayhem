@@ -19,8 +19,8 @@ func TestGetScores(t *testing.T) {
 	score1 := game.TestScore1()
 	score2 := game.TestScore2()
 
-	web.arena.RedScore.Taxi[0] = game.AutonTaxiValues[score1.Taxi[0]]
-	web.arena.RedScore.Taxi[1] = game.AutonTaxiValues[score1.Taxi[1]]
+	web.arena.RedScore.Taxi[0] = score1.Taxi[0]
+	web.arena.RedScore.Taxi[1] = score1.Taxi[1]
 	web.arena.RedScore.Shelf.AutonBottomShelfCubes = score1.Shelf.AutonBottomShelfCubes
 	web.arena.RedScore.Shelf.AutonTopShelfCubes = score1.Shelf.AutonTopShelfCubes
 	web.arena.RedScore.Shelf.TeleopBottomShelfCubes = score1.Shelf.TeleopBottomShelfCubes
@@ -31,8 +31,8 @@ func TestGetScores(t *testing.T) {
 	web.arena.RedScore.OppFouls = score1.OppFouls
 	web.arena.RedScore.OppTechFouls = score1.OppTechFouls
 
-	web.arena.BlueScore.Taxi[0] = game.AutonTaxiValues[score2.Taxi[0]]
-	web.arena.BlueScore.Taxi[1] = game.AutonTaxiValues[score2.Taxi[1]]
+	web.arena.BlueScore.Taxi[0] = score2.Taxi[0]
+	web.arena.BlueScore.Taxi[1] = score2.Taxi[1]
 	web.arena.BlueScore.Shelf.AutonBottomShelfCubes = score2.Shelf.AutonBottomShelfCubes
 	web.arena.BlueScore.Shelf.AutonTopShelfCubes = score2.Shelf.AutonTopShelfCubes
 	web.arena.BlueScore.Shelf.TeleopBottomShelfCubes = score2.Shelf.TeleopBottomShelfCubes
