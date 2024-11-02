@@ -60,10 +60,10 @@ func (database *Database) TruncateMatchResults() error {
 
 // Calculates and returns the summary fields used for ranking and display for the red alliance.
 func (matchResult *MatchResult) RedScoreSummary() *game.ScoreSummary {
-	return matchResult.RedScore.Summarize()
+	return matchResult.RedScore.Summarize(matchResult.BlueScore)
 }
 
 // Calculates and returns the summary fields used for ranking and display for the blue alliance.
 func (matchResult *MatchResult) BlueScoreSummary() *game.ScoreSummary {
-	return matchResult.BlueScore.Summarize()
+	return matchResult.BlueScore.Summarize(matchResult.RedScore)
 }

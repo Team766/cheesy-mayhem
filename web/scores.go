@@ -84,7 +84,7 @@ type jsonScore struct {
 	Blue jsonAllianceScore `json:"blue"`
 }
 
-func getJsonForScore(score *game.Score, fouls int, techFouls int) jsonAllianceScore {
+func getJsonForScore(score *game.Score) jsonAllianceScore {
 	return jsonAllianceScore{
 		Taxi: [2]int{int(score.Taxi[0]), int(score.Taxi[1])},
 		Shelf: jsonShelf{
@@ -96,8 +96,8 @@ func getJsonForScore(score *game.Score, fouls int, techFouls int) jsonAllianceSc
 		Hamper:     score.Hamper,
 		Park:       [2]bool{score.Park[0], score.Park[1]},
 		GoldenCube: score.GoldenCube,
-		Foul:       fouls,
-		TechFoul:   techFouls,
+		Foul:       score.Fouls,
+		TechFoul:   score.TechFouls,
 	}
 }
 
@@ -141,8 +141,8 @@ func updateScoreFromJson(json jsonAllianceScore, scoreMap map[string]interface{}
 
 func (web *Web) getScoresHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(jsonScore{
-		Red:  getJsonForScore(web.arena.RedScore, web.arena.BlueScore.OppFouls, web.arena.BlueScore.OppTechFouls),
-		Blue: getJsonForScore(web.arena.BlueScore, web.arena.RedScore.OppFouls, web.arena.RedScore.OppTechFouls),
+		Red:  getJsonForScore(web.arena.RedScore),
+		Blue: getJsonForScore(web.arena.BlueScore),
 	})
 }
 

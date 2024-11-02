@@ -14,11 +14,11 @@ func TestScore1() *Score {
 			TeleopBottomShelfCubes: 4,
 			TeleopTopShelfCubes:    4,
 		},
-		Hamper:       4,
-		Park:         [2]bool{true, false},
-		GoldenCube:   false,
-		OppFouls:     0,
-		OppTechFouls: 2,
+		Hamper:     4,
+		Park:       [2]bool{true, false},
+		GoldenCube: false,
+		Fouls:      1,
+		TechFouls:  0,
 	}
 }
 
@@ -31,11 +31,11 @@ func TestScore2() *Score {
 			TeleopBottomShelfCubes: 2,
 			TeleopTopShelfCubes:    1,
 		},
-		Hamper:       2,
-		Park:         [2]bool{false, false},
-		GoldenCube:   true,
-		OppFouls:     1,
-		OppTechFouls: 0,
+		Hamper:     2,
+		Park:       [2]bool{false, false},
+		GoldenCube: true,
+		Fouls:      0,
+		TechFouls:  2,
 	}
 }
 

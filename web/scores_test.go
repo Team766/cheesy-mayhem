@@ -28,8 +28,8 @@ func TestGetScores(t *testing.T) {
 	web.arena.RedScore.Hamper = score1.Hamper
 	web.arena.RedScore.Park = score1.Park
 	web.arena.RedScore.GoldenCube = score1.GoldenCube
-	web.arena.RedScore.OppFouls = score1.OppFouls
-	web.arena.RedScore.OppTechFouls = score1.OppTechFouls
+	web.arena.RedScore.Fouls = score1.Fouls
+	web.arena.RedScore.TechFouls = score1.TechFouls
 
 	web.arena.BlueScore.Taxi[0] = score2.Taxi[0]
 	web.arena.BlueScore.Taxi[1] = score2.Taxi[1]
@@ -40,8 +40,8 @@ func TestGetScores(t *testing.T) {
 	web.arena.BlueScore.Hamper = score2.Hamper
 	web.arena.BlueScore.Park = score2.Park
 	web.arena.BlueScore.GoldenCube = score2.GoldenCube
-	web.arena.BlueScore.OppFouls = score2.OppFouls
-	web.arena.BlueScore.OppTechFouls = score2.OppTechFouls
+	web.arena.BlueScore.Fouls = score2.Fouls
+	web.arena.BlueScore.TechFouls = score2.TechFouls
 
 	recorder := web.getHttpResponse("/api/scores")
 	assert.Equal(t, 200, recorder.Code)
@@ -59,8 +59,8 @@ func TestGetScores(t *testing.T) {
 	assert.Equal(t, score1.GoldenCube, reqScores.Red.GoldenCube)
 	assert.Equal(t, score1.Park[0], reqScores.Red.Park[0])
 	assert.Equal(t, score1.Park[1], reqScores.Red.Park[1])
-	assert.Equal(t, score1.OppFouls, reqScores.Blue.Foul)
-	assert.Equal(t, score1.OppTechFouls, reqScores.Blue.TechFoul)
+	assert.Equal(t, score1.Fouls, reqScores.Red.Foul)
+	assert.Equal(t, score1.TechFouls, reqScores.Red.TechFoul)
 
 	assert.Equal(t, int(score2.Taxi[0]), reqScores.Blue.Taxi[0])
 	assert.Equal(t, int(score2.Taxi[1]), reqScores.Blue.Taxi[1])
@@ -72,8 +72,8 @@ func TestGetScores(t *testing.T) {
 	assert.Equal(t, score2.GoldenCube, reqScores.Blue.GoldenCube)
 	assert.Equal(t, score2.Park[0], reqScores.Blue.Park[0])
 	assert.Equal(t, score2.Park[1], reqScores.Blue.Park[1])
-	assert.Equal(t, score2.OppFouls, reqScores.Red.Foul)
-	assert.Equal(t, score2.OppTechFouls, reqScores.Red.TechFoul)
+	assert.Equal(t, score2.Fouls, reqScores.Blue.Foul)
+	assert.Equal(t, score2.TechFouls, reqScores.Blue.TechFoul)
 }
 
 func TestPatchScores(t *testing.T) {

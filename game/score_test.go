@@ -15,17 +15,17 @@ func TestScoreSummary(t *testing.T) {
 	redScore := TestScore1()
 	blueScore := TestScore2()
 
-	redSummary := redScore.Summarize()
+	redSummary := redScore.Summarize(blueScore)
 	assert.Equal(t, 30, redSummary.AutoPoints)
 	assert.Equal(t, 40, redSummary.TeleopPoints)
 	assert.Equal(t, 37, redSummary.EndgamePoints)
-	assert.Equal(t, 20, redSummary.OppPenalties)
+	assert.Equal(t, 5, redSummary.Penalties)
 
-	blueSummary := blueScore.Summarize()
+	blueSummary := blueScore.Summarize(redScore)
 	assert.Equal(t, 23, blueSummary.AutoPoints)
 	assert.Equal(t, 18, blueSummary.TeleopPoints)
 	assert.Equal(t, 15, blueSummary.EndgamePoints)
-	assert.Equal(t, 5, blueSummary.OppPenalties)
+	assert.Equal(t, 20, blueSummary.Penalties)
 }
 
 func TestScorePoints(t *testing.T) {
@@ -59,7 +59,7 @@ func TestScoreEquals(t *testing.T) {
 	assert.False(t, score2.Equals(score1))
 
 	score2 = TestScore1()
-	score2.OppFouls = 2
+	score2.Fouls = 2
 	assert.False(t, score1.Equals(score2))
 	assert.False(t, score2.Equals(score1))
 
