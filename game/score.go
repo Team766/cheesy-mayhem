@@ -22,13 +22,13 @@ const (
 var AutonTaxiPoints = [...]int{0, 3, 7}
 
 type Score struct {
-	Taxi         [2]AutonTaxiStatus
-	Shelf        Shelf
-	Hamper       int
-	Park         [2]bool
-	GoldenCube   bool
-	OppFouls     int
-	OppTechFouls int
+	Taxi       [2]AutonTaxiStatus
+	Shelf      Shelf
+	Hamper     int
+	Park       [2]bool
+	GoldenCube bool
+	Fouls      int
+	TechFouls  int
 }
 
 type AutonTaxiStatus int
@@ -90,23 +90,23 @@ func (score *Score) EndgamePoints() int {
 	return points
 }
 
-func (score *Score) OppPenalties() int {
-	return FoulPoints*score.OppFouls + TechFoulPoints*score.OppTechFouls
+func (score *Score) Penalties() int {
+	return FoulPoints*score.Fouls + TechFoulPoints*score.TechFouls
 }
 
-func (score *Score) TotalPoints() int {
-	return score.AutoPoints() + score.TeleopPoints() + score.EndgamePoints() + score.OppPenalties()
+func (score *Score) TotalPoints(opponentScore *Score) int {
+	return score.AutoPoints() + score.TeleopPoints() + score.EndgamePoints() + opponentScore.Penalties()
 }
 
 // Calculates and returns the summary fields used for ranking and display.
-func (score *Score) Summarize() *ScoreSummary {
+func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary := new(ScoreSummary)
 
 	summary.AutoPoints = score.AutoPoints()
 	summary.TeleopPoints = score.TeleopPoints()
 	summary.EndgamePoints = score.EndgamePoints()
-	summary.OppPenalties = score.OppPenalties()
-	summary.Score = score.TotalPoints()
+	summary.Penalties = score.Penalties()
+	summary.Score = score.TotalPoints(opponentScore)
 
 	return summary
 }
@@ -118,8 +118,8 @@ func (score *Score) Equals(other *Score) bool {
 		score.Hamper != other.Hamper ||
 		score.Park != other.Park ||
 		score.GoldenCube != other.GoldenCube ||
-		score.OppFouls != other.OppFouls ||
-		score.OppTechFouls != other.OppTechFouls {
+		score.Fouls != other.Fouls ||
+		score.TechFouls != other.TechFouls {
 		return false
 	}
 
