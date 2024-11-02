@@ -54,7 +54,6 @@ package web
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -70,34 +69,34 @@ type jsonShelf struct {
 }
 
 type jsonAllianceScore struct {
-	Taxi       [2]int    `json:"taxi"`
-	Shelf      jsonShelf `json:"shelf"`
-	Hamper     int       `json:"hamper"`
-	Park       [2]bool   `json:"park"`
-	GoldenCube bool      `json:"golden_cube"`
-	Foul       int       `json:"foul"`
-	TechFoul   int       `json:"tech_foul"`
+	Taxi       *[2]int    `json:"taxi"`
+	Shelf      *jsonShelf `json:"shelf"`
+	Hamper     *int       `json:"hamper"`
+	Park       *[2]bool   `json:"park"`
+	GoldenCube *bool      `json:"golden_cube"`
+	Foul       *int       `json:"foul"`
+	TechFoul   *int       `json:"tech_foul"`
 }
 
 type jsonScore struct {
-	Red  jsonAllianceScore `json:"red"`
-	Blue jsonAllianceScore `json:"blue"`
+	Red  *jsonAllianceScore `json:"red"`
+	Blue *jsonAllianceScore `json:"blue"`
 }
 
-func getJsonForScore(score *game.Score) jsonAllianceScore {
-	return jsonAllianceScore{
-		Taxi: [2]int{int(score.Taxi[0]), int(score.Taxi[1])},
-		Shelf: jsonShelf{
+func getJsonForScore(score *game.Score) *jsonAllianceScore {
+	return &jsonAllianceScore{
+		Taxi: &[2]int{int(score.Taxi[0]), int(score.Taxi[1])},
+		Shelf: &jsonShelf{
 			AutonBottomShelf:  score.Shelf.AutonBottomShelfCubes,
 			AutonTopShelf:     score.Shelf.AutonTopShelfCubes,
 			TeleopBottomShelf: score.Shelf.TeleopBottomShelfCubes,
 			TeleopTopShelf:    score.Shelf.TeleopTopShelfCubes,
 		},
-		Hamper:     score.Hamper,
-		Park:       [2]bool{score.Park[0], score.Park[1]},
-		GoldenCube: score.GoldenCube,
-		Foul:       score.Fouls,
-		TechFoul:   score.TechFouls,
+		Hamper:     &score.Hamper,
+		Park:       &[2]bool{score.Park[0], score.Park[1]},
+		GoldenCube: &score.GoldenCube,
+		Foul:       &score.Fouls,
+		TechFoul:   &score.TechFouls,
 	}
 }
 
@@ -114,26 +113,25 @@ func getShelfFromJsonField(shelf jsonShelf) game.Shelf {
 	}
 }
 
-func updateScoreFromJson(json jsonAllianceScore, scoreMap map[string]interface{}, score *game.Score) {
-	fmt.Println(json)
-	if _, ok := scoreMap["taxi"]; ok {
-		score.Taxi = getTaxiFromJsonField(json.Taxi)
+func updateScoreFromJson(json jsonAllianceScore, score *game.Score) {
+	if json.Taxi != nil {
+		score.Taxi = getTaxiFromJsonField(*json.Taxi)
 	}
 
-	if _, ok := scoreMap["shelf"]; ok {
-		score.Shelf = getShelfFromJsonField(json.Shelf)
+	if json.Shelf != nil {
+		score.Shelf = getShelfFromJsonField(*json.Shelf)
 	}
 
-	if _, ok := scoreMap["golden_cube"]; ok {
-		score.GoldenCube = json.GoldenCube
+	if json.GoldenCube != nil {
+		score.GoldenCube = *json.GoldenCube
 	}
 
-	if _, ok := scoreMap["hamper"]; ok {
-		score.Hamper = json.Hamper
+	if json.Hamper != nil {
+		score.Hamper = *json.Hamper
 	}
 
-	if _, ok := scoreMap["park"]; ok {
-		score.Park = json.Park
+	if json.Park != nil {
+		score.Park = *json.Park
 	}
 
 	// TODO: add support for penalties
@@ -160,10 +158,6 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var scoresMap map[string]interface{}
-
-	// ick - is there a way to parse into the struct - and tell which fields are explicitly filled?
-	json.Unmarshal(reqBody, &scoresMap)
 	json.Unmarshal(reqBody, &scores)
 
 	if r.Method == "PUT" {
@@ -171,13 +165,12 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		web.arena.BlueScore = new(game.Score)
 	}
 
-	// FIXME: update this logic
-	if red, ok := scoresMap["red"].(map[string]interface{}); ok {
-		updateScoreFromJson(scores.Red, red, web.arena.RedScore)
+	if scores.Red != nil {
+		updateScoreFromJson(*scores.Red, web.arena.RedScore)
 	}
 
-	if blue, ok := scoresMap["blue"].(map[string]interface{}); ok {
-		updateScoreFromJson(scores.Blue, blue, web.arena.BlueScore)
+	if scores.Blue != nil {
+		updateScoreFromJson(*scores.Blue, web.arena.BlueScore)
 	}
 
 	// TODO: return current scores?
