@@ -64,7 +64,7 @@ func (rankings Rankings) Less(i, j int) bool {
 	b := rankings[j]
 
 	// Use cross-multiplication to keep it in integer math.
-	// FIXME: add penaltis as another tiebreaker
+	// FIXME: add penalties as another tiebreaker
 	if a.RankingPoints*b.Played == b.RankingPoints*a.Played {
 		if a.AutoPoints*b.Played == b.AutoPoints*a.Played {
 			if a.EndgamePoints*b.Played == b.EndgamePoints*a.Played {
