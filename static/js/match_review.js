@@ -34,10 +34,10 @@ var renderResults = function(alliance) {
   getInputElement(alliance, "AutonTop").val(result.score.Shelf.AutonTopShelfCubes);
   getInputElement(alliance, "TeleopBottom").val(result.score.Shelf.TeleopBottomShelfCubes);
   getInputElement(alliance, "TeleopTop").val(result.score.Shelf.TeleopTopShelfCubes);
-  getInputElement(alliance, "GoldenCube").val(result.score.GoldenCube);
+  getInputElement(alliance, "GoldenCube").prop('checked', result.score.GoldenCube);
   getInputElement(alliance, "Hamper").val(result.score.Hamper);
-  getInputElement(alliance, "Park1").val(result.score.Park[0]);
-  getInputElement(alliance, "Park2").val(result.score.Park[1]);
+  getInputElement(alliance, "Park1").prop('checked', result.score.Park[0]);
+  getInputElement(alliance, "Park2").prop('checked', result.score.Park[1]);
 };
 
 // Converts the current form values back into JSON structures and caches them.
@@ -69,6 +69,9 @@ var getInputElement = function(alliance, name, value) {
 
 // TODO: is there a builtin way to do this?
 var parseBool = function(text) {
+  if (text === undefined) {
+    return false;
+  }
   var lower = text.toLowerCase();
   var num = parseInt(text);
   if (lower === "true" || num == 1) {
@@ -77,4 +80,4 @@ var parseBool = function(text) {
     return false;
   }
   return false;
-}
+};
