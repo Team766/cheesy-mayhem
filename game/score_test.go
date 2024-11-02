@@ -75,6 +75,6 @@ func TestScoreJson(t *testing.T) {
 
 	assert.True(t, err == nil)
 	assert.Equal(t,
-		"{\"Taxi\":[1,2],\"Shelf\":{\"AutonTopShelfCubes\":1,\"AutonBottomShelfCubes\":2,\"TeleopTopShelfCubes\":4,\"TeleopBottomShelfCubes\":4},\"Hamper\":4,\"Park\":[true,false],\"GoldenCube\":false,\"OppFouls\":0,\"OppTechFouls\":2}",
+		"{\"Taxi\":[1,2],\"Shelf\":{\"AutonTopShelfCubes\":1,\"AutonBottomShelfCubes\":2,\"TeleopTopShelfCubes\":4,\"TeleopBottomShelfCubes\":4},\"Hamper\":4,\"Park\":[true,false],\"GoldenCube\":false,\"Fouls\":1,\"TechFouls\":0}",
 		string(json))
 }
