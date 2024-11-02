@@ -55,12 +55,12 @@ func TestGetScores(t *testing.T) {
 	assert.Equal(t, score1.Shelf.AutonTopShelfCubes, reqScores.Red.Shelf.AutonTopShelf)
 	assert.Equal(t, score1.Shelf.TeleopBottomShelfCubes, reqScores.Red.Shelf.TeleopBottomShelf)
 	assert.Equal(t, score1.Shelf.TeleopTopShelfCubes, reqScores.Red.Shelf.TeleopBottomShelf)
-	assert.Equal(t, score1.Hamper, reqScores.Red.Hamper)
-	assert.Equal(t, score1.GoldenCube, reqScores.Red.GoldenCube)
+	assert.Equal(t, score1.Hamper, *reqScores.Red.Hamper)
+	assert.Equal(t, score1.GoldenCube, *reqScores.Red.GoldenCube)
 	assert.Equal(t, score1.Park[0], reqScores.Red.Park[0])
 	assert.Equal(t, score1.Park[1], reqScores.Red.Park[1])
-	assert.Equal(t, score1.Fouls, reqScores.Red.Foul)
-	assert.Equal(t, score1.TechFouls, reqScores.Red.TechFoul)
+	assert.Equal(t, score1.Fouls, *reqScores.Red.Foul)
+	assert.Equal(t, score1.TechFouls, *reqScores.Red.TechFoul)
 
 	assert.Equal(t, int(score2.Taxi[0]), reqScores.Blue.Taxi[0])
 	assert.Equal(t, int(score2.Taxi[1]), reqScores.Blue.Taxi[1])
@@ -68,12 +68,12 @@ func TestGetScores(t *testing.T) {
 	assert.Equal(t, score2.Shelf.AutonTopShelfCubes, reqScores.Blue.Shelf.AutonTopShelf)
 	assert.Equal(t, score2.Shelf.TeleopBottomShelfCubes, reqScores.Blue.Shelf.TeleopBottomShelf)
 	assert.Equal(t, score2.Shelf.TeleopTopShelfCubes, reqScores.Blue.Shelf.TeleopTopShelf)
-	assert.Equal(t, score2.Hamper, reqScores.Blue.Hamper)
-	assert.Equal(t, score2.GoldenCube, reqScores.Blue.GoldenCube)
+	assert.Equal(t, score2.Hamper, *reqScores.Blue.Hamper)
+	assert.Equal(t, score2.GoldenCube, *reqScores.Blue.GoldenCube)
 	assert.Equal(t, score2.Park[0], reqScores.Blue.Park[0])
 	assert.Equal(t, score2.Park[1], reqScores.Blue.Park[1])
-	assert.Equal(t, score2.Fouls, reqScores.Blue.Foul)
-	assert.Equal(t, score2.TechFouls, reqScores.Blue.TechFoul)
+	assert.Equal(t, score2.Fouls, *reqScores.Blue.Foul)
+	assert.Equal(t, score2.TechFouls, *reqScores.Blue.TechFoul)
 }
 
 func TestPatchScores(t *testing.T) {
