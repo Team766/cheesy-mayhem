@@ -8,11 +8,12 @@ package web
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strconv"
+
 	"github.com/Team254/cheesy-arena-lite/game"
 	"github.com/Team254/cheesy-arena-lite/model"
 	"github.com/gorilla/mux"
-	"net/http"
-	"strconv"
 )
 
 type MatchReviewListItem struct {
@@ -119,6 +120,9 @@ func (web *Web) matchReviewEditPostHandler(w http.ResponseWriter, r *http.Reques
 		handleWebErr(w, err)
 		return
 	}
+
+	fmt.Println(r.PostFormValue("matchResultJson"))
+
 	if matchResult.MatchId != match.Id {
 		handleWebErr(w, fmt.Errorf("Error: match ID %d from result does not match expected", matchResult.MatchId))
 		return
@@ -184,8 +188,8 @@ func (web *Web) buildMatchReviewList(matchType string) ([]MatchReviewListItem, e
 		matchReviewList[i].Id = match.Id
 		matchReviewList[i].DisplayName = match.TypePrefix() + match.DisplayName
 		matchReviewList[i].Time = match.Time.Local().Format("Mon 1/02 03:04 PM")
-		matchReviewList[i].RedTeams = []int{match.Red1, match.Red2, match.Red3}
-		matchReviewList[i].BlueTeams = []int{match.Blue1, match.Blue2, match.Blue3}
+		matchReviewList[i].RedTeams = []int{match.Red1, match.Red2}
+		matchReviewList[i].BlueTeams = []int{match.Blue1, match.Blue2}
 		matchResult, err := web.arena.Database.GetMatchResultForMatch(match.Id)
 		if err != nil {
 			return []MatchReviewListItem{}, err
