@@ -41,11 +41,13 @@ func TestMatchReviewEditExistingResult(t *testing.T) {
 	web := setupTestWeb(t)
 
 	match := model.Match{Type: "elimination", DisplayName: "QF4-3", Status: game.RedWonMatch, Red1: 1001,
-		Red2: 1002, Red3: 1003, Blue1: 1004, Blue2: 1005, Blue3: 1006, ElimRedAlliance: 1, ElimBlueAlliance: 2}
+		Red2: 1002, Blue1: 1004, Blue2: 1005, ElimRedAlliance: 1, ElimBlueAlliance: 2}
 	assert.Nil(t, web.arena.Database.CreateMatch(&match))
 	matchResult := model.BuildTestMatchResult(match.Id, 1)
 	matchResult.MatchType = match.Type
 	assert.Nil(t, web.arena.Database.CreateMatchResult(matchResult))
+	fmt.Println(matchResult)
+
 	tournament.CreateTestAlliances(web.arena.Database, 2)
 	web.arena.EventSettings.NumElimAlliances = 2
 	web.arena.CreatePlayoffBracket()
@@ -53,7 +55,7 @@ func TestMatchReviewEditExistingResult(t *testing.T) {
 	recorder := web.getHttpResponse("/match_review")
 	assert.Equal(t, 200, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), ">QF4-3<")
-	assert.Contains(t, recorder.Body.String(), ">137<") // The red score
+	assert.Contains(t, recorder.Body.String(), ">127<") // The red score
 	assert.Contains(t, recorder.Body.String(), ">61<")  // The blue score
 
 	// Check response for non-existent match.
@@ -65,22 +67,21 @@ func TestMatchReviewEditExistingResult(t *testing.T) {
 	assert.Equal(t, 200, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), " QF4-3 ")
 
-	// FIXME: update after adding support for editing match results
 	// Update the score to something else.
-	// postBody := fmt.Sprintf(
-	// 	"matchResultJson={\"MatchId\":%d,\"RedScore\":{\"AutoPoints\":45,\"TeleopPoints\":80,\"EndgamePoints\":10},"+
-	// 		"\"BlueScore\":{\"AutoPoints\":15,\"TeleopPoints\":60,\"EndgamePoints\":50}}",
-	// 	match.Id,
-	// )
-	// recorder = web.postHttpResponse(fmt.Sprintf("/match_review/%d/edit", match.Id), postBody)
-	// assert.Equal(t, 303, recorder.Code, recorder.Body.String())
+	postBody := fmt.Sprintf(
+		"matchResultJson={\"MatchId\":%d,\"RedScore\":{\"Taxi\":[0,2],\"Hamper\":4},"+
+			"\"BlueScore\":{\"Taxi\":[1,1],\"Hamper\":2}}",
+		match.Id,
+	)
+	recorder = web.postHttpResponse(fmt.Sprintf("/match_review/%d/edit", match.Id), postBody)
+	assert.Equal(t, 303, recorder.Code, recorder.Body.String())
 
-	// // Check for the updated scores back on the match list page.
-	// recorder = web.getHttpResponse("/match_review")
-	// assert.Equal(t, 200, recorder.Code)
-	// assert.Contains(t, recorder.Body.String(), ">QF4-3<")
-	// assert.Contains(t, recorder.Body.String(), ">137<") // The red score
-	// assert.Contains(t, recorder.Body.String(), ">61<")  // The blue score
+	// Check for the updated scores back on the match list page.
+	recorder = web.getHttpResponse("/match_review")
+	assert.Equal(t, 200, recorder.Code)
+	assert.Contains(t, recorder.Body.String(), ">QF4-3<")
+	assert.Contains(t, recorder.Body.String(), ">42<") // The red score
+	assert.Contains(t, recorder.Body.String(), ">21<") // The blue score
 }
 
 func TestMatchReviewCreateNewResult(t *testing.T) {
@@ -104,9 +105,10 @@ func TestMatchReviewCreateNewResult(t *testing.T) {
 	assert.Contains(t, recorder.Body.String(), " QF4-3 ")
 
 	// Update the score to something else.
+	// Update the score to something else.
 	postBody := fmt.Sprintf(
-		"matchResultJson={\"MatchId\":%d,\"RedScore\":{\"AutoPoints\":10,\"TeleopPoints\":20,\"EndgamePoints\":30},"+
-			"\"BlueScore\":{\"AutoPoints\":40,\"TeleopPoints\":50,\"EndgamePoints\":60}}",
+		"matchResultJson={\"MatchId\":%d,\"RedScore\":{\"Taxi\":[0,2],\"Hamper\":4},"+
+			"\"BlueScore\":{\"Taxi\":[1,1],\"Hamper\":2}}",
 		match.Id,
 	)
 	recorder = web.postHttpResponse(fmt.Sprintf("/match_review/%d/edit", match.Id), postBody)
@@ -116,8 +118,8 @@ func TestMatchReviewCreateNewResult(t *testing.T) {
 	recorder = web.getHttpResponse("/match_review")
 	assert.Equal(t, 200, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), ">QF4-3<")
-	assert.Contains(t, recorder.Body.String(), ">60<")  // The red score
-	assert.Contains(t, recorder.Body.String(), ">150<") // The blue score
+	assert.Contains(t, recorder.Body.String(), ">42<") // The red score
+	assert.Contains(t, recorder.Body.String(), ">21<") // The blue score
 }
 
 func TestMatchReviewEditCurrentMatch(t *testing.T) {
@@ -141,24 +143,22 @@ func TestMatchReviewEditCurrentMatch(t *testing.T) {
 	assert.Equal(t, 200, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), " 352 ")
 
-	// FIXME: add support for editing match results
-	// postBody := fmt.Sprintf(
-	// 	"matchResultJson={\"MatchId\":%d,\"RedScore\":{\"AutoPoints\":10,\"TeleopPoints\":20,\"EndgamePoints\":30},"+
-	// 		"\"BlueScore\":{\"AutoPoints\":40,\"TeleopPoints\":50,\"EndgamePoints\":60}}",
-	// 	match.Id,
-	// )
-	// recorder = web.postHttpResponse("/match_review/current/edit", postBody)
-	// assert.Equal(t, 303, recorder.Code, recorder.Body.String())
-	// assert.Equal(t, "/match_play", recorder.Header().Get("Location"))
+	postBody := fmt.Sprintf(
+		"matchResultJson={\"MatchId\":%d,\"RedScore\":{\"Taxi\":[0,2],\"Hamper\":4},"+
+			"\"BlueScore\":{\"Taxi\":[1,1],\"Hamper\":2}}",
+		match.Id,
+	)
+	recorder = web.postHttpResponse("/match_review/current/edit", postBody)
+	assert.Equal(t, 303, recorder.Code, recorder.Body.String())
+	assert.Equal(t, "/match_play", recorder.Header().Get("Location"))
 
 	// Check that the persisted match is still unedited and that the realtime scores have been updated instead.
 	match2, _ := web.arena.Database.GetMatchById(match.Id)
-	assert.Equal(t, "", match2)
 	assert.Equal(t, game.MatchNotPlayed, match2.Status)
-	assert.Equal(t, 10, web.arena.RedScore.AutoPoints())
-	assert.Equal(t, 20, web.arena.RedScore.TeleopPoints())
-	assert.Equal(t, 30, web.arena.RedScore.EndgamePoints())
-	assert.Equal(t, 40, web.arena.BlueScore.AutoPoints())
-	assert.Equal(t, 50, web.arena.BlueScore.TeleopPoints())
-	assert.Equal(t, 60, web.arena.BlueScore.EndgamePoints())
+	assert.Equal(t, 7, web.arena.RedScore.AutoPoints())
+	assert.Equal(t, 0, web.arena.RedScore.TeleopPoints())
+	assert.Equal(t, 35, web.arena.RedScore.EndgamePoints())
+	assert.Equal(t, 6, web.arena.BlueScore.AutoPoints())
+	assert.Equal(t, 0, web.arena.BlueScore.TeleopPoints())
+	assert.Equal(t, 15, web.arena.BlueScore.EndgamePoints())
 }
