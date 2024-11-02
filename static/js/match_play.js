@@ -325,5 +325,7 @@ $(function() {
     eventStatus: function(event) { handleEventStatus(event.data); },
     matchTime: function(event) { handleMatchTime(event.data); },
     matchTiming: function(event) { handleMatchTiming(event.data); },
+    // FIXME: re-enable this once we add support for realtime score updates again.
+    // realtimeScore: function(event) { handleRealtimeScore(event.data); },
   });
 });
