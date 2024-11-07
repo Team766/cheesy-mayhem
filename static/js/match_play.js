@@ -68,18 +68,6 @@ var startTimeout = function() {
   websocket.send("startTimeout", durationSec);
 };
 
-// Sends a websocket message to update the realtime score
-var updateRealtimeScore = function() {
-  websocket.send("updateRealtimeScore", {
-    blueAuto: parseInt($("#blueAutoScore").val()),
-    redAuto: parseInt($("#redAutoScore").val()),
-    blueTeleop: parseInt($("#blueTeleopScore").val()),
-    redTeleop: parseInt($("#redTeleopScore").val()),
-    blueEndgame: parseInt($("#blueEndgameScore").val()),
-    redEndgame: parseInt($("#redEndgameScore").val())
-  })
-};
-
 var scoreKeyHandler = function(e) {
   var keycode = (event.keyCode ? event.keyCode : event.which);
   if (keycode == 13) {
@@ -279,6 +267,7 @@ var handleMatchTime = function(data) {
 };
 
 // Handles a websocket message to update the match score.
+// TODO: fix this when we address PLANE-234
 var handleRealtimeScore = function(data) {
   $("#redScore").text(data.Red.ScoreSummary.Score);
   $("#blueScore").text(data.Blue.ScoreSummary.Score);
@@ -336,6 +325,7 @@ $(function() {
     eventStatus: function(event) { handleEventStatus(event.data); },
     matchTime: function(event) { handleMatchTime(event.data); },
     matchTiming: function(event) { handleMatchTiming(event.data); },
-    realtimeScore: function(event) { handleRealtimeScore(event.data); },
+    // FIXME: re-enable this once we add support for realtime score updates again.
+    // realtimeScore: function(event) { handleRealtimeScore(event.data); },
   });
 });

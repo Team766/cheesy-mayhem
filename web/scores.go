@@ -5,13 +5,14 @@
 
 /*
 
+FIXME: update all of this.
+
 API Docs
 
 JSON Schema:
 
 {
-   “red”: {“auto”: 99, “teleop”: 99, “endgame": 99},
-   “blue”: {“auto”: 99, “teleop”: 99, “endgame": 99}
+	FIXME
 }
 
 GET http://10.0.100.5/api/scores
@@ -26,7 +27,7 @@ parts are optional. Anything missing is set to zero.
 Example:
 
 {
-   “red”: {“auto”: 10}
+	FIXME
 }
 
 Red teleop and endgame are set to zero as well as all blue scores.
@@ -40,10 +41,10 @@ request body are left untouched.
 Example:
 
 {
-   “red”: {“auto”: 10},
-   "blue": {"teleop": -5}
+	FIXME
 }
 
+FIXME
 10 is added to red auto. Red teleop and endgame are left untouched.
 5 is subtracted from blue teleop. Blue auto and endgame are left untouched.
 
@@ -53,35 +54,93 @@ package web
 
 import (
 	"encoding/json"
-	"github.com/Team254/cheesy-arena-lite/field"
-	"github.com/Team254/cheesy-arena-lite/game"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/Team254/cheesy-arena-lite/field"
+	"github.com/Team254/cheesy-arena-lite/game"
 )
 
+type jsonShelf struct {
+	AutonBottomShelf  int `json:"auton_bottom"`
+	AutonTopShelf     int `json:"auton_top"`
+	TeleopBottomShelf int `json:"teleop_bottom"`
+	TeleopTopShelf    int `json:"teleop_top"`
+}
+
 type jsonAllianceScore struct {
-	Auto    int `json:"auto"`
-	Teleop  int `json:"teleop"`
-	Endgame int `json:"endgame"`
+	Taxi       *[2]int    `json:"taxi"`
+	Shelf      *jsonShelf `json:"shelf"`
+	Hamper     *int       `json:"hamper"`
+	Park       *[2]bool   `json:"park"`
+	GoldenCube *bool      `json:"golden_cube"`
+	Foul       *int       `json:"foul"`
+	TechFoul   *int       `json:"tech_foul"`
 }
 
 type jsonScore struct {
-	Red  jsonAllianceScore `json:"red"`
-	Blue jsonAllianceScore `json:"blue"`
+	Red  *jsonAllianceScore `json:"red"`
+	Blue *jsonAllianceScore `json:"blue"`
+}
+
+func getJsonForScore(score *game.Score) *jsonAllianceScore {
+	return &jsonAllianceScore{
+		Taxi: &[2]int{int(score.Taxi[0]), int(score.Taxi[1])},
+		Shelf: &jsonShelf{
+			AutonBottomShelf:  score.Shelf.AutonBottomShelfCubes,
+			AutonTopShelf:     score.Shelf.AutonTopShelfCubes,
+			TeleopBottomShelf: score.Shelf.TeleopBottomShelfCubes,
+			TeleopTopShelf:    score.Shelf.TeleopTopShelfCubes,
+		},
+		Hamper:     &score.Hamper,
+		Park:       &[2]bool{score.Park[0], score.Park[1]},
+		GoldenCube: &score.GoldenCube,
+		Foul:       &score.Fouls,
+		TechFoul:   &score.TechFouls,
+	}
+}
+
+func getTaxiFromJsonField(taxi [2]int) [2]game.AutonTaxiStatus {
+	return [2]game.AutonTaxiStatus{game.AutonTaxiStatus(taxi[0]), game.AutonTaxiStatus(taxi[1])}
+}
+
+func getShelfFromJsonField(shelf jsonShelf) game.Shelf {
+	return game.Shelf{
+		AutonBottomShelfCubes:  shelf.AutonBottomShelf,
+		AutonTopShelfCubes:     shelf.AutonTopShelf,
+		TeleopBottomShelfCubes: shelf.TeleopBottomShelf,
+		TeleopTopShelfCubes:    shelf.TeleopTopShelf,
+	}
+}
+
+func updateScoreFromJson(json jsonAllianceScore, score *game.Score) {
+	if json.Taxi != nil {
+		score.Taxi = getTaxiFromJsonField(*json.Taxi)
+	}
+
+	if json.Shelf != nil {
+		score.Shelf = getShelfFromJsonField(*json.Shelf)
+	}
+
+	if json.GoldenCube != nil {
+		score.GoldenCube = *json.GoldenCube
+	}
+
+	if json.Hamper != nil {
+		score.Hamper = *json.Hamper
+	}
+
+	if json.Park != nil {
+		score.Park = *json.Park
+	}
+
+	// TODO: add support for penalties
 }
 
 func (web *Web) getScoresHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(jsonScore{
-		Red: jsonAllianceScore{
-			Auto:    web.arena.RedScore.AutoPoints,
-			Teleop:  web.arena.RedScore.TeleopPoints,
-			Endgame: web.arena.RedScore.EndgamePoints,
-		},
-		Blue: jsonAllianceScore{
-			Auto:    web.arena.BlueScore.AutoPoints,
-			Teleop:  web.arena.BlueScore.TeleopPoints,
-			Endgame: web.arena.BlueScore.EndgamePoints,
-		},
+		Red:  getJsonForScore(web.arena.RedScore),
+		Blue: getJsonForScore(web.arena.BlueScore),
 	})
 }
 
@@ -98,6 +157,7 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		handleWebErr(w, err)
 		return
 	}
+
 	json.Unmarshal(reqBody, &scores)
 
 	if r.Method == "PUT" {
@@ -105,11 +165,14 @@ func (web *Web) setScoresHandler(w http.ResponseWriter, r *http.Request) {
 		web.arena.BlueScore = new(game.Score)
 	}
 
-	web.arena.RedScore.AutoPoints += scores.Red.Auto
-	web.arena.RedScore.TeleopPoints += scores.Red.Teleop
-	web.arena.RedScore.EndgamePoints += scores.Red.Endgame
-	web.arena.BlueScore.AutoPoints += scores.Blue.Auto
-	web.arena.BlueScore.TeleopPoints += scores.Blue.Teleop
-	web.arena.BlueScore.EndgamePoints += scores.Blue.Endgame
+	if scores.Red != nil {
+		updateScoreFromJson(*scores.Red, web.arena.RedScore)
+	}
+
+	if scores.Blue != nil {
+		updateScoreFromJson(*scores.Blue, web.arena.BlueScore)
+	}
+
+	// TODO: return current scores?
 	web.arena.RealtimeScoreNotifier.Notify()
 }

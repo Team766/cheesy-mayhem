@@ -7,17 +7,35 @@ package game
 
 func TestScore1() *Score {
 	return &Score{
-		AutoPoints:    45,
-		TeleopPoints:  80,
-		EndgamePoints: 30,
+		Taxi: [2]AutonTaxiStatus{AutonTaxiPartial, AutonTaxiFull},
+		Shelf: Shelf{
+			AutonBottomShelfCubes:  2,
+			AutonTopShelfCubes:     1,
+			TeleopBottomShelfCubes: 4,
+			TeleopTopShelfCubes:    4,
+		},
+		Hamper:     4,
+		Park:       [2]bool{true, false},
+		GoldenCube: false,
+		Fouls:      1,
+		TechFouls:  0,
 	}
 }
 
 func TestScore2() *Score {
 	return &Score{
-		AutoPoints:    15,
-		TeleopPoints:  40,
-		EndgamePoints: 25,
+		Taxi: [2]AutonTaxiStatus{AutonTaxiNone, AutonTaxiPartial},
+		Shelf: Shelf{
+			AutonBottomShelfCubes:  0,
+			AutonTopShelfCubes:     2,
+			TeleopBottomShelfCubes: 2,
+			TeleopTopShelfCubes:    1,
+		},
+		Hamper:     2,
+		Park:       [2]bool{false, false},
+		GoldenCube: true,
+		Fouls:      0,
+		TechFouls:  2,
 	}
 }
 

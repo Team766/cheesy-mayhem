@@ -7,14 +7,15 @@ package field
 
 import (
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/Team254/cheesy-arena-lite/bracket"
 	"github.com/Team254/cheesy-arena-lite/game"
 	"github.com/Team254/cheesy-arena-lite/model"
 	"github.com/Team254/cheesy-arena-lite/network"
 	"github.com/Team254/cheesy-arena-lite/partner"
 	"github.com/Team254/cheesy-arena-lite/plc"
-	"log"
-	"time"
 )
 
 const (
@@ -573,12 +574,12 @@ func (arena *Arena) Run() {
 
 // Calculates the red alliance score summary for the given realtime snapshot.
 func (arena *Arena) RedScoreSummary() *game.ScoreSummary {
-	return arena.RedScore.Summarize()
+	return arena.RedScore.Summarize(arena.BlueScore)
 }
 
 // Calculates the blue alliance score summary for the given realtime snapshot.
 func (arena *Arena) BlueScoreSummary() *game.ScoreSummary {
-	return arena.BlueScore.Summarize()
+	return arena.BlueScore.Summarize(arena.RedScore)
 }
 
 // Loads a team into an alliance station, cleaning up the previous team there if there is one.

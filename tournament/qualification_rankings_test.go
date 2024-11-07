@@ -4,11 +4,12 @@
 package tournament
 
 import (
+	"math/rand"
+	"testing"
+
 	"github.com/Team254/cheesy-arena-lite/game"
 	"github.com/Team254/cheesy-arena-lite/model"
 	"github.com/stretchr/testify/assert"
-	"math/rand"
-	"testing"
 )
 
 func TestCalculateRankings(t *testing.T) {
@@ -98,8 +99,8 @@ func setupMatchResultsForRankings(database *model.Database) {
 	database.CreateMatch(&match2)
 	matchResult2 := model.BuildTestMatchResult(match2.Id, 1)
 	matchResult2.BlueScore, matchResult2.RedScore = matchResult2.RedScore, matchResult2.BlueScore
-	matchResult2.RedScore.AutoPoints += 2
-	matchResult2.BlueScore.AutoPoints += 2
+	matchResult2.RedScore.Shelf.AutonTopShelfCubes += 1
+	matchResult2.BlueScore.Shelf.AutonTopShelfCubes += 1
 	database.CreateMatchResult(matchResult2)
 
 	match3 := model.Match{Type: "qualification", DisplayName: "3", Red1: 6, Red2: 5, Red3: 4, Blue1: 3, Blue2: 2,

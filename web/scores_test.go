@@ -5,11 +5,12 @@ package web
 
 import (
 	"encoding/json"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/Team254/cheesy-arena-lite/field"
 	"github.com/Team254/cheesy-arena-lite/game"
 	"github.com/stretchr/testify/assert"
-	"net/http/httptest"
-	"testing"
 )
 
 func TestGetScores(t *testing.T) {
@@ -17,24 +18,40 @@ func TestGetScores(t *testing.T) {
 
 	score1 := game.TestScore1()
 	score2 := game.TestScore2()
-	web.arena.RedScore.AutoPoints = score1.AutoPoints
-	web.arena.RedScore.TeleopPoints = score1.TeleopPoints
-	web.arena.RedScore.EndgamePoints = score1.EndgamePoints
-	web.arena.BlueScore.AutoPoints = score2.AutoPoints
-	web.arena.BlueScore.TeleopPoints = score2.TeleopPoints
-	web.arena.BlueScore.EndgamePoints = score2.EndgamePoints
+
+	web.arena.RedScore = score1
+	web.arena.BlueScore = score2
 
 	recorder := web.getHttpResponse("/api/scores")
 	assert.Equal(t, 200, recorder.Code)
 
 	var reqScores jsonScore
 	json.Unmarshal(recorder.Body.Bytes(), &reqScores)
-	assert.Equal(t, score1.AutoPoints, reqScores.Red.Auto)
-	assert.Equal(t, score1.TeleopPoints, reqScores.Red.Teleop)
-	assert.Equal(t, score1.EndgamePoints, reqScores.Red.Endgame)
-	assert.Equal(t, score2.AutoPoints, reqScores.Blue.Auto)
-	assert.Equal(t, score2.TeleopPoints, reqScores.Blue.Teleop)
-	assert.Equal(t, score2.EndgamePoints, reqScores.Blue.Endgame)
+	assert.Equal(t, int(score1.Taxi[0]), reqScores.Red.Taxi[0])
+	assert.Equal(t, int(score1.Taxi[1]), reqScores.Red.Taxi[1])
+	assert.Equal(t, score1.Shelf.AutonBottomShelfCubes, reqScores.Red.Shelf.AutonBottomShelf)
+	assert.Equal(t, score1.Shelf.AutonTopShelfCubes, reqScores.Red.Shelf.AutonTopShelf)
+	assert.Equal(t, score1.Shelf.TeleopBottomShelfCubes, reqScores.Red.Shelf.TeleopBottomShelf)
+	assert.Equal(t, score1.Shelf.TeleopTopShelfCubes, reqScores.Red.Shelf.TeleopBottomShelf)
+	assert.Equal(t, score1.Hamper, *reqScores.Red.Hamper)
+	assert.Equal(t, score1.GoldenCube, *reqScores.Red.GoldenCube)
+	assert.Equal(t, score1.Park[0], reqScores.Red.Park[0])
+	assert.Equal(t, score1.Park[1], reqScores.Red.Park[1])
+	assert.Equal(t, score1.Fouls, *reqScores.Red.Foul)
+	assert.Equal(t, score1.TechFouls, *reqScores.Red.TechFoul)
+
+	assert.Equal(t, int(score2.Taxi[0]), reqScores.Blue.Taxi[0])
+	assert.Equal(t, int(score2.Taxi[1]), reqScores.Blue.Taxi[1])
+	assert.Equal(t, score2.Shelf.AutonBottomShelfCubes, reqScores.Blue.Shelf.AutonBottomShelf)
+	assert.Equal(t, score2.Shelf.AutonTopShelfCubes, reqScores.Blue.Shelf.AutonTopShelf)
+	assert.Equal(t, score2.Shelf.TeleopBottomShelfCubes, reqScores.Blue.Shelf.TeleopBottomShelf)
+	assert.Equal(t, score2.Shelf.TeleopTopShelfCubes, reqScores.Blue.Shelf.TeleopTopShelf)
+	assert.Equal(t, score2.Hamper, *reqScores.Blue.Hamper)
+	assert.Equal(t, score2.GoldenCube, *reqScores.Blue.GoldenCube)
+	assert.Equal(t, score2.Park[0], reqScores.Blue.Park[0])
+	assert.Equal(t, score2.Park[1], reqScores.Blue.Park[1])
+	assert.Equal(t, score2.Fouls, *reqScores.Blue.Foul)
+	assert.Equal(t, score2.TechFouls, *reqScores.Blue.TechFoul)
 }
 
 func TestPatchScores(t *testing.T) {
@@ -48,35 +65,36 @@ func TestPatchScores(t *testing.T) {
 
 	score1 := game.TestScore1()
 	score2 := game.TestScore2()
-	web.arena.RedScore.AutoPoints = score1.AutoPoints
-	web.arena.RedScore.TeleopPoints = score1.TeleopPoints
-	web.arena.RedScore.EndgamePoints = score1.EndgamePoints
-	web.arena.BlueScore.AutoPoints = score2.AutoPoints
-	web.arena.BlueScore.TeleopPoints = score2.TeleopPoints
-	web.arena.BlueScore.EndgamePoints = score2.EndgamePoints
+
+	web.arena.RedScore = score1
+	web.arena.BlueScore = score2
 
 	web.arena.MatchState = field.PostMatch
 	recorder = web.patchHttpResponse("/api/scores",
-		"{\"red\":{\"auto\":5,\"teleop\":10,\"endgame\":15}}")
+		"{\"red\":{\"taxi\": [2,2], \"hamper\": 2}}")
 	assert.Equal(t, 200, recorder.Code)
 
-	assert.Equal(t, score1.AutoPoints+5, web.arena.RedScore.AutoPoints)
-	assert.Equal(t, score1.TeleopPoints+10, web.arena.RedScore.TeleopPoints)
-	assert.Equal(t, score1.EndgamePoints+15, web.arena.RedScore.EndgamePoints)
-	assert.Equal(t, score2.AutoPoints, web.arena.BlueScore.AutoPoints)
-	assert.Equal(t, score2.TeleopPoints, web.arena.BlueScore.TeleopPoints)
-	assert.Equal(t, score2.EndgamePoints, web.arena.BlueScore.EndgamePoints)
+	assert.Equal(t, 34, web.arena.RedScore.AutoPoints())
+	assert.Equal(t, 40, web.arena.RedScore.TeleopPoints())
+	assert.Equal(t, 17, web.arena.RedScore.EndgamePoints())
+	assert.Equal(t, 5, web.arena.RedScore.Penalties())
+	assert.Equal(t, 23, web.arena.BlueScore.AutoPoints())
+	assert.Equal(t, 18, web.arena.BlueScore.TeleopPoints())
+	assert.Equal(t, 15, web.arena.BlueScore.EndgamePoints())
+	assert.Equal(t, 20, web.arena.BlueScore.Penalties())
 
 	recorder = web.patchHttpResponse("/api/scores",
-		"{\"blue\":{\"auto\":-5,\"teleop\":-10,\"endgame\":-15}}")
+		"{\"blue\":{\"shelf\": {\"auton_top\": 4, \"teleop_bottom\": 1 }, \"golden_cube\": true}}")
 	assert.Equal(t, 200, recorder.Code)
 
-	assert.Equal(t, score1.AutoPoints+5, web.arena.RedScore.AutoPoints)
-	assert.Equal(t, score1.TeleopPoints+10, web.arena.RedScore.TeleopPoints)
-	assert.Equal(t, score1.EndgamePoints+15, web.arena.RedScore.EndgamePoints)
-	assert.Equal(t, score2.AutoPoints-5, web.arena.BlueScore.AutoPoints)
-	assert.Equal(t, score2.TeleopPoints-10, web.arena.BlueScore.TeleopPoints)
-	assert.Equal(t, score2.EndgamePoints-15, web.arena.BlueScore.EndgamePoints)
+	assert.Equal(t, 34, web.arena.RedScore.AutoPoints())
+	assert.Equal(t, 40, web.arena.RedScore.TeleopPoints())
+	assert.Equal(t, 17, web.arena.RedScore.EndgamePoints())
+	assert.Equal(t, 5, web.arena.RedScore.Penalties())
+	assert.Equal(t, 43, web.arena.BlueScore.AutoPoints())
+	assert.Equal(t, 8, web.arena.BlueScore.TeleopPoints())
+	assert.Equal(t, 15, web.arena.BlueScore.EndgamePoints())
+	assert.Equal(t, 20, web.arena.BlueScore.Penalties())
 }
 
 func TestPutScores(t *testing.T) {
@@ -90,33 +108,19 @@ func TestPutScores(t *testing.T) {
 
 	score1 := game.TestScore1()
 	score2 := game.TestScore2()
-	web.arena.RedScore.AutoPoints = score1.AutoPoints
-	web.arena.RedScore.TeleopPoints = score1.TeleopPoints
-	web.arena.RedScore.EndgamePoints = score1.EndgamePoints
-	web.arena.BlueScore.AutoPoints = score2.AutoPoints
-	web.arena.BlueScore.TeleopPoints = score2.TeleopPoints
-	web.arena.BlueScore.EndgamePoints = score2.EndgamePoints
+
+	web.arena.RedScore = score1
+	web.arena.BlueScore = score2
 
 	web.arena.MatchState = field.PostMatch
 	recorder = web.putHttpResponse("/api/scores",
-		"{\"red\":{\"auto\":5,\"teleop\":10,\"endgame\":15}}")
+		"{\"blue\":{\"taxi\": [2,2], \"hamper\": 2}}")
 	assert.Equal(t, 200, recorder.Code)
 
-	assert.Equal(t, 5, web.arena.RedScore.AutoPoints)
-	assert.Equal(t, 10, web.arena.RedScore.TeleopPoints)
-	assert.Equal(t, 15, web.arena.RedScore.EndgamePoints)
-	assert.Equal(t, 0, web.arena.BlueScore.AutoPoints)
-	assert.Equal(t, 0, web.arena.BlueScore.TeleopPoints)
-	assert.Equal(t, 0, web.arena.BlueScore.EndgamePoints)
-
-	recorder = web.putHttpResponse("/api/scores",
-		"{\"blue\":{\"auto\":5,\"teleop\":10,\"endgame\":15}}")
-	assert.Equal(t, 200, recorder.Code)
-
-	assert.Equal(t, 0, web.arena.RedScore.AutoPoints)
-	assert.Equal(t, 0, web.arena.RedScore.TeleopPoints)
-	assert.Equal(t, 0, web.arena.RedScore.EndgamePoints)
-	assert.Equal(t, 5, web.arena.BlueScore.AutoPoints)
-	assert.Equal(t, 10, web.arena.BlueScore.TeleopPoints)
-	assert.Equal(t, 15, web.arena.BlueScore.EndgamePoints)
+	assert.Equal(t, 0, web.arena.RedScore.AutoPoints())
+	assert.Equal(t, 0, web.arena.RedScore.TeleopPoints())
+	assert.Equal(t, 0, web.arena.RedScore.EndgamePoints())
+	assert.Equal(t, 14, web.arena.BlueScore.AutoPoints())
+	assert.Equal(t, 0, web.arena.BlueScore.TeleopPoints())
+	assert.Equal(t, 15, web.arena.BlueScore.EndgamePoints())
 }

@@ -12,11 +12,13 @@ type RankingFields struct {
 	AutoPoints    int
 	EndgamePoints int
 	TeleopPoints  int
-	Random        float64
-	Wins          int
-	Losses        int
-	Ties          int
-	Played        int
+	// FIXME: add this
+	// OppPenalties  int
+	Random float64
+	Wins   int
+	Losses int
+	Ties   int
+	Played int
 }
 
 type Ranking struct {
@@ -62,6 +64,7 @@ func (rankings Rankings) Less(i, j int) bool {
 	b := rankings[j]
 
 	// Use cross-multiplication to keep it in integer math.
+	// FIXME: add penalties as another tiebreaker
 	if a.RankingPoints*b.Played == b.RankingPoints*a.Played {
 		if a.AutoPoints*b.Played == b.AutoPoints*a.Played {
 			if a.EndgamePoints*b.Played == b.EndgamePoints*a.Played {
