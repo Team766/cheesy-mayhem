@@ -5,15 +5,25 @@
 
 /*
 
-FIXME: update all of this.
-
 API Docs
 
 JSON Schema:
 
-{
-	FIXME
-}
+  “red”: { “taxi”: [int,int],
+          “shelf”: {
+            “auton_bottom”: int,
+            “auton_top”: int,
+            “teleop_bottom”: int,
+            “teleop_top”: int
+          },
+          “hamper”: int,
+          “park”: [bool,bool],
+          “golden_cube”: bool
+          “foul”: int,
+          “tech_foul”, int },
+  “blue”: { ... }
+
+(taxi values: NONE = 0, PARTIAL = 1, FULL = 2)
 
 GET http://10.0.100.5/api/scores
 
@@ -27,27 +37,38 @@ parts are optional. Anything missing is set to zero.
 Example:
 
 {
-	FIXME
+	  “red”: { “taxi”: [2, 1],
+          “shelf”: {
+            “auton_bottom”: 1,
+            “auton_top”: 2,
+            “teleop_bottom”: 2,
+            “teleop_top”: 3,
+          }
 }
 
-Red teleop and endgame are set to zero as well as all blue scores.
+Red hamper, park, golden_cube, and fouls are set to zero as well as all blue scores.
 
 PATCH http://10.0.100.5/api/scores
 
-Adds or subtracts the current scores from the request
-body. All parts are optional. Scores missing from the
-request body are left untouched.
+Sets just the provided portion of the score.  Fields that are provided override existing
+values; the rest are left untouched.
 
 Example:
 
 {
-	FIXME
-}
+	  "blue”: {
+          “shelf”: {
+            “auton_bottom”: 1,
+            “auton_top”: 2,
+            “teleop_bottom”: 2,
+            “teleop_top”: 3,
+          }},
+	  "red": {
+		"hamper": 2,
+	  }
 
-FIXME
-10 is added to red auto. Red teleop and endgame are left untouched.
-5 is subtracted from blue teleop. Blue auto and endgame are left untouched.
-
+The blue shelf status and red hamper count are updated.  The blue taxi, hamper, park, golden_cube, and fouls,
+and red taxi, shelf, park, golden_cube, and fouls are left untouched.
 */
 
 package web
