@@ -1,0 +1,63 @@
+{{define "title"}}ref page for red team{{end}}
+{{define "body"}}
+<div class="row">
+  <div class="well">
+    <form class="form-horizontal" method="POST">
+      <fieldset>
+        <legend>Edit Match {{.Match.DisplayName}} Results</legend>
+        <div class="col-lg-6" id="redScore"></div>
+        <div class="col-lg-6" id="blueScore"></div>
+        <div class="row form-group">
+          <div class="text-center col-lg-12">
+            <a href="/match_review"><button type="button" class="btn btn-default">Cancel</button></a>
+            <button type="submit" class="btn btn-info">Save</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+<div id="scoreTemplate" style="display: none;">
+  <div class="well well-{{"{{alliance}}"}}">
+    <div class="form-group">
+      <label>Taxi</label>
+      <div class="status-well">
+        <label>Taxi 1</label>
+        <input name="{{"{{alliance}}"}}Taxi1"/>
+        <label>Taxi 2</label>
+        <input name="{{"{{alliance}}"}}Taxi2"/>
+      </div>
+    </div>
+    <div class="status-well">
+      <label>Shelf</label>
+      <div class="form-group">
+        <label>AutonBottom</label>
+        <input name="{{"{{alliance}}"}}AutonBottom"/>
+        <label>AutonTop</label>
+        <input name="{{"{{alliance}}"}}AutonTop"/>
+        <br/>
+        <label>TeleopBottom</label>
+        <input name="{{"{{alliance}}"}}TeleopBottom"/>
+        <label>TeleopTop</label>
+        <input name="{{"{{alliance}}"}}TeleopTop"/>
+        <br/>
+        <label>Golden Cube</label>
+        <input name="{{"{{alliance}}"}}GoldenCube" type="checkbox" value="true"/>
+      </div>
+    </div>
+    <div class="status-well">
+      <label>Hamper</label>
+      <input name="{{"{{alliance}}"}}Hamper"/>
+    </div>
+    <div class="form-group">
+      <label>Park</label>
+      <div class="status-well">
+        <label>Park 1</label>
+        <input name="{{"{{alliance}}"}}Park1" type="checkbox" value="true"/>
+        <label>Park 2</label>
+        <input name="{{"{{alliance}}"}}Park2" type="checkbox" value="true"/>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
