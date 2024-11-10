@@ -5,14 +5,15 @@ import (
 	"net/http"
 
 	"github.com/Team254/cheesy-arena-lite/model"
+	"github.com/gorilla/mux"
 )
 
 // Renders the audience display to be chroma keyed over the video feed.
 func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
-
-	alliance := r.PathValue("alliance")
+	vars := mux.Vars(r)
+	alliance := vars["alliance"]
 	if alliance != "red" && alliance != "blue" {
-		handleWebErr(w, fmt.Errorf("Invalid alliance: '%s'.", alliance))
+		handleWebErr(w, fmt.Errorf("Invalid alliance: '%s'. (%s)", alliance, r))
 		return
 	}
 	// if !web.enforceDisplayConfiguration(w, r, map[string]string{"background": "#0f0", "reversed": "false",
@@ -30,7 +31,7 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 		*model.EventSettings
 		alliance string
 	}{web.arena.EventSettings, alliance}
-	err = template.ExecuteTemplate(w, "ref_display.html", data)
+	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)
 		return
