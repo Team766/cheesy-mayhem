@@ -41,10 +41,10 @@ Example:
 		“taxi”: [2, 1],
         “shelf”: {
 			“auton_bottom”: 1,
-            “auton_top”: 2,
-            “teleop_bottom”: 2,
-            “teleop_top”: 3,
-        }
+			“auton_top”: 2,
+			“teleop_bottom”: 2,
+			“teleop_top”: 3,
+		}
 	}
 }
 
@@ -61,10 +61,10 @@ Example:
 	"blue”: {
 		“shelf”: {
 			“auton_bottom”: 1,
-            “auton_top”: 2,
-            “teleop_bottom”: 2,
-            “teleop_top”: 3,
-        }
+			“auton_top”: 2,
+			“teleop_bottom”: 2,
+			“teleop_top”: 3,
+		}
 	},
 	"red": {
 		"hamper": 2,
