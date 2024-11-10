@@ -65,7 +65,6 @@ var handleRealtimeScore = function(data) {
 
 // Handles a websocket message to populate the final score data.
 var handleScorePosted = function(data) {
-  alert(JSON.stringify(data.RedScoreSummary));
   var redRankings = {};
   redRankings[data.Match.Red1] = getRankingText(data.Match.Red1, data.Rankings);
   redRankings[data.Match.Red2] = getRankingText(data.Match.Red2, data.Rankings);

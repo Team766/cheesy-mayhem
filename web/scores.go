@@ -37,13 +37,15 @@ parts are optional. Anything missing is set to zero.
 Example:
 
 {
-	  “red”: { “taxi”: [2, 1],
-          “shelf”: {
-            “auton_bottom”: 1,
+	“red”: {
+		“taxi”: [2, 1],
+        “shelf”: {
+			“auton_bottom”: 1,
             “auton_top”: 2,
             “teleop_bottom”: 2,
             “teleop_top”: 3,
-          }
+        }
+	}
 }
 
 Red hamper, park, golden_cube, and fouls are set to zero as well as all blue scores.
@@ -56,16 +58,18 @@ values; the rest are left untouched.
 Example:
 
 {
-	  "blue”: {
-          “shelf”: {
-            “auton_bottom”: 1,
+	"blue”: {
+		“shelf”: {
+			“auton_bottom”: 1,
             “auton_top”: 2,
             “teleop_bottom”: 2,
             “teleop_top”: 3,
-          }},
-	  "red": {
+        }
+	},
+	"red": {
 		"hamper": 2,
-	  }
+	}
+}
 
 The blue shelf status and red hamper count are updated.  The blue taxi, hamper, park, golden_cube, and fouls,
 and red taxi, shelf, park, golden_cube, and fouls are left untouched.
