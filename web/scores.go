@@ -9,19 +9,21 @@ API Docs
 
 JSON Schema:
 
-  “red”: { “taxi”: [int,int],
-          “shelf”: {
-            “auton_bottom”: int,
-            “auton_top”: int,
-            “teleop_bottom”: int,
-            “teleop_top”: int
-          },
-          “hamper”: int,
-          “park”: [bool,bool],
-          “golden_cube”: bool
-          “foul”: int,
-          “tech_foul”, int },
-  “blue”: { ... }
+“red”: {
+	“taxi”: [int,int],
+	“shelf”: {
+		“auton_bottom”: int,
+		“auton_top”: int,
+		“teleop_bottom”: int,
+		“teleop_top”: int
+	},
+	“hamper”: int,
+	“park”: [bool,bool],
+	“golden_cube”: bool,
+	“foul”: int,
+	“tech_foul”: int,
+},
+“blue”: { ... }
 
 (taxi values: NONE = 0, PARTIAL = 1, FULL = 2)
 
