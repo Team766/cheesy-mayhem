@@ -41,7 +41,7 @@ Example:
 {
 	“red”: {
 		“taxi”: [2, 1],
-        “shelf”: {
+		“shelf”: {
 			“auton_bottom”: 1,
 			“auton_top”: 2,
 			“teleop_bottom”: 2,
