@@ -267,28 +267,17 @@ var handleMatchTime = function(data) {
 };
 
 // Handles a websocket message to update the match score.
-// TODO: fix this when we address PLANE-234
 var handleRealtimeScore = function(data) {
   $("#redScore").text(data.Red.ScoreSummary.Score);
   $("#blueScore").text(data.Blue.ScoreSummary.Score);
-  if (parseInt($("#redAutoScore").val()) != data.Red.Score.AutoPoints) {
-    $("#redAutoScore").val(data.Red.Score.AutoPoints);
-  }
-  if (parseInt($("#redTeleopScore").val()) != data.Red.Score.TeleopPoints) {
-    $("#redTeleopScore").val(data.Red.Score.TeleopPoints);
-  }
-  if (parseInt($("#redEndgameScore").val()) != data.Red.Score.EndgamePoints) {
-    $("#redEndgameScore").val(data.Red.Score.EndgamePoints);
-  }
-  if (parseInt($("#blueAutoScore").val()) != data.Blue.Score.AutoPoints) {
-    $("#blueAutoScore").val(data.Blue.Score.AutoPoints);
-  }
-  if (parseInt($("#blueTeleopScore").val()) != data.Blue.Score.TeleopPoints) {
-    $("#blueTeleopScore").val(data.Blue.Score.TeleopPoints);
-  }
-  if (parseInt($("#blueEndgameScore").val()) != data.Blue.Score.EndgamePoints) {
-    $("#blueEndgameScore").val(data.Blue.Score.EndgamePoints);
-  }
+  $("#redAutoScore").text(data.Red.ScoreSummary.AutoPoints);
+  $("#redTeleopScore").text(data.Red.ScoreSummary.TeleopPoints);
+  $("#redEndgameScore").text(data.Red.ScoreSummary.EndgamePoints);
+  $("#redPenalties").text(data.Red.ScoreSummary.Penalties);
+  $("#blueAutoScore").text(data.Blue.ScoreSummary.AutoPoints);
+  $("#blueTeleopScore").text(data.Blue.ScoreSummary.TeleopPoints);
+  $("#blueEndgameScore").text(data.Blue.ScoreSummary.EndgamePoints);
+  $("#bluePenalties").text(data.Blue.Score.Penalties);
 }
 
 // Handles a websocket message to update the audience display screen selector.
@@ -325,7 +314,6 @@ $(function() {
     eventStatus: function(event) { handleEventStatus(event.data); },
     matchTime: function(event) { handleMatchTime(event.data); },
     matchTiming: function(event) { handleMatchTiming(event.data); },
-    // FIXME: re-enable this once we add support for realtime score updates again.
-    // realtimeScore: function(event) { handleRealtimeScore(event.data); },
+    realtimeScore: function(event) { handleRealtimeScore(event.data); },
   });
 });

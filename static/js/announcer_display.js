@@ -35,7 +35,6 @@ var handleMatchLoad = function(data) {
   }
   teams.append(createTeamElement("red", data.Teams["R1"], false));
   teams.append(createTeamElement("red", data.Teams["R2"], false));
-  teams.append(createTeamElement("red", data.Teams["R3"], false));
   for (team of data.RedOffFieldTeams) {
     teams.append(createTeamElement("red", team, true));
   }
@@ -45,7 +44,6 @@ var handleMatchLoad = function(data) {
   }
   teams.append(createTeamElement("blue", data.Teams["B1"], false));
   teams.append(createTeamElement("blue", data.Teams["B2"], false));
-  teams.append(createTeamElement("blue", data.Teams["B3"], false));
   for (team of data.BlueOffFieldTeams) {
     teams.append(createTeamElement("blue", team, true));
   }
@@ -61,8 +59,8 @@ var handleMatchTime = function(data) {
 
 // Handles a websocket message to update the match score.
 var handleRealtimeScore = function(data) {
-  $("#redScore").text(data.Red.ScoreSummary.Score - data.Red.ScoreSummary.EndgamePoints);
-  $("#blueScore").text(data.Blue.ScoreSummary.Score - data.Blue.ScoreSummary.EndgamePoints);
+  $("#redScore").text(data.Red.ScoreSummary.Score);
+  $("#blueScore").text(data.Blue.ScoreSummary.Score);
 };
 
 // Handles a websocket message to populate the final score data.
@@ -70,11 +68,9 @@ var handleScorePosted = function(data) {
   var redRankings = {};
   redRankings[data.Match.Red1] = getRankingText(data.Match.Red1, data.Rankings);
   redRankings[data.Match.Red2] = getRankingText(data.Match.Red2, data.Rankings);
-  redRankings[data.Match.Red3] = getRankingText(data.Match.Red3, data.Rankings);
   var blueRankings = {};
   blueRankings[data.Match.Blue1] = getRankingText(data.Match.Blue1, data.Rankings);
   blueRankings[data.Match.Blue2] = getRankingText(data.Match.Blue2, data.Rankings);
-  blueRankings[data.Match.Blue3] = getRankingText(data.Match.Blue3, data.Rankings);
 
   $("#scoreMatchName").text(data.MatchType + " Match " + data.Match.DisplayName);
   $("#redScoreDetails").html(matchResultTemplate({score: data.RedScoreSummary, rankings: redRankings}));
