@@ -29,8 +29,9 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		*model.EventSettings
-		alliance string
-	}{web.arena.EventSettings, alliance}
+		Match    *model.Match
+		Alliance string
+	}{web.arena.EventSettings, web.arena.CurrentMatch, alliance}
 	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)
