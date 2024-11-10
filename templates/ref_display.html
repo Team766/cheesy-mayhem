@@ -4,13 +4,13 @@
   <div class="well">
     <form class="form-horizontal" method="POST">
       <fieldset>
-        <legend>Edit Match {{.Match.DisplayName}} Results</legend>
+        <legend>Ref Match {{.Match.DisplayName}}</legend>
         <div class="col-lg-6" id="redScore"></div>
         <div class="col-lg-6" id="blueScore"></div>
         <div class="row form-group">
-          <div class="text-center col-lg-12">
+          < class="text-center col-lg-12">
             <a href="/match_review"><button type="button" class="btn btn-default">Cancel</button></a>
-            <button type="submit" class="btn btn-info">Save</button>
+            <!--</1><button type="submit" class="btn btn-info">Save</button>-->
           </div>
         </div>
       </fieldset>
@@ -60,4 +60,17 @@
     </div>
   </div>
 </div>
+{{end}}
+{{define "script"}}
+<script src="/static/js/match_review.js"></script>
+<script>
+  var matchId = {{.Match.Id}};
+  matchResult = jQuery.parseJSON('{{.MatchResultJson}}');
+  allianceResults["red"] = {alliance: "red", team1: {{.Match.Red1}}, team2: {{.Match.Red2}},
+      score: matchResult.RedScore};
+  allianceResults["blue"] = {alliance: "blue", team1: {{.Match.Blue1}}, team2: {{.Match.Blue2}},
+      score: matchResult.BlueScore};
+  renderResults("red");
+  renderResults("blue");
+</script>
 {{end}}
