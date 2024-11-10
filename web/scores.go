@@ -155,7 +155,13 @@ func updateScoreFromJson(json jsonAllianceScore, score *game.Score) {
 		score.Park = *json.Park
 	}
 
-	// TODO: add support for penalties
+	if json.Foul != nil {
+		score.Fouls = *json.Foul
+	}
+
+	if json.TechFoul != nil {
+		score.TechFouls = *json.TechFoul
+	}
 }
 
 func (web *Web) getScoresHandler(w http.ResponseWriter, r *http.Request) {
