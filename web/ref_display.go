@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Team254/cheesy-arena-lite/model"
+	"github.com/Team254/cheesy-arena-lite/websocket"
 	"github.com/gorilla/mux"
 )
 
@@ -13,7 +14,7 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	alliance := vars["alliance"]
 	if alliance != "red" && alliance != "blue" {
-		handleWebErr(w, fmt.Errorf("Invalid alliance: '%s'. (%s)", alliance, r))
+		handleWebErr(w, fmt.Errorf("Invalid alliance: '%s'", alliance))
 		return
 	}
 	// if !web.enforceDisplayConfiguration(w, r, map[string]string{"background": "#0f0", "reversed": "false",
@@ -37,5 +38,17 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 		handleWebErr(w, err)
 		return
 	}
+}
 
+// The websocket endpoint for the ref display client to receive status updates.
+func (web *Web) refDisplayWebsocketHandler(w http.ResponseWriter, r *http.Request) {
+	ws, err := websocket.NewWebsocket(w, r)
+	if err != nil {
+		handleWebErr(w, err)
+		return
+	}
+	defer ws.Close()
+
+	// Subscribe the websocket to the notifiers whose messages will be passed on to the client.
+	ws.HandleNotifiers(web.arena.MatchLoadNotifier, web.arena.MatchTimingNotifier, web.arena.MatchTimeNotifier, web.arena.RealtimeScoreNotifier)
 }

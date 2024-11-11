@@ -1,11 +1,12 @@
-{{define "title"}}Ref Match {{.Match.DisplayName}} | {{.Alliance}} Alliance{{end}}
+{{define "title"}}Ref {{.Alliance}} Alliance{{end}}
 {{define "head"}}{{end}}
 {{define "body"}}
-<legend>Ref Match {{.Match.DisplayName}} | {{.Alliance}} Alliance</legend>
+<legend>Ref {{.Alliance}} Alliance</legend>
 <div class="well">
-  <span id="matchState" class="well-sm text-center">NOT STARTED</span>
-  <span id="matchTime" class="well-sm text-center">0</span>
-  <span id="matchScore" class="well-sm text-center">0</span>
+  <span id="matchName" class="well-sm text-center">&nbsp;</span>
+  <span id="matchState" class="well-sm text-center">&nbsp;</span>
+  <span id="matchTime" class="well-sm text-center">&nbsp;</span>
+  <span id="matchScore" class="well-sm text-center">&nbsp;</span>
 </div>
 <div class="well">
   <div class="well">
@@ -67,4 +68,6 @@
   </div>
 {{end}}
 {{define "script"}}
+<script src="/static/js/match_timing.js"></script>
+<script src="/static/js/ref_display.js"></script>
 {{end}}
