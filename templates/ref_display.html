@@ -1,77 +1,70 @@
-{{define "title"}}ref page for {{.Alliance}} team{{end}}
+{{define "title"}}Ref Match {{.Match.DisplayName}} | {{.Alliance}} Alliance{{end}}
 {{define "head"}}{{end}}
 {{define "body"}}
-<div class="row">
+<legend>Ref Match {{.Match.DisplayName}} | {{.Alliance}} Alliance</legend>
+<div class="well">
+  <span id="matchState" class="well-sm text-center">NOT STARTED</span>
+  <span id="matchTime" class="well-sm text-center">0</span>
+  <span id="matchScore" class="well-sm text-center">0</span>
+</div>
+<div class="well">
   <div class="well">
-    <form class="form-horizontal" method="POST">
-      <fieldset>
-        <legend>Ref Match {{.Match.DisplayName}}</legend>
-        <div class="col-lg-6" id="redScore"></div>
-        <div class="col-lg-6" id="blueScore"></div>
-        <div class="row form-group">
-          < class="text-center col-lg-12">
-            <a href="/match_review"><button type="button" class="btn btn-default">Cancel</button></a>
-            <!--</1><button type="submit" class="btn btn-info">Save</button>-->
-          </div>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-</div>
-<div id="scoreTemplate" style="display: none;">
-  <div class="well well-{{"{{alliance}}"}}">
-    <div class="form-group">
-      <label>Taxi</label>
-      <div class="status-well">
-        <label>Taxi 1</label>
-        <input name="{{"{{alliance}}"}}Taxi1"/>
-        <label>Taxi 2</label>
-        <input name="{{"{{alliance}}"}}Taxi2"/>
-      </div>
+    <label>Taxi</label>
+    <div>
+      <span>Taxi 1</span>
+      <span id="taxi1">0</span>
     </div>
-    <div class="status-well">
-      <label>Shelf</label>
-      <div class="form-group">
-        <label>AutonBottom</label>
-        <input name="{{"{{alliance}}"}}AutonBottom"/>
-        <label>AutonTop</label>
-        <input name="{{"{{alliance}}"}}AutonTop"/>
-        <br/>
-        <label>TeleopBottom</label>
-        <input name="{{"{{alliance}}"}}TeleopBottom"/>
-        <label>TeleopTop</label>
-        <input name="{{"{{alliance}}"}}TeleopTop"/>
-        <br/>
-        <label>Golden Cube</label>
-        <input name="{{"{{alliance}}"}}GoldenCube" type="checkbox" value="true"/>
-      </div>
-    </div>
-    <div class="status-well">
-      <label>Hamper</label>
-      <input name="{{"{{alliance}}"}}Hamper"/>
-    </div>
-    <div class="form-group">
-      <label>Park</label>
-      <div class="status-well">
-        <label>Park 1</label>
-        <input name="{{"{{alliance}}"}}Park1" type="checkbox" value="true"/>
-        <label>Park 2</label>
-        <input name="{{"{{alliance}}"}}Park2" type="checkbox" value="true"/>
-      </div>
+    <div>
+      <span>Taxi 2</span>
+      <span id="taxi2">0</span>
     </div>
   </div>
-</div>
+  <div class="well">
+    <label>Shelf</label>
+    <div>
+      <div>
+        <span>-</span>
+        <span class="text-left">AutonBottom</span>
+        <span>+</span>
+        <span id="auton_bottom">0</span>
+      </div>
+      <div>
+        <span>-</span>
+        <span class="text-left">AutonTop</span>
+        <span>+</span>
+        <span id="auton_top">0</span>
+      </div>
+      <div>
+        <span>-</span>
+        <span class="text-left">TeleopBottom</span>
+        <span>+</span>
+        <span id="teleop_bottom">0</span>
+      </div>
+      <div>
+        <span>-</span>
+        <span class="text-left">TeleopTop</span>
+        <span>+</span>
+        <span id="teleop_top">0</span>
+      </div>
+      <div id="golden_cube">Golden Cube</div>
+    </div>
+  </div>
+  <div class="well">
+    <label>Endgame</label>
+    <div>
+      <span>-</span>
+      <span class="text-left">Hamper</span>
+      <span>+</span>
+      <span id="hamper">0</span>
+    </div>
+      <div>
+        <label>Park</label>
+        <br/>
+        <span>Park 1</span>
+        <span>Park 2</span>
+      </div>  
+    </div>
+  </div>
 {{end}}
 {{define "script"}}
-<script src="/static/js/match_review.js"></script>
-<script>
-  var matchId = {{.Match.Id}};
-  matchResult = jQuery.parseJSON('{{.MatchResultJson}}');
-  allianceResults["red"] = {alliance: "red", team1: {{.Match.Red1}}, team2: {{.Match.Red2}},
-      score: matchResult.RedScore};
-  allianceResults["blue"] = {alliance: "blue", team1: {{.Match.Blue1}}, team2: {{.Match.Blue2}},
-      score: matchResult.BlueScore};
-  renderResults("red");
-  renderResults("blue");
-</script>
 {{end}}
