@@ -53,6 +53,7 @@
   {{"{{/if}}"}}
 </script>
 <script id="matchResultTemplate" type="text/x-handlebars-template">
+  <!-- TODO: break down the score into specific scoring elements -->
   <h4>Score</h4>
   <div class="row">
     <div class="col-lg-7 col-lg-offset-1 control-label">Auto Points</div>
@@ -65,6 +66,10 @@
   <div class="row">
     <div class="col-lg-7 col-lg-offset-1 control-label">Endgame Points</div>
     <div class="col-lg-2">{{"{{score.EndgamePoints}}"}}</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-7 col-lg-offset-1 control-label">Penalties</div>
+    <div class="col-lg-2">{{"{{score.Penalties}}"}}</div>
   </div>
   <div class="row">
     <div class="col-lg-7 col-lg-offset-1 control-label"><b>Final Score</b></div>
