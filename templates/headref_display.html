@@ -1,0 +1,78 @@
+{{define "title"}}Head Ref{{end}}
+{{define "head"}}{{end}}
+{{define "body"}}
+<legend>Head Ref</legend>
+<div class="well">
+  <span id="matchName" class="well-sm text-center">&nbsp;</span>
+  <span id="matchState" class="well-sm text-center">&nbsp;</span>
+  <span id="matchTime" class="well-sm text-center">&nbsp;</span>
+  <span id="matchScore" class="well-sm text-center">&nbsp;</span>
+</div>
+<div class="well">
+  <div class="well">
+    <label>Taxi</label>
+    <div>
+      <span>Taxi 1</span>
+      <span id="taxi1">0</span>
+    </div>
+    <div>
+      <span>Taxi 2</span>
+      <span id="taxi2">0</span>
+    </div>
+  </div>
+  <div class="well">
+    <label>Shelf</label>
+    <div>
+      <div>
+        <span>-</span>
+        <span class="text-left">AutonBottom</span>
+        <span>+</span>
+        <span id="auton_bottom">0</span>
+      </div>
+      <div>
+        <span>-</span>
+        <span class="text-left">AutonTop</span>
+        <span>+</span>
+        <span id="auton_top">0</span>
+      </div>
+      <div>
+        <span>-</span>
+        <span class="text-left">TeleopBottom</span>
+        <span>+</span>
+        <span id="teleop_bottom">0</span>
+      </div>
+      <div>
+        <span>-</span>
+        <span class="text-left">TeleopTop</span>
+        <span>+</span>
+        <span id="teleop_top">0</span>
+      </div>
+      <div>
+        <span>Golden Cube: </span>
+        <span id="golden_cube">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="well">
+    <label>Endgame</label>
+    <div>
+      <span>-</span>
+      <span class="text-left">Hamper</span>
+      <span>+</span>
+      <span id="hamper">0</span>
+    </div>
+      <div>
+        <label>Park</label>
+        <br/>
+        <span>Park 1: </span>
+        <span id="park1">&nbsp;</span>
+        <span>Park 2: </span>
+        <span id="park2">&nbsp;</span>
+      </div>  
+    </div>
+  </div>
+{{end}}
+{{define "script"}}
+<script src="/static/js/match_timing.js"></script>
+<script src="/static/js/headref_display.js"></script>
+{{end}}

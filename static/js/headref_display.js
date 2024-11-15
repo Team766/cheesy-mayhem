@@ -1,7 +1,6 @@
 // Client-side logic for the ref page.
 
 var websocket;
-let alliance;
 
 // Handles a websocket message to update the teams for the current match.
 var handleMatchLoad = function(data) {
@@ -16,40 +15,39 @@ var handleMatchTime = function(data) {
     });
 };
 
+var updateAllianceScore = function(alliance, score) {
+    // update each of the individal scoring elements
+    // taxi
+    $("#" + alliance + "Taxi1").text(score.Taxi[0]);
+    $("#taxi2").text(score.Taxi[1]);
+
+    // shelf
+    $("#" + alliance + "AutonBottom").text(score.Shelf.AutonBottomShelfCubes);
+    $("#" + alliance + "AutonTop").text(score.Shelf.AutonTopShelfCubes);
+    $("#" + alliance + "TeleopBottom").text(score.Shelf.TeleopBottomShelfCubes);
+    $("#" + alliance + "TeleopTop").text(score.Shelf.TeleopTopShelfCubes);
+
+    // golden_cube
+    $("#" + alliance + "GoldenCube").text(score.GoldenCube);
+
+    // hamper
+    $("#" + alliance + "Hamper").text(score.Hamper);
+
+    // park
+    $("#" + alliance + "Park1").text(score.Park[0]);
+    $("#" + alliance + "Park2").text(score.Park[1]);
+}
+
 // Handles a websocket message to update the match score.
 var handleRealtimeScore = function(data) {
 
     var score;
 
-    // update the overall score
-    if (alliance === "red") {
-        $("#matchScore").text(data.Red.ScoreSummary.Score);
-        score = data.Red.Score;
-    } else if (alliance === "blue") {
-        $("#matchScore").text(data.Blue.ScoreSummary.Score);
-        score = data.Blue.Score;
-    }
+    $("#redScore").text(data.Red.ScoreSummary.Score);
+    $("#blueScore").text(data.Blue.ScoreSummary.Score);
 
-    // update each of the individal scoring elements
-    // taxi
-    $("#taxi1").text(score.Taxi[0]);
-    $("#taxi2").text(score.Taxi[1]);
-
-    // shelf
-    $("#auton_bottom").text(score.Shelf.AutonBottomShelfCubes);
-    $("#auton_top").text(score.Shelf.AutonTopShelfCubes);
-    $("#teleop_bottom").text(score.Shelf.TeleopBottomShelfCubes);
-    $("#teleop_top").text(score.Shelf.TeleopTopShelfCubes);
-
-    // golden_cube
-    $("#golden_cube").text(score.GoldenCube);
-
-    // hamper
-    $("#hamper").text(score.Hamper);
-
-    // park
-    $("#park1").text(score.Park[0]);
-    $("#park2").text(score.Park[1]);
+    updateScore(data.Red.ScoreSummary.Score, "red");
+    updateScore(data.Blue.ScoreSummary.Score, "blue");
 };
 
 $(function() {
