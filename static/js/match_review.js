@@ -67,7 +67,6 @@ var getInputElement = function(alliance, name, value) {
   return $(selector);
 };
 
-// TODO: is there a builtin way to do this?
 var parseBool = function(text) {
   if (text === undefined) {
     return false;

@@ -20,13 +20,16 @@ func (web *Web) headrefDisplayHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	alliances := [2]string { "red", "blue" }
+	alliances := [2]string{"red", "blue"}
+	shelfLocations := [4]string{"AutonBottom", "AutonTop", "TeleopBottom", "TeleopTop"}
 
 	data := struct {
 		*model.EventSettings
-		Match    *model.Match
-		Alliances [2]string
-	}{web.arena.EventSettings, web.arena.CurrentMatch, alliances}
+		Match          *model.Match
+		Alliances      [2]string
+		ShelfLocations [4]string
+	}{web.arena.EventSettings, web.arena.CurrentMatch, alliances, shelfLocations}
+
 	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)

@@ -13,68 +13,59 @@
 
 <table class="scoring-section">
   <tr>
-    <td class="well-red red-text">Red Alliance</td>
-    <td class="well-blue blue-text">Blue Alliance</td>
+    <td class="well-red red-text">
+      <span>Red Alliance</span>
+      <span id="redScore">0</span>
+    </td>
+    <td class="well-blue blue-text">
+      <span>Blue Alliance</span>
+      <span id="blueScore">0</span>
+    </td>
   </tr>
   <tr>
-    {{range .Alliances}}
+    {{range $a := $.Alliances}}
     <td>
       <table>
         <tr>
-          <td id="{{.}}Taxi1" class="taxi-status" data-value="0" onclick="toggleTaxi({{.}}Taxi1)">Taxi 1</td>
-          <td id="{{.}}Taxi2" class="taxi-status" data-value="0" onclick="toggleTaxi({{.}}Taxi2)">Taxi 2</td>
+          <td id="{{$a}}Taxi1" class="taxi-status" data-value="0" onclick="toggleTaxi({{$a}}Taxi1); patchScore(getTaxi('{{$a}}'));">Taxi 1</td>
+          <td id="{{$a}}Taxi2" class="taxi-status" data-value="0" onclick="toggleTaxi({{$a}}Taxi2); patchScore(getTaxi('{{$a}}'));">Taxi 2</td>
         </tr>
         <tr>
           <td colspan="3">Shelf</td>
         </tr>
+        {{range $s := $.ShelfLocations}}
         <tr>
-          <td>AutonBottom</td>
-          <td id="{{.}}AutonBottom">0</td>
-          <td class="minus" onclick="decrementScore({{.}}AutonBottom)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}AutonBottom)">+</td>
+          <td>{{$s}}</td>
+          <td id="{{$a}}{{$s}}">0</td>
+          <td class="minus" onclick="decrementScore({{$a}}{{$s}}); patchScore(getShelf('{{$a}}'));">-</td>
+          <td class="plus" onclick="incrementScore({{$a}}{{$s}}); patchScore(getShelf('{{$a}}'));">+</td>
         </tr>
+        {{end}}
         <tr>
-          <td>AutonTop</td>
-          <td id="{{.}}AutonTop">0</td>
-          <td class="minus" onclick="decrementScore({{.}}AutonTop)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}AutonTop)">+</td>
-        </tr>
-        <tr>
-          <td>TeleopBottom</td>
-          <td id="{{.}}TeleopBottom">0</td>
-          <td class="minus" onclick="decrementScore({{.}}TeleopBottom)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}TeleopBottom)">+</td>
-        </tr>
-        <tr>
-          <td>TeleopTop</td>
-          <td id="{{.}}TeleopTop">0</td>
-          <td class="minus" onclick="decrementScore({{.}}AutonBottom)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}AutonBottom)">+</td>
-        </tr>
-        <tr>
-          <td id="{{.}}GoldenCube" class="boolean" data-value="false" onclick="toggleBoolean({{.}}GoldenCube)">Golden Cube</td>
+          <td id="{{$a}}GoldenCube" class="boolean" data-value="false"
+              onclick="toggleBoolean({{$a}}GoldenCube); patchScore(getGoldenCube('{{$a}}'));">Golden Cube</td>
         </tr>
         <tr>
           <td>Hamper</td>
-          <td id="{{.}}Hamper">0</td>
-          <td class="minus" onclick="decrementScore({{.}}Hamper)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}Hamper)">+</td>
+          <td id="{{$a}}Hamper">0</td>
+          <td class="minus" onclick="decrementScore({{$a}}Hamper); patchScore(getHamper('{{$a}}'));">-</td>
+          <td class="plus" onclick="incrementScore({{$a}}Hamper); patchScore(getHamper('{{$a}}'));">+</td>
         </tr>
         <tr>
-          <td id="{{.}}Park1" class="boolean" data-value="false" onclick="toggleBoolean({{.}}Park1)">Park 1</td>
-          <td id="{{.}}Park2" class="boolean" data-value="false" onclick="toggleBoolean({{.}}Park2)">Park 2</td>
+          <td id="{{$a}}Park1" class="boolean" data-value="false" onclick="toggleBoolean({{$a}}Park1); patchScore(getPark('{{$a}}'));">Park 1</td>
+          <td id="{{$a}}Park2" class="boolean" data-value="false" onclick="toggleBoolean({{$a}}Park2); patchScore(getPark('{{$a}}'));">Park 2</td>
         </tr>
         <tr>
           <td>Fouls</td>
-          <td id="{{.}}Foul">0</td>
-          <td class="minus" onclick="decrementScore({{.}}Foul)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}Foul)">+</td>
+          <td id="{{$a}}Foul">0</td>
+          <td class="minus" onclick="decrementScore({{$a}}Foul); patchScore(getFoul('{{$a}}'));">-</td>
+          <td class="plus" onclick="incrementScore({{$a}}Foul); patchScore(getFoul('{{$a}}'));">+</td>
         </tr>
         <tr>
           <td>Tech Fouls</td>
-          <td id="{{.}}TechFoul">0</td>
-          <td class="minus" onclick="decrementScore({{.}}TechFoul)">-</td>
-          <td class="plus" onclick="incrementScore({{.}}TechFoul)">+</td>
+          <td id="{{$a}}TechFoul">0</td>
+          <td class="minus" onclick="decrementScore({{$a}}TechFoul); patchScore(getTechFoul('{{$a}}'));">-</td>
+          <td class="plus" onclick="incrementScore({{$a}}TechFoul); patchScore(getTechFoul('{{$a}}')) ;">+</td>
         </tr>
       </table>
     </td>
@@ -102,10 +93,83 @@
     $(id).text(curValue + 1);
   }
 
-
   var toggleBoolean = function(id) {
     $(id).attr("data-value", $(id).attr("data-value") != "true");
   }
 
+  var parseBoolean = function(text) {
+    return text != undefined && text === "true";
+  }
+
+  var getTaxi = function(alliance) {
+    var taxi1 = parseInt($("#" + alliance + "Taxi1").attr("data-value"));
+    var taxi2 = parseInt($("#" + alliance + "Taxi2").attr("data-value"));
+
+    var score = {};
+    score.taxi = [ taxi1, taxi2 ];
+    return { [alliance]: score };
+  }
+
+  var getShelf = function(alliance) {
+    var autonBottom = parseInt($("#" + alliance + "AutonBottom").text());
+    var autonTop = parseInt($("#" + alliance + "AutonTop").text());
+    var teleopBottom = parseInt($("#" + alliance + "TeleopBottom").text());
+    var teleopTop = parseInt($("#" + alliance + "TeleopTop").text());
+
+    var score = {};
+    score.shelf = {
+      "auton_bottom": autonBottom,
+      "auton_top": autonTop,
+      "teleop_bottom": teleopBottom,
+      "teleop_top": teleopTop,
+    }
+    return { [alliance]: score };
+  }
+
+  var getGoldenCube = function(alliance) {
+    var goldenCube = parseBoolean($("#" + alliance + "GoldenCube").attr("data-value"));
+
+    var score = {};
+    score.golden_cube = goldenCube;
+    return { [alliance]: score };
+  }
+
+  var getHamper = function(alliance) {
+    var hamper = parseInt($("#" + alliance + "Hamper").text());
+    var score = {};
+    score.hamper = hamper;
+    return { [alliance]: score };
+  }
+
+  var getPark = function(alliance) {
+    var park1 = parseBoolean($("#" + alliance + "Park1").attr("data-value"));
+    var park2 = parseBoolean($("#" + alliance + "Park2").attr("data-value"));
+
+    var score = {};
+    score.park = [ park1, park2 ];
+    return { [alliance]: score };
+  }
+
+  var getFoul = function(alliance) {
+    var foul = parseInt($("#" + alliance + "Foul").text());
+    var score = {};
+    score.foul = foul;
+    return { [alliance]: score };
+  }
+
+  var getTechFoul = function(alliance) {
+    var techFoul = parseInt($("#" + alliance + "TechFoul").text());
+    var score = {};
+    score.tech_foul = techFoul;
+    return { [alliance]: score };
+  }
+
+  var patchScore = function(score) {
+    fetch('/api/scores', {
+      method: 'PATCH',
+      body: JSON.stringify(score),
+    });
+    // TODO: add error handling
+  }
 </script>
 {{end}}
