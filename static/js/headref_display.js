@@ -38,10 +38,10 @@ var updateAllianceScore = function(alliance, score) {
     $("#" + alliance + "Park2").attr("data-value", score.Park[1]);
 
     // foul
-    $("#" + alliance + "Foul").text(score.Foul);
+    $("#" + alliance + "Foul").text(score.Fouls);
 
     // tech foul
-    $("#" + alliance + "TechFoul").text(score.TechFoul);
+    $("#" + alliance + "TechFoul").text(score.TechFouls);
 }
 
 // Handles a websocket message to update the match score.

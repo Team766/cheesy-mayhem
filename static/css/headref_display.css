@@ -48,10 +48,9 @@ body {
     color: #ccc;
 }
 
-.scoring-header>div {
-    height: 2.5vw;
+.scoring-header {
+    width: 25vw;
     margin: 0.4vw 1vw 0.4vw 0.2vw;
-    color: #666;
 }
 
 .robot-field {
@@ -71,6 +70,10 @@ body {
     background-color: #263;
 }
 
+.taxi-status {
+    width: 10vw;
+}
+
 .taxi-status[data-value="0"] {
     background-color: #333;
 }
@@ -83,10 +86,11 @@ body {
     background-color: #263;
 }
 
-.shelf-header {
+.section-header {
     height: 5vw;
-    margin: 0.4vw 0vw;
-    color: #666;
+    width: 10vw;
+    margin: 0.4vw 0.4vw;
+    color: #888;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -119,10 +123,12 @@ body {
 
 .plus {
     background: #263;
+    width: 2vw;
 }
 
 .minus {
     background: #633;
+    width: 2vw;
 }
 
 #instructions {
