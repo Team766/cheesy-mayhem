@@ -115,8 +115,6 @@ func (web *Web) matchReviewEditPostHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	fmt.Println(r.PostFormValue("matchResultJson"))
-
 	var matchResult model.MatchResult
 	if err = json.Unmarshal([]byte(r.PostFormValue("matchResultJson")), &matchResult); err != nil {
 		handleWebErr(w, err)

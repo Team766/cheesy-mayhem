@@ -7,14 +7,15 @@ package web
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/field"
-	"github.com/Team254/cheesy-arena-lite/model"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/Team254/cheesy-arena-lite/field"
+	"github.com/Team254/cheesy-arena-lite/model"
+	"github.com/gorilla/mux"
 )
 
 const (
@@ -134,10 +135,14 @@ func (web *Web) newHandler() http.Handler {
 	router.HandleFunc("/displays/bracket/websocket", web.bracketDisplayWebsocketHandler).Methods("GET")
 	router.HandleFunc("/displays/field_monitor", web.fieldMonitorDisplayHandler).Methods("GET")
 	router.HandleFunc("/displays/field_monitor/websocket", web.fieldMonitorDisplayWebsocketHandler).Methods("GET")
+	router.HandleFunc("/displays/headref", web.headrefDisplayHandler).Methods("GET")
+	router.HandleFunc("/displays/headref/websocket", web.headrefDisplayWebsocketHandler).Methods("GET")
 	router.HandleFunc("/displays/queueing", web.queueingDisplayHandler).Methods("GET")
 	router.HandleFunc("/displays/queueing/websocket", web.queueingDisplayWebsocketHandler).Methods("GET")
 	router.HandleFunc("/displays/rankings", web.rankingsDisplayHandler).Methods("GET")
 	router.HandleFunc("/displays/rankings/websocket", web.rankingsDisplayWebsocketHandler).Methods("GET")
+	router.HandleFunc("/displays/ref/{alliance}", web.refDisplayHandler).Methods("GET")
+	router.HandleFunc("/displays/ref/{alliance}/websocket", web.refDisplayWebsocketHandler).Methods("GET")
 	router.HandleFunc("/displays/twitch", web.twitchDisplayHandler).Methods("GET")
 	router.HandleFunc("/displays/twitch/websocket", web.twitchDisplayWebsocketHandler).Methods("GET")
 	router.HandleFunc("/login", web.loginHandler).Methods("GET")
