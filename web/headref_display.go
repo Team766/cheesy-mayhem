@@ -7,7 +7,9 @@ import (
 	"github.com/Team254/cheesy-arena-lite/websocket"
 )
 
-// Renders the audience display to be chroma keyed over the video feed.
+// renders the head ref UI, allowing the head ref to view and edit scores and fouls for both alliances.
+// through a websockets integration, the head ref will be able to see score updates submitted by other
+// refs in realtime.
 func (web *Web) headrefDisplayHandler(w http.ResponseWriter, r *http.Request) {
 	// if !web.enforceDisplayConfiguration(w, r, map[string]string{"background": "#0f0", "reversed": "false",
 	// 	"overlayLocation": "bottom"}) {

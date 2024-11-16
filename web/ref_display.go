@@ -9,7 +9,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Renders the audience display to be chroma keyed over the video feed.
+// renders the ref UI for an individual alliance
+// each alliance will typically have two individual refs, with each ref scoring non-overlapping
+// field elements.  through a websockets integration, each ref will be able to see score updates
+// submitted by other refs in realtime.
 func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	alliance := vars["alliance"]
