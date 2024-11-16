@@ -1,0 +1,130 @@
+html {
+    height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+body {
+    height: 100%;
+    background-color: #222;
+}
+
+.container {
+    padding-top: 2vw;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#alliance {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 25px;
+    border: 1px solid #333;
+}
+
+#alliance[data-alliance="red"] {
+    background-color: #322;
+}
+
+#alliance[data-alliance="blue"] {
+    background-color: #223;
+}
+
+.match-info {
+    font-size: 2vw;
+}
+
+.scoring-section {
+    margin-bottom: 0.5vw;
+    display: flex;
+    font-size: 1.5vw;
+    color: #ccc;
+}
+
+.scoring-header>div {
+    height: 2.5vw;
+    margin: 0.4vw 1vw 0.4vw 0.2vw;
+    color: #666;
+}
+
+.robot-field {
+    width: 17vw;
+    height: 2.5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.4vw 0.2vw;
+}
+
+.boolean[data-value="false"] {
+    background-color: #333;
+}
+
+.boolean[data-value="true"] {
+    background-color: #263;
+}
+
+.taxi-status[data-value="0"] {
+    background-color: #333;
+}
+
+.taxi-status[data-value="1"] {
+    background-color: #aa0;
+}
+
+.taxi-status[data-value="2"] {
+    background-color: #263;
+}
+
+.shelf-header {
+    height: 5vw;
+    margin: 0.4vw 0vw;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.shelf-period {
+    text-align: center;
+    color: #666;
+}
+
+.shelf {
+    width: 13vw;
+    height: 5vw;
+    margin: 0.4vw 3vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.number-button {
+    width: 4vw;
+    height: 4vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #666;
+    border-radius: 0.5vw;
+    font-size: 3vw;
+}
+
+.plus {
+    background: #263;
+}
+
+.minus {
+    background: #633;
+}
+
+#instructions {
+    margin-top: 0.3vw;
+}

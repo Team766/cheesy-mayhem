@@ -1,78 +1,111 @@
 {{define "title"}}Head Ref{{end}}
-{{define "head"}}{{end}}
+{{define "head"}}
+  <link href="/static/css/headref_display.css" rel="stylesheet">
+{{end}}
 {{define "body"}}
 <legend>Head Ref</legend>
-<div class="well">
-  <span id="matchName" class="well-sm text-center">&nbsp;</span>
-  <span id="matchState" class="well-sm text-center">&nbsp;</span>
-  <span id="matchTime" class="well-sm text-center">&nbsp;</span>
-  <span id="matchScore" class="well-sm text-center">&nbsp;</span>
+<div class="match-info">
+  <span id="matchName">&nbsp;</span>
+  <span id="matchState">&nbsp;</span>
+  <span id="matchTime">&nbsp;</span>
+  <span id="matchScore">&nbsp;</span>
 </div>
-<div class="well">
-  <div class="well">
-    <label>Taxi</label>
-    <div>
-      <span>Taxi 1</span>
-      <span id="taxi1">0</span>
-    </div>
-    <div>
-      <span>Taxi 2</span>
-      <span id="taxi2">0</span>
-    </div>
-  </div>
-  <div class="well">
-    <label>Shelf</label>
-    <div>
-      <div>
-        <span>-</span>
-        <span class="text-left">AutonBottom</span>
-        <span>+</span>
-        <span id="auton_bottom">0</span>
-      </div>
-      <div>
-        <span>-</span>
-        <span class="text-left">AutonTop</span>
-        <span>+</span>
-        <span id="auton_top">0</span>
-      </div>
-      <div>
-        <span>-</span>
-        <span class="text-left">TeleopBottom</span>
-        <span>+</span>
-        <span id="teleop_bottom">0</span>
-      </div>
-      <div>
-        <span>-</span>
-        <span class="text-left">TeleopTop</span>
-        <span>+</span>
-        <span id="teleop_top">0</span>
-      </div>
-      <div>
-        <span>Golden Cube: </span>
-        <span id="golden_cube">&nbsp;</div>
-      </div>
-    </div>
-  </div>
-  <div class="well">
-    <label>Endgame</label>
-    <div>
-      <span>-</span>
-      <span class="text-left">Hamper</span>
-      <span>+</span>
-      <span id="hamper">0</span>
-    </div>
-      <div>
-        <label>Park</label>
-        <br/>
-        <span>Park 1: </span>
-        <span id="park1">&nbsp;</span>
-        <span>Park 2: </span>
-        <span id="park2">&nbsp;</span>
-      </div>  
-    </div>
-  </div>
+
+<table class="scoring-section">
+  <tr>
+    <td class="well-red red-text">Red Alliance</td>
+    <td class="well-blue blue-text">Blue Alliance</td>
+  </tr>
+  <tr>
+    {{range .Alliances}}
+    <td>
+      <table>
+        <tr>
+          <td id="{{.}}Taxi1" class="taxi-status" data-value="0" onclick="toggleTaxi({{.}}Taxi1)">Taxi 1</td>
+          <td id="{{.}}Taxi2" class="taxi-status" data-value="0" onclick="toggleTaxi({{.}}Taxi2)">Taxi 2</td>
+        </tr>
+        <tr>
+          <td colspan="3">Shelf</td>
+        </tr>
+        <tr>
+          <td>AutonBottom</td>
+          <td id="{{.}}AutonBottom">0</td>
+          <td class="minus" onclick="decrementScore({{.}}AutonBottom)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}AutonBottom)">+</td>
+        </tr>
+        <tr>
+          <td>AutonTop</td>
+          <td id="{{.}}AutonTop">0</td>
+          <td class="minus" onclick="decrementScore({{.}}AutonTop)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}AutonTop)">+</td>
+        </tr>
+        <tr>
+          <td>TeleopBottom</td>
+          <td id="{{.}}TeleopBottom">0</td>
+          <td class="minus" onclick="decrementScore({{.}}TeleopBottom)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}TeleopBottom)">+</td>
+        </tr>
+        <tr>
+          <td>TeleopTop</td>
+          <td id="{{.}}TeleopTop">0</td>
+          <td class="minus" onclick="decrementScore({{.}}AutonBottom)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}AutonBottom)">+</td>
+        </tr>
+        <tr>
+          <td id="{{.}}GoldenCube" class="boolean" data-value="false" onclick="toggleBoolean({{.}}GoldenCube)">Golden Cube</td>
+        </tr>
+        <tr>
+          <td>Hamper</td>
+          <td id="{{.}}Hamper">0</td>
+          <td class="minus" onclick="decrementScore({{.}}Hamper)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}Hamper)">+</td>
+        </tr>
+        <tr>
+          <td id="{{.}}Park1" class="boolean" data-value="false" onclick="toggleBoolean({{.}}Park1)">Park 1</td>
+          <td id="{{.}}Park2" class="boolean" data-value="false" onclick="toggleBoolean({{.}}Park2)">Park 2</td>
+        </tr>
+        <tr>
+          <td>Fouls</td>
+          <td id="{{.}}Foul">0</td>
+          <td class="minus" onclick="decrementScore({{.}}Foul)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}Foul)">+</td>
+        </tr>
+        <tr>
+          <td>Tech Fouls</td>
+          <td id="{{.}}TechFoul">0</td>
+          <td class="minus" onclick="decrementScore({{.}}TechFoul)">-</td>
+          <td class="plus" onclick="incrementScore({{.}}TechFoul)">+</td>
+        </tr>
+      </table>
+    </td>
+    {{end}}
+  </tr>
+</div>
 {{end}}
+
 {{define "script"}}
 <script src="/static/js/match_timing.js"></script>
 <script src="/static/js/headref_display.js"></script>
+
+<script>
+  var toggleTaxi = function(id) {
+    $(id).attr("data-value", ($(id).attr("data-value") + 1)  % 3);
+  }
+
+  var decrementScore = function(id) {
+    var curValue = parseInt($(id).text());
+    $(id).text(Math.max(curValue - 1, 0));
+  }
+
+  var incrementScore = function(id) {
+    var curValue = parseInt($(id).text());
+    $(id).text(curValue + 1);
+  }
+
+
+  var toggleBoolean = function(id) {
+    $(id).attr("data-value", $(id).attr("data-value") != "true");
+  }
+
+</script>
 {{end}}
