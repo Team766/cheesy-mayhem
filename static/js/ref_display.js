@@ -3,6 +3,35 @@
 var websocket;
 let alliance;
 
+var updateScore = function(score) {
+    // update each of the individal scoring elements
+    // taxi
+    $("#" + alliance + "Taxi1").attr("data-value", score.Taxi[0]);
+    $("#" + alliance + "Taxi2").attr("data-value", score.Taxi[1]);
+
+    // shelf
+    $("#" + alliance + "AutonBottom").text(score.Shelf.AutonBottomShelfCubes);
+    $("#" + alliance + "AutonTop").text(score.Shelf.AutonTopShelfCubes);
+    $("#" + alliance + "TeleopBottom").text(score.Shelf.TeleopBottomShelfCubes);
+    $("#" + alliance + "TeleopTop").text(score.Shelf.TeleopTopShelfCubes);
+
+    // golden_cube
+    $("#" + alliance + "GoldenCube").attr("data-value", score.GoldenCube);
+
+    // hamper
+    $("#" + alliance + "Hamper").text(score.Hamper);
+
+    // park
+    $("#" + alliance + "Park1").attr("data-value", score.Park[0]);
+    $("#" + alliance + "Park2").attr("data-value", score.Park[1]);
+
+    // foul
+    $("#" + alliance + "Foul").text(score.Fouls);
+
+    // tech foul
+    $("#" + alliance + "TechFoul").text(score.TechFouls);
+}
+
 // Handles a websocket message to update the teams for the current match.
 var handleMatchLoad = function(data) {
     $("#matchName").text(data.MatchType + " Match " + data.Match.DisplayName);
@@ -29,27 +58,7 @@ var handleRealtimeScore = function(data) {
         $("#matchScore").text(data.Blue.ScoreSummary.Score);
         score = data.Blue.Score;
     }
-
-    // update each of the individal scoring elements
-    // taxi
-    $("#taxi1").text(score.Taxi[0]);
-    $("#taxi2").text(score.Taxi[1]);
-
-    // shelf
-    $("#auton_bottom").text(score.Shelf.AutonBottomShelfCubes);
-    $("#auton_top").text(score.Shelf.AutonTopShelfCubes);
-    $("#teleop_bottom").text(score.Shelf.TeleopBottomShelfCubes);
-    $("#teleop_top").text(score.Shelf.TeleopTopShelfCubes);
-
-    // golden_cube
-    $("#golden_cube").text(score.GoldenCube);
-
-    // hamper
-    $("#hamper").text(score.Hamper);
-
-    // park
-    $("#park1").text(score.Park[0]);
-    $("#park2").text(score.Park[1]);
+    updateScore(score);
 };
 
 $(function() {

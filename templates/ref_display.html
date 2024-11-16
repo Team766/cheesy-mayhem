@@ -1,78 +1,148 @@
 {{define "title"}}Ref {{.Alliance}} Alliance{{end}}
-{{define "head"}}{{end}}
+{{define "head"}}
+  <link href="/static/css/headref_display.css" rel="stylesheet">
+{{end}}
 {{define "body"}}
-<legend>Ref {{.Alliance}} Alliance</legend>
-<div class="well">
-  <span id="matchName" class="well-sm text-center">&nbsp;</span>
-  <span id="matchState" class="well-sm text-center">&nbsp;</span>
-  <span id="matchTime" class="well-sm text-center">&nbsp;</span>
-  <span id="matchScore" class="well-sm text-center">&nbsp;</span>
-</div>
-<div class="well">
-  <div class="well">
-    <label>Taxi</label>
-    <div>
-      <span>Taxi 1</span>
-      <span id="taxi1">0</span>
-    </div>
-    <div>
-      <span>Taxi 2</span>
-      <span id="taxi2">0</span>
-    </div>
-  </div>
-  <div class="well">
-    <label>Shelf</label>
-    <div>
-      <div>
-        <span>-</span>
-        <span class="text-left">AutonBottom</span>
-        <span>+</span>
-        <span id="auton_bottom">0</span>
-      </div>
-      <div>
-        <span>-</span>
-        <span class="text-left">AutonTop</span>
-        <span>+</span>
-        <span id="auton_top">0</span>
-      </div>
-      <div>
-        <span>-</span>
-        <span class="text-left">TeleopBottom</span>
-        <span>+</span>
-        <span id="teleop_bottom">0</span>
-      </div>
-      <div>
-        <span>-</span>
-        <span class="text-left">TeleopTop</span>
-        <span>+</span>
-        <span id="teleop_top">0</span>
-      </div>
-      <div>
-        <span>Golden Cube: </span>
-        <span id="golden_cube">&nbsp;</div>
-      </div>
-    </div>
-  </div>
-  <div class="well">
-    <label>Endgame</label>
-    <div>
-      <span>-</span>
-      <span class="text-left">Hamper</span>
-      <span>+</span>
-      <span id="hamper">0</span>
-    </div>
-      <div>
-        <label>Park</label>
-        <br/>
-        <span>Park 1: </span>
-        <span id="park1">&nbsp;</span>
-        <span>Park 2: </span>
-        <span id="park2">&nbsp;</span>
-      </div>  
-    </div>
-  </div>
+<span class="match-info section-header">Ref {{.Alliance}}</span>
+<table>
+  <tr>
+    <td id="matchName" style="width: 50%">&nbsp;</td>
+    <td id="matchState" style="width: 25%">&nbsp;</td>
+    <td id="matchTime" style="width: 15%">&nbsp;</td>
+    <td id="matchScore" style="width: 10%">&nbsp;</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td class="section-header">Auton</td>
+  </tr>
+
+  <tr>
+    <td id="{{$.Alliance}}Taxi1" class="taxi-status" data-value="0" onclick="toggleTaxi({{$.Alliance}}Taxi1); patchScore(getTaxi());">Taxi 1</td>
+    <td id="{{$.Alliance}}Taxi2" class="taxi-status" data-value="0" onclick="toggleTaxi({{$.Alliance}}Taxi2); patchScore(getTaxi());">Taxi 2</td>
+  </tr>
+
+  {{range $s := $.ShelfLocations}}
+  <tr>
+    <td>{{$s}}</td>
+    <td id="{{$.Alliance}}Auton{{$s}}">0</td>
+    <td class="minus" onclick="decrementCount({{$.Alliance}}Auton{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">-</td>
+    <td class="plus" onclick="incrementCount({{$.Alliance}}Auton{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">+</td>
+  </tr>
+  {{end}}
+
+  <tr>
+    <td class="section-header">Teleop</td>
+  </tr>
+
+  {{range $s := $.ShelfLocations}}
+  <tr>
+    <td>{{$s}}</td>
+    <td id="{{$.Alliance}}Teleop{{$s}}">0</td>
+    <td class="minus" onclick="decrementCount({{$.Alliance}}Teleop{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">-</td>
+    <td class="plus" onclick="incrementCount({{$.Alliance}}Teleop{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">+</td>
+  </tr>
+  {{end}}
+  <tr>
+    <td id="{{$.Alliance}}GoldenCube" class="boolean" data-value="false"
+        onclick="toggleBoolean({{$.Alliance}}GoldenCube); patchScore(getGoldenCube('{{$.Alliance}}'));">Golden Cube</td>
+  </tr>
+  <tr>
+    <td class="section-header">Endgame</td>
+  </tr>
+  <tr>
+    <td>Hamper</td>
+    <td id="{{$.Alliance}}Hamper">0</td>
+    <td class="minus" onclick="decrementCount({{$.Alliance}}Hamper); patchScore(getHamper('{{$.Alliance}}'));">-</td>
+    <td class="plus" onclick="incrementCount({{$.Alliance}}Hamper); patchScore(getHamper('{{$.Alliance}}'));">+</td>
+  </tr>
+  <tr>
+    <td id="{{$.Alliance}}Park1" class="boolean" data-value="false" onclick="toggleBoolean({{$.Alliance}}Park1); patchScore(getPark('{{$.Alliance}}'));">Park 1</td>
+    <td id="{{$.Alliance}}Park2" class="boolean" data-value="false" onclick="toggleBoolean({{$.Alliance}}Park2); patchScore(getPark('{{$.Alliance}}'));">Park 2</td>
+  </tr>
+
+  <tr>
+    <td class="section-header">Penalties</td>
+  </tr>
+</table>
+
+
 {{end}}
 {{define "script"}}
 <script src="/static/js/match_timing.js"></script>
 <script src="/static/js/ref_display.js"></script>
+
+<script>
+  var toggleTaxi = function(id) {
+    $(id).attr("data-value", ($(id).attr("data-value") + 1)  % 3);
+  }
+
+  var decrementCount = function(id) {
+    var curValue = parseInt($(id).text());
+    $(id).text(Math.max(curValue - 1, 0));
+  }
+
+  var incrementCount = function(id) {
+    var curValue = parseInt($(id).text());
+    $(id).text(curValue + 1);
+  }
+
+  var toggleBoolean = function(id) {
+    $(id).attr("data-value", $(id).attr("data-value") != "true");
+  }
+
+  var parseBoolean = function(text) {
+    return text != undefined && text === "true";
+  }
+
+  var getTaxi = function() {
+    var taxi1 = parseInt($("#" + "{{$.Alliance}}" + "Taxi1").attr("data-value"));
+    var taxi2 = parseInt($("#" + "{{$.Alliance}}" + "Taxi2").attr("data-value"));
+
+    var score = {};
+    score.taxi = [ taxi1, taxi2 ];
+    return { ["{{$.Alliance}}"]: score };
+  }
+
+  var getShelf = function() {
+    var autonBottom = parseInt($("#" + "{{$.Alliance}}" + "AutonBottom").text());
+    var autonTop = parseInt($("#" + "{{$.Alliance}}" + "AutonTop").text());
+    var teleopBottom = parseInt($("#" + "{{$.Alliance}}" + "TeleopBottom").text());
+    var teleopTop = parseInt($("#" + "{{$.Alliance}}" + "TeleopTop").text());
+
+    var score = {};
+    score.shelf = {
+      "auton_bottom": autonBottom,
+      "auton_top": autonTop,
+      "teleop_bottom": teleopBottom,
+      "teleop_top": teleopTop,
+    }
+    return { ["{{$.Alliance}}"]: score };
+  }
+
+  var getGoldenCube = function() {
+    var goldenCube = parseBoolean($("#" + "{{$.Alliance}}" + "GoldenCube").attr("data-value"));
+
+    var score = {};
+    score.golden_cube = goldenCube;
+    return { ["{{$.Alliance}}"]: score };
+  }
+
+  var getHamper = function() {
+    var hamper = parseInt($("#" + "{{$.Alliance}}" + "Hamper").text());
+    var score = {};
+    score.hamper = hamper;
+    return { ["{{$.Alliance}}"]: score };
+  }
+
+  var getPark = function() {
+    var park1 = parseBoolean($("#" + "{{$.Alliance}}" + "Park1").attr("data-value"));
+    var park2 = parseBoolean($("#" + "{{$.Alliance}}" + "Park2").attr("data-value"));
+
+    var score = {};
+    score.park = [ park1, park2 ];
+    return { ["{{$.Alliance}}"]: score };
+  }
+
 {{end}}

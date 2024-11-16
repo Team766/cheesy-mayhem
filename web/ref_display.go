@@ -28,11 +28,14 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	shelfLocations := [2]string{"Bottom", "Top"}
+
 	data := struct {
 		*model.EventSettings
-		Match    *model.Match
-		Alliance string
-	}{web.arena.EventSettings, web.arena.CurrentMatch, alliance}
+		Match          *model.Match
+		Alliance       string
+		ShelfLocations [2]string
+	}{web.arena.EventSettings, web.arena.CurrentMatch, alliance, shelfLocations}
 	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)
