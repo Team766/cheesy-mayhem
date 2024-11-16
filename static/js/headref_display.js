@@ -5,9 +5,6 @@ var websocket;
 // Handles a websocket message to update the teams for the current match.
 var handleMatchLoad = function(data) {
     $("#matchName").text(data.MatchType + " Match " + data.Match.DisplayName);
-    updateAllianceScore("red", {});
-    updateAllianceScore("blue", {});
-    alert("resetting match");
 }
 
 // Handles a websocket message to update the match time countdown.
