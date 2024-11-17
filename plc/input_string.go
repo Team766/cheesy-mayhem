@@ -10,16 +10,16 @@ func _() {
 	var x [1]struct{}
 	_ = x[fieldEstop-0]
 	_ = x[redEstop1-1]
-	_ = x[redEstop2-2]
-	_ = x[redEstop3-3]
-	_ = x[blueEstop1-4]
-	_ = x[blueEstop2-5]
-	_ = x[blueEstop3-6]
-	_ = x[redAstop1-7]
-	_ = x[redAstop2-8]
-	_ = x[redAstop3-9]
-	_ = x[blueAstop1-10]
-	_ = x[blueAstop2-11]
+	_ = x[redAstop1-2]
+	_ = x[redEstop2-3]
+	_ = x[redAstop2-4]
+	_ = x[redEstop3-5]
+	_ = x[redAstop3-6]
+	_ = x[blueEstop1-7]
+	_ = x[blueAstop1-8]
+	_ = x[blueEstop2-9]
+	_ = x[blueAstop2-10]
+	_ = x[blueEstop3-11]
 	_ = x[blueAstop3-12]
 	_ = x[redConnected1-13]
 	_ = x[redConnected2-14]
@@ -30,9 +30,9 @@ func _() {
 	_ = x[inputCount-19]
 }
 
-const _input_name = "fieldEstopredEstop1redEstop2redEstop3blueEstop1blueEstop2blueEstop3redAstop1redAstop2redAstop3blueAstop1blueAstop2blueAstop3redConnected1redConnected2redConnected3blueConnected1blueConnected2blueConnected3inputCount"
+const _input_name = "fieldEstopredEstop1redAstop1redEstop2redAstop2redEstop3redAstop3blueEstop1blueAstop1blueEstop2blueAstop2blueEstop3blueAstop3redConnected1redConnected2redConnected3blueConnected1blueConnected2blueConnected3inputCount"
 
-var _input_index = [...]uint8{0, 10, 19, 28, 37, 47, 57, 67, 76, 85, 94, 104, 114, 124, 137, 150, 163, 177, 191, 205, 215}
+var _input_index = [...]uint8{0, 10, 19, 28, 37, 46, 55, 64, 74, 84, 94, 104, 114, 124, 137, 150, 163, 177, 191, 205, 215}
 
 func (i input) String() string {
 	if i < 0 || i >= input(len(_input_index)-1) {

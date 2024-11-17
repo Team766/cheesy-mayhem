@@ -46,16 +46,16 @@ type input int
 const (
 	fieldEstop input = iota
 	redEstop1
-	redEstop2
-	redEstop3
-	blueEstop1
-	blueEstop2
-	blueEstop3
 	redAstop1
+	redEstop2
 	redAstop2
+	redEstop3
 	redAstop3
+	blueEstop1
 	blueAstop1
+	blueEstop2
 	blueAstop2
+	blueEstop3
 	blueAstop3
 	redConnected1
 	redConnected2
