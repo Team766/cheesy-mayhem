@@ -7,11 +7,12 @@ package plc
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/websocket"
-	"github.com/goburrow/modbus"
 	"log"
 	"strings"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/websocket"
+	"github.com/goburrow/modbus"
 )
 
 type Plc struct {
@@ -50,6 +51,12 @@ const (
 	blueEstop1
 	blueEstop2
 	blueEstop3
+	redAstop1
+	redAstop2
+	redAstop3
+	blueAstop1
+	blueAstop2
+	blueAstop3
 	redConnected1
 	redConnected2
 	redConnected3
@@ -186,6 +193,20 @@ func (plc *Plc) GetTeamEstops() ([3]bool, [3]bool) {
 		blueEstops[2] = !plc.inputs[blueEstop3]
 	}
 	return redEstops, blueEstops
+}
+
+// Returns the state of the red and blue driver station auton stop buttons (true if a-stop is active).
+func (plc *Plc) GetTeamAstops() ([3]bool, [3]bool) {
+	var redAstops, blueAstops [3]bool
+	if plc.IsEnabled() {
+		redAstops[0] = !plc.inputs[redAstop1]
+		redAstops[1] = !plc.inputs[redAstop2]
+		redAstops[2] = !plc.inputs[redAstop3]
+		blueAstops[0] = !plc.inputs[blueAstop1]
+		blueAstops[1] = !plc.inputs[blueAstop2]
+		blueAstops[2] = !plc.inputs[blueAstop3]
+	}
+	return redAstops, blueAstops
 }
 
 // Returns whether anything is connected to each station's designated Ethernet port on the SCC.

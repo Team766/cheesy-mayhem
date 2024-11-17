@@ -728,6 +728,8 @@ func (arena *Arena) checkAllianceStationsReady(stations ...string) error {
 		if allianceStation.Estop {
 			return fmt.Errorf("Cannot start match while an emergency stop is active.")
 		}
+		// TODO: should we also block match start on astop?  that may be okay, eg if a team last minute wants
+		// to suppress their individual auton.
 		if !allianceStation.Bypass {
 			if allianceStation.DsConn == nil || !allianceStation.DsConn.RobotLinked {
 				return fmt.Errorf("Cannot start match until all robots are connected or bypassed.")
@@ -745,6 +747,7 @@ func (arena *Arena) sendDsPacket(auto bool, enabled bool) {
 			dsConn.Auto = auto
 			dsConn.Enabled = enabled && !allianceStation.Estop && !allianceStation.Astop && !allianceStation.Bypass
 			dsConn.Estop = allianceStation.Estop
+			dsConn.Astop = allianceStation.Astop
 			err := dsConn.update(arena)
 			if err != nil {
 				log.Printf("Unable to send driver station packet for team %d.", allianceStation.Team.Id)
@@ -779,6 +782,13 @@ func (arena *Arena) handlePlcInput() {
 	arena.handleEstop("B1", blueEstops[0])
 	arena.handleEstop("B2", blueEstops[1])
 	arena.handleEstop("B3", blueEstops[2])
+	redAstops, blueAstops := arena.Plc.GetTeamAstops()
+	arena.handleAstop("R1", redAstops[0])
+	arena.handleAstop("R2", redAstops[1])
+	arena.handleAstop("R3", redAstops[2])
+	arena.handleAstop("B1", blueAstops[0])
+	arena.handleAstop("B2", blueAstops[1])
+	arena.handleAstop("B3", blueAstops[2])
 	redEthernets, blueEthernets := arena.Plc.GetEthernetConnected()
 	arena.AllianceStations["R1"].Ethernet = redEthernets[0]
 	arena.AllianceStations["R2"].Ethernet = redEthernets[1]
@@ -840,6 +850,7 @@ func (arena *Arena) handleEstop(station string, state bool) {
 	allianceStation := arena.AllianceStations[station]
 	if state {
 		if arena.MatchState == AutoPeriod {
+			// FIXME: do we still want this behavior?
 			allianceStation.Astop = true
 		} else {
 			allianceStation.Estop = true
@@ -851,6 +862,16 @@ func (arena *Arena) handleEstop(station string, state bool) {
 		if arena.MatchTimeSec() == 0 {
 			// Don't reset the e-stop while a match is in progress.
 			allianceStation.Estop = false
+		}
+	}
+}
+
+func (arena *Arena) handleAstop(station string, state bool) {
+	allianceStation := arena.AllianceStations[station]
+	if state {
+		// only allow a team to set the astop during auton
+		if arena.MatchState == AutoPeriod {
+			allianceStation.Astop = true
 		}
 	}
 }

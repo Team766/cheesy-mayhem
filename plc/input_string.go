@@ -15,18 +15,24 @@ func _() {
 	_ = x[blueEstop1-4]
 	_ = x[blueEstop2-5]
 	_ = x[blueEstop3-6]
-	_ = x[redConnected1-7]
-	_ = x[redConnected2-8]
-	_ = x[redConnected3-9]
-	_ = x[blueConnected1-10]
-	_ = x[blueConnected2-11]
-	_ = x[blueConnected3-12]
-	_ = x[inputCount-13]
+	_ = x[redAstop1-7]
+	_ = x[redAstop2-8]
+	_ = x[redAstop3-9]
+	_ = x[blueAstop1-10]
+	_ = x[blueAstop2-11]
+	_ = x[blueAstop3-12]
+	_ = x[redConnected1-13]
+	_ = x[redConnected2-14]
+	_ = x[redConnected3-15]
+	_ = x[blueConnected1-16]
+	_ = x[blueConnected2-17]
+	_ = x[blueConnected3-18]
+	_ = x[inputCount-19]
 }
 
-const _input_name = "fieldEstopredEstop1redEstop2redEstop3blueEstop1blueEstop2blueEstop3redConnected1redConnected2redConnected3blueConnected1blueConnected2blueConnected3inputCount"
+const _input_name = "fieldEstopredEstop1redEstop2redEstop3blueEstop1blueEstop2blueEstop3redAstop1redAstop2redAstop3blueAstop1blueAstop2blueAstop3redConnected1redConnected2redConnected3blueConnected1blueConnected2blueConnected3inputCount"
 
-var _input_index = [...]uint8{0, 10, 19, 28, 37, 47, 57, 67, 80, 93, 106, 120, 134, 148, 158}
+var _input_index = [...]uint8{0, 10, 19, 28, 37, 47, 57, 67, 76, 85, 94, 104, 114, 124, 137, 150, 163, 177, 191, 205, 215}
 
 func (i input) String() string {
 	if i < 0 || i >= input(len(_input_index)-1) {
