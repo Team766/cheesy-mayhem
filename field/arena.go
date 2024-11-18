@@ -750,7 +750,7 @@ func (arena *Arena) sendDsPacket(auto bool, enabled bool) {
 		dsConn := allianceStation.DsConn
 		if dsConn != nil {
 			dsConn.Auto = auto
-			dsConn.Enabled = enabled && !allianceStation.Estop && !allianceStation.Astop && !allianceStation.Bypass
+			dsConn.Enabled = enabled && !allianceStation.Estop && !(auto && allianceStation.Astop) && !allianceStation.Bypass
 			dsConn.Estop = allianceStation.Estop
 			dsConn.Astop = allianceStation.Astop
 			err := dsConn.update(arena)
@@ -853,7 +853,7 @@ func (arena *Arena) handleTeamStop(station string, eStopState, aStopState bool) 
 		// Keep the E-stop latched until the match is over.
 		allianceStation.Estop = false
 	}
-	if aStopState && arena.MatchState == AutoPeriod {
+	if aStopState {
 		allianceStation.Astop = true
 	} else if arena.MatchState != AutoPeriod {
 		// Keep the A-stop latched until the autonomous period is over.

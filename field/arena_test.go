@@ -572,12 +572,12 @@ func TestEstopAstop(t *testing.T) {
 	// reset estop on R2 for the next test
 	arena.AllianceStations["R2"].Estop = false
 	// test that estop works on R1
-	// test that astop no longer does anything in teleop
+	// test that astop no longer disables in teleop
 	arena.handleTeamStop("R1", true, false)
 	arena.handleTeamStop("R2", false, true)
 	assert.Equal(t, false, arena.AllianceStations["R1"].Astop)
 	assert.Equal(t, true, arena.AllianceStations["R1"].Estop)
-	assert.Equal(t, false, arena.AllianceStations["R2"].Astop)
+	assert.Equal(t, true, arena.AllianceStations["R2"].Astop)
 	assert.Equal(t, false, arena.AllianceStations["R2"].Estop)
 	arena.lastDsPacketTime = time.Unix(0, 0) // Force a DS packet.
 	arena.Update()
