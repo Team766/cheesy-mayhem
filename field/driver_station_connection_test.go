@@ -4,11 +4,12 @@
 package field
 
 import (
-	"github.com/Team254/cheesy-arena-lite/network"
-	"github.com/stretchr/testify/assert"
 	"net"
 	"testing"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/network"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEncodeControlPacket(t *testing.T) {
@@ -78,6 +79,15 @@ func TestEncodeControlPacket(t *testing.T) {
 	dsConn.Estop = true
 	data = dsConn.encodeControlPacket(arena)
 	assert.Equal(t, byte(132), data[3])
+
+	dsConn.Estop = false
+	dsConn.Astop = true
+	data = dsConn.encodeControlPacket(arena)
+	assert.Equal(t, byte(68), data[3])
+
+	dsConn.Estop = true
+	data = dsConn.encodeControlPacket(arena)
+	assert.Equal(t, byte(196), data[3])
 
 	// Check different match types.
 	arena.CurrentMatch.Type = "practice"
