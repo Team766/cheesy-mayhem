@@ -853,7 +853,7 @@ func (arena *Arena) handleTeamStop(station string, eStopState, aStopState bool) 
 		// Keep the E-stop latched until the match is over.
 		allianceStation.Estop = false
 	}
-	if aStopState {
+	if aStopState && arena.MatchState == AutoPeriod {
 		allianceStation.Astop = true
 	} else if arena.MatchState != AutoPeriod {
 		// Keep the A-stop latched until the autonomous period is over.
