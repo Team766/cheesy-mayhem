@@ -43,26 +43,28 @@ const (
 //go:generate stringer -type=input
 type input int
 
+// only 0-15 are mapped to pins, 16 and above (max 32) are ignored
+// TODO: we don't have a single field Estop but have 4 seperate field Estops linked in parallel to 4 teams' estops
 const (
 	fieldEstop input = iota
 	redEstop1
 	redAstop1
 	redEstop2
 	redAstop2
-	redEstop3
-	redAstop3
 	blueEstop1
 	blueAstop1
 	blueEstop2
 	blueAstop2
-	blueEstop3
-	blueAstop3
 	redConnected1
 	redConnected2
 	redConnected3
 	blueConnected1
 	blueConnected2
 	blueConnected3
+	redEstop3	
+	redAstop3	// 17th, this and following are ignored by plc
+	blueEstop3
+	blueAstop3
 	inputCount
 )
 
@@ -81,15 +83,29 @@ const (
 //go:generate stringer -type=coil
 type coil int
 
+// only 0-15 are mapped to pins, 16 and above (max 32) are ignored
+// TODO: map team RGB lights to something
 const (
-	heartbeat coil = iota
-	matchReset
+	matchReset coil = iota
+	fieldResetLight
+	red1R
+	red1G
+	red1B
+	red2R
+	red2G
+	red2B
+	blue1R
+	blue1G
+	blue1B
+	blue2R
+	blue2G
+	blue2B
 	stackLightGreen
-	stackLightOrange
+	stackLightOrange	// 17th, this and following are ignored by plc
 	stackLightRed
 	stackLightBlue
 	stackLightBuzzer
-	fieldResetLight
+	heartbeat
 	coilCount
 )
 
