@@ -108,6 +108,9 @@ var handleArenaStatus = function(data) {
     if (stationStatus.Estop) {
       teamBypassElement.attr("data-status-ok", false);
       teamBypassElement.text("ES");
+    } else if (stationStatus.Astop) {
+      teamBypassElement.attr("data-status-ok", false);
+      teamBypassElement.text("AS");     
     } else if (stationStatus.Bypass) {
       teamBypassElement.attr("data-status-ok", false);
       teamBypassElement.text("BYP");
