@@ -55,7 +55,7 @@ const (
 	blueAstop1
 	blueEstop2
 	blueAstop2
-	redConnected1
+	redConnected1	// these and below aren't used by MAhem
 	redConnected2
 	redConnected3
 	blueConnected1
@@ -100,12 +100,12 @@ const (
 	blue2R
 	blue2G
 	blue2B
-	stackLightGreen
+	stackLightGreen		// this and below aren't used by MAhem
 	stackLightOrange	// 17th, this and following are ignored by plc
 	stackLightRed
 	stackLightBlue
 	stackLightBuzzer
-	heartbeat
+	heartbeat			// we don't really need this as plc activity over network already toggles arduino pin13 for blinkies
 	coilCount
 )
 

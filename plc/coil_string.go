@@ -8,20 +8,32 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
-	_ = x[heartbeat-0]
-	_ = x[matchReset-1]
-	_ = x[stackLightGreen-2]
-	_ = x[stackLightOrange-3]
-	_ = x[stackLightRed-4]
-	_ = x[stackLightBlue-5]
-	_ = x[stackLightBuzzer-6]
-	_ = x[fieldResetLight-7]
-	_ = x[coilCount-8]
+	_ = x[matchReset-0]
+	_ = x[fieldResetLight-1]
+	_ = x[red1R-2]
+	_ = x[red1G-3]
+	_ = x[red1B-4]
+	_ = x[red2R-5]
+	_ = x[red2G-6]
+	_ = x[red2B-7]
+	_ = x[blue1R-8]
+	_ = x[blue1G-9]
+	_ = x[blue1B-10]
+	_ = x[blue2R-11]
+	_ = x[blue2G-12]
+	_ = x[blue2B-13]
+	_ = x[stackLightGreen-14]
+	_ = x[stackLightOrange-15]
+	_ = x[stackLightRed-16]
+	_ = x[stackLightBlue-17]
+	_ = x[stackLightBuzzer-18]
+	_ = x[heartbeat-19]
+	_ = x[coilCount-20]
 }
 
-const _coil_name = "heartbeatmatchResetstackLightGreenstackLightOrangestackLightRedstackLightBluestackLightBuzzerfieldResetLightcoilCount"
+const _coil_name = "matchResetfieldResetLightred1Rred1Gred1Bred2Rred2Gred2Bblue1Rblue1Gblue1Bblue2Rblue2Gblue2BstackLightGreenstackLightOrangestackLightRedstackLightBluestackLightBuzzerheartbeatcoilCount"
 
-var _coil_index = [...]uint8{0, 9, 19, 34, 50, 63, 77, 93, 108, 117}
+var _coil_index = [...]uint8{0, 10, 25, 30, 35, 40, 45, 50, 55, 61, 67, 73, 79, 85, 91, 106, 122, 135, 149, 165, 174, 183}
 
 func (i coil) String() string {
 	if i < 0 || i >= coil(len(_coil_index)-1) {
