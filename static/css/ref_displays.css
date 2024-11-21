@@ -6,6 +6,7 @@ html {
 
 body {
     height: 100%;
+    font-size: x-large;
     background-color: #222;
 }
 
@@ -133,4 +134,35 @@ body {
 
 #instructions {
     margin-top: 0.3vw;
+}
+
+#auton {
+    margin: 10px 20px;
+    padding: 10px;
+    width: 160px;
+}
+#teleop {
+    margin: 10px 20px;
+    padding: 10px;
+    width: 160px;
+}
+#endgame {
+    margin: 10px 20px;
+    padding: 10px;
+    width: 160px;
+}
+#team {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#blue_id {
+    padding: 10px;
+}
+#red_id {
+    padding: 10px;
+}
+#team_table {
+    width: 10px;
 }

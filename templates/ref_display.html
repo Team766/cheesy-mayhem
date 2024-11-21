@@ -1,73 +1,148 @@
-{{define "title"}}Ref {{.Alliance}} Alliance{{end}}
-{{define "head"}}
-  <link href="/static/css/headref_display.css" rel="stylesheet">
-{{end}}
-
-{{define "body"}}
+{{define "title"}}Ref {{.Alliance}} Alliance{{end}} {{define "head"}}
+<link href="/static/css/ref_displays.css" rel="stylesheet" />
+{{end}} {{define "body"}}
 <span class="match-info section-header">Ref {{.Alliance}}</span>
 <table>
-  <tr>
-    <td id="matchName" style="width: 50%">&nbsp;</td>
-    <td id="matchState" style="width: 25%">&nbsp;</td>
-    <td id="matchTime" style="width: 15%">&nbsp;</td>
-    <td id="matchScore" style="width: 10%">&nbsp;</td>
-  </tr>
+    <tr>
+        <td id="matchName" style="width: 50%">&nbsp;</td>
+        <td id="matchState" style="width: 25%">&nbsp;</td>
+        <td id="matchTime" style="width: 15%">&nbsp;</td>
+        <td id="matchScore" style="width: 10%">&nbsp;</td>
+    </tr>
 </table>
+<div id="team">
+    <div id="auton">
+        <table style="width: 100%">
+            <tr>
+                <td />
+                <td class="section-header">Auton</td>
+            </tr>
 
-<table>
-  <tr>
-    <td class="section-header">Auton</td>
-  </tr>
+            <tr>
+                <td />
+                <td
+                    id="{{$.Alliance}}Taxi1"
+                    class="taxi-status"
+                    data-value="0"
+                    onclick="toggleTriState({{$.Alliance}}Taxi1); patchScore(getTaxi('{{$.Alliance}}'));"
+                >
+                    Taxi 1
+                </td>
+                <td
+                    id="{{$.Alliance}}Taxi2"
+                    class="taxi-status"
+                    data-value="0"
+                    onclick="toggleTriState({{$.Alliance}}Taxi2); patchScore(getTaxi('{{$.Alliance}}'));"
+                >
+                    Taxi 2
+                </td>
+            </tr>
 
-  <tr>
-    <td id="{{$.Alliance}}Taxi1" class="taxi-status" data-value="0"
-        onclick="toggleTriState({{$.Alliance}}Taxi1); patchScore(getTaxi('{{$.Alliance}}'));">Taxi 1</td>
-    <td id="{{$.Alliance}}Taxi2" class="taxi-status" data-value="0" 
-        onclick="toggleTriState({{$.Alliance}}Taxi2); patchScore(getTaxi('{{$.Alliance}}'));">Taxi 2</td>
-  </tr>
+            {{range $s := $.ShelfLocations}}
+            <tr>
+                <td
+                    class="minus"
+                    onclick="decrementCount({{$.Alliance}}Auton{{$s}}); patchScore(getShelf('{{$.Alliance}}'));"
+                >
+                    -
+                </td>
+                <td>{{$s}}</td>
+                <td id="{{$.Alliance}}Auton{{$s}}">0</td>
 
-  {{range $s := $.ShelfLocations}}
-  <tr>
-    <td>{{$s}}</td>
-    <td id="{{$.Alliance}}Auton{{$s}}">0</td>
-    <td class="minus" onclick="decrementCount({{$.Alliance}}Auton{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">-</td>
-    <td class="plus" onclick="incrementCount({{$.Alliance}}Auton{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">+</td>
-  </tr>
-  {{end}}
+                <td
+                    class="plus"
+                    onclick="incrementCount({{$.Alliance}}Auton{{$s}}); patchScore(getShelf('{{$.Alliance}}'));"
+                >
+                    +
+                </td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+    <div id="teleop">
+        <table style="width: 100%">
+            <tr>
+                <td />
+                <td class="section-header">Teleop</td>
+            </tr>
+            <tr>
+                <td />
+                <td
+                    id="{{$.Alliance}}GoldenCube"
+                    class="boolean"
+                    data-value="false"
+                    onclick="toggleBoolean({{$.Alliance}}GoldenCube); patchScore(getGoldenCube('{{$.Alliance}}'));"
+                >
+                    Golden Cube
+                </td>
+            </tr>
+            {{range $s := $.ShelfLocations}}
+            <tr>
+                <td
+                    class="minus"
+                    onclick="decrementCount({{$.Alliance}}Teleop{{$s}}); patchScore(getShelf('{{$.Alliance}}'));"
+                >
+                    -
+                </td>
+                <td>{{$s}}</td>
+                <td id="{{$.Alliance}}Teleop{{$s}}">0</td>
 
-  <tr>
-    <td class="section-header">Teleop</td>
-  </tr>
+                <td
+                    class="plus"
+                    onclick="incrementCount({{$.Alliance}}Teleop{{$s}}); patchScore(getShelf('{{$.Alliance}}'));"
+                >
+                    +
+                </td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+    <div id="endgame">
+        <table style="width: 100%">
+            <tr>
+                <td />
+                <td class="section-header">Endgame</td>
+            </tr>
+            <tr>
+                <td />
+                <td
+                    id="{{$.Alliance}}Park1"
+                    class="boolean"
+                    data-value="false"
+                    onclick="toggleBoolean({{$.Alliance}}Park1); patchScore(getPark('{{$.Alliance}}'));"
+                >
+                    Park 1
+                </td>
+                <td
+                    id="{{$.Alliance}}Park2"
+                    class="boolean"
+                    data-value="false"
+                    onclick="toggleBoolean({{$.Alliance}}Park2); patchScore(getPark('{{$.Alliance}}'));"
+                >
+                    Park 2
+                </td>
+            </tr>
+            <tr>
+                <td
+                    class="minus"
+                    onclick="decrementCount({{$.Alliance}}Hamper); patchScore(getHamper('{{$.Alliance}}'));"
+                >
+                    -
+                </td>
+                <td>Hamper</td>
+                <td id="{{$.Alliance}}Hamper">0</td>
 
-  {{range $s := $.ShelfLocations}}
-  <tr>
-    <td>{{$s}}</td>
-    <td id="{{$.Alliance}}Teleop{{$s}}">0</td>
-    <td class="minus" onclick="decrementCount({{$.Alliance}}Teleop{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">-</td>
-    <td class="plus" onclick="incrementCount({{$.Alliance}}Teleop{{$s}}); patchScore(getShelf('{{$.Alliance}}'));">+</td>
-  </tr>
-  {{end}}
-  <tr>
-    <td id="{{$.Alliance}}GoldenCube" class="boolean" data-value="false"
-        onclick="toggleBoolean({{$.Alliance}}GoldenCube); patchScore(getGoldenCube('{{$.Alliance}}'));">Golden Cube</td>
-  </tr>
-  <tr>
-    <td class="section-header">Endgame</td>
-  </tr>
-  <tr>
-    <td>Hamper</td>
-    <td id="{{$.Alliance}}Hamper">0</td>
-    <td class="minus" onclick="decrementCount({{$.Alliance}}Hamper); patchScore(getHamper('{{$.Alliance}}'));">-</td>
-    <td class="plus" onclick="incrementCount({{$.Alliance}}Hamper); patchScore(getHamper('{{$.Alliance}}'));">+</td>
-  </tr>
-  <tr>
-    <td id="{{$.Alliance}}Park1" class="boolean" data-value="false" onclick="toggleBoolean({{$.Alliance}}Park1); patchScore(getPark('{{$.Alliance}}'));">Park 1</td>
-    <td id="{{$.Alliance}}Park2" class="boolean" data-value="false" onclick="toggleBoolean({{$.Alliance}}Park2); patchScore(getPark('{{$.Alliance}}'));">Park 2</td>
-  </tr>
-</table>
-{{end}}
-
-{{define "script"}}
+                <td
+                    class="plus"
+                    onclick="incrementCount({{$.Alliance}}Hamper); patchScore(getHamper('{{$.Alliance}}'));"
+                >
+                    +
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{{end}} {{define "script"}}
 <script src="/static/js/match_timing.js"></script>
 <script src="/static/js/ref_display.js"></script>
 <script src="/static/js/scores.js"></script>
