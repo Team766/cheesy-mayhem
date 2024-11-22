@@ -347,35 +347,6 @@ func (web *Web) determineNextCell() (int, int) {
 			return i, 1
 		}
 	}
-	/*
-		// Check the third column.
-		if web.arena.EventSettings.SelectionRound2Order == "F" {
-			for i, alliance := range web.arena.AllianceSelectionAlliances {
-				if alliance.TeamIds[2] == 0 {
-					return i, 2
-				}
-			}
-		} else {
-			for i := len(web.arena.AllianceSelectionAlliances) - 1; i >= 0; i-- {
-				if web.arena.AllianceSelectionAlliances[i].TeamIds[2] == 0 {
-					return i, 2
-				}
-			}
-		}
 
-		// Check the fourth column.
-		if web.arena.EventSettings.SelectionRound3Order == "F" {
-			for i, alliance := range web.arena.AllianceSelectionAlliances {
-				if alliance.TeamIds[3] == 0 {
-					return i, 3
-				}
-			}
-		} else if web.arena.EventSettings.SelectionRound3Order == "L" {
-			for i := len(web.arena.AllianceSelectionAlliances) - 1; i >= 0; i-- {
-				if web.arena.AllianceSelectionAlliances[i].TeamIds[3] == 0 {
-					return i, 3
-				}
-			}
-		} */
 	return -1, -1
 }

@@ -703,10 +703,4 @@ func (web *Web) bracketPdfReportHandler(w http.ResponseWriter, r *http.Request) 
 // Returns the text to display if a team is a surrogate.
 func surrogateText(isSurrogate bool) string {
 	return ""
-
-	/* if isSurrogate {
-		return ""
-	} else {
-		return ""
-	} */
 }
