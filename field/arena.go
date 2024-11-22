@@ -82,12 +82,13 @@ type Arena struct {
 }
 
 type AllianceStation struct {
-	DsConn   *DriverStationConnection
-	Ethernet bool
-	Astop    bool
-	Estop    bool
-	Bypass   bool
-	Team     *model.Team
+	DsConn     *DriverStationConnection
+	Ethernet   bool
+	Astop      bool
+	Estop      bool
+	Bypass     bool
+	Team       *model.Team
+	aStopReset bool
 }
 
 // Creates the arena and sets it to its initial state.
@@ -589,6 +590,9 @@ func (arena *Arena) assignTeam(teamId int, station string) error {
 		return fmt.Errorf("Invalid alliance station '%s'.", station)
 	}
 
+	// Force the A-stop to be reset by the new team if it is already pressed (if the PLC is enabled).
+	arena.AllianceStations[station].aStopReset = !arena.Plc.IsEnabled()
+
 	// Do nothing if the station is already assigned to the requested team.
 	dsConn := arena.AllianceStations[station].DsConn
 	if dsConn != nil && dsConn.TeamId == teamId {
@@ -728,6 +732,9 @@ func (arena *Arena) checkAllianceStationsReady(stations ...string) error {
 		if allianceStation.Estop {
 			return fmt.Errorf("Cannot start match while an emergency stop is active.")
 		}
+		if !allianceStation.aStopReset {
+			return fmt.Errorf("cannot start match if an autonomous stop has not been reset since the previous match")
+		}
 		if !allianceStation.Bypass {
 			if allianceStation.DsConn == nil || !allianceStation.DsConn.RobotLinked {
 				return fmt.Errorf("Cannot start match until all robots are connected or bypassed.")
@@ -743,8 +750,9 @@ func (arena *Arena) sendDsPacket(auto bool, enabled bool) {
 		dsConn := allianceStation.DsConn
 		if dsConn != nil {
 			dsConn.Auto = auto
-			dsConn.Enabled = enabled && !allianceStation.Estop && !allianceStation.Astop && !allianceStation.Bypass
+			dsConn.Enabled = enabled && !allianceStation.Estop && !(auto && allianceStation.Astop) && !allianceStation.Bypass
 			dsConn.Estop = allianceStation.Estop
+			dsConn.Astop = allianceStation.Astop
 			err := dsConn.update(arena)
 			if err != nil {
 				log.Printf("Unable to send driver station packet for team %d.", allianceStation.Team.Id)
@@ -773,12 +781,13 @@ func (arena *Arena) handlePlcInput() {
 		arena.AbortMatch()
 	}
 	redEstops, blueEstops := arena.Plc.GetTeamEstops()
-	arena.handleEstop("R1", redEstops[0])
-	arena.handleEstop("R2", redEstops[1])
-	arena.handleEstop("R3", redEstops[2])
-	arena.handleEstop("B1", blueEstops[0])
-	arena.handleEstop("B2", blueEstops[1])
-	arena.handleEstop("B3", blueEstops[2])
+	redAstops, blueAstops := arena.Plc.GetTeamAstops()
+	arena.handleTeamStop("R1", redEstops[0], redAstops[0])
+	arena.handleTeamStop("R2", redEstops[1], redAstops[1])
+	arena.handleTeamStop("R3", redEstops[2], redAstops[2])
+	arena.handleTeamStop("B1", blueEstops[0], blueAstops[0])
+	arena.handleTeamStop("B2", blueEstops[1], blueAstops[1])
+	arena.handleTeamStop("B3", blueEstops[2], blueAstops[2])
 	redEthernets, blueEthernets := arena.Plc.GetEthernetConnected()
 	arena.AllianceStations["R1"].Ethernet = redEthernets[0]
 	arena.AllianceStations["R2"].Ethernet = redEthernets[1]
@@ -836,22 +845,20 @@ func (arena *Arena) handlePlcOutput() {
 	}
 }
 
-func (arena *Arena) handleEstop(station string, state bool) {
+func (arena *Arena) handleTeamStop(station string, eStopState, aStopState bool) {
 	allianceStation := arena.AllianceStations[station]
-	if state {
-		if arena.MatchState == AutoPeriod {
-			allianceStation.Astop = true
-		} else {
-			allianceStation.Estop = true
-		}
-	} else {
-		if arena.MatchState != AutoPeriod {
-			allianceStation.Astop = false
-		}
-		if arena.MatchTimeSec() == 0 {
-			// Don't reset the e-stop while a match is in progress.
-			allianceStation.Estop = false
-		}
+	if eStopState {
+		allianceStation.Estop = true
+	} else if arena.MatchTimeSec() == 0 {
+		// Keep the E-stop latched until the match is over.
+		allianceStation.Estop = false
+	}
+	if aStopState {
+		allianceStation.Astop = true
+	} else if arena.MatchState != AutoPeriod {
+		// Keep the A-stop latched until the autonomous period is over.
+		allianceStation.Astop = false
+		allianceStation.aStopReset = true
 	}
 }
 

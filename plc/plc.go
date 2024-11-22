@@ -7,11 +7,12 @@ package plc
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/websocket"
-	"github.com/goburrow/modbus"
 	"log"
 	"strings"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/websocket"
+	"github.com/goburrow/modbus"
 )
 
 type Plc struct {
@@ -42,20 +43,28 @@ const (
 //go:generate stringer -type=input
 type input int
 
+// only 0-15 are mapped to pins, 16 and above (max 32) are ignored
+// TODO: we don't have a single field Estop but have 4 seperate field Estops linked in parallel to 4 teams' estops
 const (
 	fieldEstop input = iota
 	redEstop1
+	redAstop1
 	redEstop2
-	redEstop3
+	redAstop2
 	blueEstop1
+	blueAstop1
 	blueEstop2
-	blueEstop3
-	redConnected1
+	blueAstop2
+	redConnected1	// these and below aren't used by MAhem
 	redConnected2
 	redConnected3
 	blueConnected1
 	blueConnected2
 	blueConnected3
+	redEstop3	
+	redAstop3	// 17th, this and following are ignored by plc
+	blueEstop3
+	blueAstop3
 	inputCount
 )
 
@@ -74,15 +83,29 @@ const (
 //go:generate stringer -type=coil
 type coil int
 
+// only 0-15 are mapped to pins, 16 and above (max 32) are ignored
+// TODO: map team RGB lights to something
 const (
-	heartbeat coil = iota
-	matchReset
-	stackLightGreen
-	stackLightOrange
+	matchReset coil = iota
+	fieldResetLight
+	red1R
+	red1G
+	red1B
+	red2R
+	red2G
+	red2B
+	blue1R
+	blue1G
+	blue1B
+	blue2R
+	blue2G
+	blue2B
+	stackLightGreen		// this and below aren't used by MAhem
+	stackLightOrange	// 17th, this and following are ignored by plc
 	stackLightRed
 	stackLightBlue
 	stackLightBuzzer
-	fieldResetLight
+	heartbeat			// we don't really need this as plc activity over network already toggles arduino pin13 for blinkies
 	coilCount
 )
 
@@ -186,6 +209,20 @@ func (plc *Plc) GetTeamEstops() ([3]bool, [3]bool) {
 		blueEstops[2] = !plc.inputs[blueEstop3]
 	}
 	return redEstops, blueEstops
+}
+
+// Returns the state of the red and blue driver station auton stop buttons (true if a-stop is active).
+func (plc *Plc) GetTeamAstops() ([3]bool, [3]bool) {
+	var redAstops, blueAstops [3]bool
+	if plc.IsEnabled() {
+		redAstops[0] = !plc.inputs[redAstop1]
+		redAstops[1] = !plc.inputs[redAstop2]
+		redAstops[2] = !plc.inputs[redAstop3]
+		blueAstops[0] = !plc.inputs[blueAstop1]
+		blueAstops[1] = !plc.inputs[blueAstop2]
+		blueAstops[2] = !plc.inputs[blueAstop3]
+	}
+	return redAstops, blueAstops
 }
 
 // Returns whether anything is connected to each station's designated Ethernet port on the SCC.

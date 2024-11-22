@@ -7,14 +7,15 @@ package field
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/game"
-	"github.com/Team254/cheesy-arena-lite/model"
-	"github.com/Team254/cheesy-arena-lite/network"
 	"log"
 	"net"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/game"
+	"github.com/Team254/cheesy-arena-lite/model"
+	"github.com/Team254/cheesy-arena-lite/network"
 )
 
 // FMS uses 1121 for sending UDP packets, and FMS Lite uses 1120. Using 1121
@@ -34,6 +35,7 @@ type DriverStationConnection struct {
 	Auto                      bool
 	Enabled                   bool
 	Estop                     bool
+	Astop                     bool
 	DsLinked                  bool
 	RadioLinked               bool
 	RobotLinked               bool
@@ -168,6 +170,9 @@ func (dsConn *DriverStationConnection) encodeControlPacket(arena *Arena) [22]byt
 	}
 	if dsConn.Enabled {
 		packet[3] |= 0x04
+	}
+	if dsConn.Astop {
+		packet[3] |= 0x40
 	}
 	if dsConn.Estop {
 		packet[3] |= 0x80

@@ -142,6 +142,9 @@ var handleArenaStatus = function(data) {
     if (stationStatus.Estop) {
       $("#status" + station + " .bypass-status").attr("data-status-ok", false);
       $("#status" + station + " .bypass-status").text("ES");
+    } else if (stationStatus.Astop) {
+      $("#status" + station + " .bypass-status").attr("data-status-ok", false);
+      $("#status" + station + " .bypass-status").text("AS");
     } else if (stationStatus.Bypass) {
       $("#status" + station + " .bypass-status").attr("data-status-ok", false);
       $("#status" + station + " .bypass-status").text("B");

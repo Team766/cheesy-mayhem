@@ -1,6 +1,8 @@
 module github.com/Team254/cheesy-arena-lite
 
-go 1.18
+go 1.22.0
+
+toolchain go1.22.1
 
 require (
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
@@ -19,6 +21,9 @@ require (
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/goburrow/serial v0.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5 // indirect
+	golang.org/x/mod v0.22.0 // indirect
+	golang.org/x/sync v0.9.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/tools v0.27.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
