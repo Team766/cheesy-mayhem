@@ -7,7 +7,8 @@ html {
 body {
     height: 100%;
     font-size: x-large;
-    background-color: #222;
+    background-color: #111;
+    font-weight: bold;
 }
 
 .container {
@@ -20,22 +21,12 @@ body {
     align-items: center;
 }
 
-#alliance {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 25px;
-    border: 1px solid #333;
+.red-alliance {
+    background-color: #900;
 }
 
-#alliance[data-alliance="red"] {
-    background-color: #322;
-}
-
-#alliance[data-alliance="blue"] {
-    background-color: #223;
+.blue-alliance {
+    background-color: #009;
 }
 
 .match-info {
@@ -97,72 +88,25 @@ body {
     justify-content: center;
 }
 
-.shelf-period {
-    text-align: center;
-    color: #666;
-}
-
-.shelf {
-    width: 13vw;
-    height: 5vw;
-    margin: 0.4vw 3vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.number-button {
-    width: 4vw;
-    height: 4vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #666;
-    border-radius: 0.5vw;
-    font-size: 3vw;
-}
-
 .plus {
     background: #263;
-    width: 2vw;
+    width: 20px;
+    border-radius: 0.75vw;
 }
 
 .minus {
     background: #633;
-    width: 2vw;
+    width: 20px;
+    border-radius: 0.75vw;
 }
 
 #instructions {
     margin-top: 0.3vw;
 }
 
-#auton {
-    margin: 10px 20px;
-    padding: 10px;
-    width: 160px;
-}
-#teleop {
-    margin: 10px 20px;
-    padding: 10px;
-    width: 160px;
-}
-#endgame {
-    margin: 10px 20px;
-    padding: 10px;
-    width: 160px;
-}
 #team {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-#blue_id {
-    padding: 10px;
-}
-#red_id {
-    padding: 10px;
-}
-#team_table {
-    width: 10px;
-}
