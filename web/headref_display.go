@@ -11,6 +11,10 @@ import (
 // through a websockets integration, the head ref will be able to see score updates submitted by other
 // refs in realtime.
 func (web *Web) headrefDisplayHandler(w http.ResponseWriter, r *http.Request) {
+	if !web.userIsAdmin(w, r) {
+		return
+	}
+
 	// if !web.enforceDisplayConfiguration(w, r, map[string]string{"background": "#0f0", "reversed": "false",
 	// 	"overlayLocation": "bottom"}) {
 	// 	return
@@ -41,6 +45,10 @@ func (web *Web) headrefDisplayHandler(w http.ResponseWriter, r *http.Request) {
 
 // The websocket endpoint for the ref display client to receive status updates.
 func (web *Web) headrefDisplayWebsocketHandler(w http.ResponseWriter, r *http.Request) {
+	if !web.userIsAdmin(w, r) {
+		return
+	}
+
 	ws, err := websocket.NewWebsocket(w, r)
 	if err != nil {
 		handleWebErr(w, err)

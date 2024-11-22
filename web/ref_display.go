@@ -14,6 +14,10 @@ import (
 // field elements.  through a websockets integration, each ref will be able to see score updates
 // submitted by other refs in realtime.
 func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
+	if !web.userIsAdmin(w, r) {
+		return
+	}
+
 	vars := mux.Vars(r)
 	alliance := vars["alliance"]
 	if alliance != "red" && alliance != "blue" {
@@ -48,6 +52,10 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 
 // The websocket endpoint for the ref display client to receive status updates.
 func (web *Web) refDisplayWebsocketHandler(w http.ResponseWriter, r *http.Request) {
+	if !web.userIsAdmin(w, r) {
+		return
+	}
+
 	ws, err := websocket.NewWebsocket(w, r)
 	if err != nil {
 		handleWebErr(w, err)
