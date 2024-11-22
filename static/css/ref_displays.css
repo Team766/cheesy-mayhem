@@ -54,6 +54,10 @@ body {
     margin: 0.4vw 0.2vw;
 }
 
+.boolean {
+    border-radius: 1.5vw;
+}
+
 .boolean[data-value="false"] {
     background-color: #333;
 }
@@ -64,6 +68,7 @@ body {
 
 .taxi-status {
     width: 10vw;
+    border-radius: 1.5vw;
 }
 
 .taxi-status[data-value="0"] {
