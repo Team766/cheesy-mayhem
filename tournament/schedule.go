@@ -35,9 +35,6 @@ func BuildRandomSchedule(teams []model.Team, scheduleBlocks []model.ScheduleBloc
 	numMatches = int(math.Ceil(float64(numTeams) * float64(matchesPerTeam) / TeamsPerMatch))
 
 	file, err := os.Open(fmt.Sprintf("%s/%d_14.csv", filepath.Join(model.BaseDir, schedulesDir), numTeams))
-	//	file, err := os.Open(fmt.Sprintf("%s/%d_%d.csv", filepath.Join(model.BaseDir, schedulesDir), numTeams,
-	//		matchesPerTeam))
-	// file, err := os.Open(fmt.Sprintf("%s/13_14.csv", filepath.Join(model.BaseDir, schedulesDir)))
 	if err != nil {
 		return nil, fmt.Errorf("No schedule template exists for %d teams and %d matches", numTeams, matchesPerTeam)
 	}
