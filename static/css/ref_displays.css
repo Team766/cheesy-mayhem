@@ -2,6 +2,7 @@ html {
     height: 100%;
     -webkit-user-select: none;
     -moz-user-select: none;
+    touch-action: manipulation;
 }
 
 body {
@@ -41,7 +42,9 @@ body {
 }
 
 .scoring-header {
-    width: 25vw;
+    text-align: left;
+    width: 30vw;
+    font-size: 2.5vw;
     margin: 0.4vw 1vw 0.4vw 0.2vw;
 }
 
@@ -85,12 +88,13 @@ body {
 
 .section-header {
     height: 5vw;
-    width: 10vw;
-    margin: 0.4vw 0.4vw;
+    width: 20vw;
+    margin: 1.4vw 0.4vw;
     color: #888;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-decoration: underline;
 }
 
 .plus {

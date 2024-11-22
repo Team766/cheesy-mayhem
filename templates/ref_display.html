@@ -1,8 +1,9 @@
 {{define "title"}}Ref {{.Alliance}} Alliance{{end}}
 {{define "head"}}
-<link href="/static/css/ref_displays.css" rel="stylesheet" />
+<link href="/static/css/ref_displays.css" rel="stylesheet"/>
 {{end}}
 {{define "body"}}
+
 <span class="{{.Alliance}}-alliance">Ref: {{.Alliance}}</span>
 <div>
     <span id="matchName" style="text-align: left">&nbsp;</span>
@@ -14,12 +15,12 @@
 <div id="team">
     <div id="auton" style="padding-right: 1.0vw">
         <table>
-            <tr>
-                <td>
+            <th>
                 <td class="section-header">Auton</td>
                 <td/>
                 <td/>
-            </tr>
+                <td/>
+            </th>
             <tr>
                 <td/>
                 <td id="{{$.Alliance}}Taxi1" class="taxi-status" data-value="0"
@@ -52,12 +53,12 @@
 
     <div id="teleop" style="padding-right: 1.0vw">
         <table>
-            <tr>
-                <td>
+            <th>
                 <td class="section-header">Teleop</td>
                 <td/>
                 <td/>
-            </tr>
+                <td/>
+            </th>
             <tr>
                 <td/>
                 <td id="{{$.Alliance}}GoldenCube" class="boolean" data-value="false"
@@ -85,12 +86,12 @@
     </div>
     <div id="endgame">
         <table>
-            <tr>
-                <td>
+            <th>
                 <td class="section-header">Endgame</td>
                 <td/>
                 <td/>
-            </tr>
+                <td/>
+            </th>
             <tr>
                 <td/>
                 <td id="{{$.Alliance}}Park1" class="boolean" data-value="false"
@@ -123,4 +124,7 @@
 <script src="/static/js/match_timing.js"></script>
 <script src="/static/js/ref_display.js"></script>
 <script src="/static/js/scores.js"></script>
+<script>
+    var updateText()
+</script>
 {{end}}
