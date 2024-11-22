@@ -14,7 +14,7 @@ import (
 // field elements.  through a websockets integration, each ref will be able to see score updates
 // submitted by other refs in realtime.
 func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
-	if !web.userIsAdmin(w, r) {
+	if !web.userIsExpected(w, r, []string{adminUser, refUser}) {
 		return
 	}
 
@@ -52,7 +52,7 @@ func (web *Web) refDisplayHandler(w http.ResponseWriter, r *http.Request) {
 
 // The websocket endpoint for the ref display client to receive status updates.
 func (web *Web) refDisplayWebsocketHandler(w http.ResponseWriter, r *http.Request) {
-	if !web.userIsAdmin(w, r) {
+	if !web.userIsExpected(w, r, []string{adminUser, refUser}) {
 		return
 	}
 

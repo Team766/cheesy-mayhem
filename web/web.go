@@ -21,6 +21,7 @@ import (
 const (
 	sessionTokenCookie = "session_token"
 	adminUser          = "admin"
+	refUser            = "ref"
 )
 
 type Web struct {
