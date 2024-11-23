@@ -816,8 +816,8 @@ func (arena *Arena) handlePlcOutput() {
 	case PostTimeout:
 		// Set the stack light state -- solid alliance color(s) if robots are not connected, solid orange if scores are
 		// not input, or blinking green if ready.
-		redAllianceReady := arena.checkAllianceStationsReady("R1", "R2", "R3") == nil
-		blueAllianceReady := arena.checkAllianceStationsReady("B1", "B2", "B3") == nil
+		redAllianceReady := arena.checkAllianceStationsReady("R1", "R2") == nil // ignore checking R3 and B3 since we only have 2 teams
+		blueAllianceReady := arena.checkAllianceStationsReady("B1", "B2") == nil
 		greenStackLight := redAllianceReady && blueAllianceReady && arena.Plc.GetCycleState(2, 0, 2)
 		arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, greenStackLight)
 		arena.Plc.SetStackBuzzer(redAllianceReady && blueAllianceReady)
@@ -842,6 +842,23 @@ func (arena *Arena) handlePlcOutput() {
 	case PausePeriod:
 		fallthrough
 	case TeleopPeriod:
+	}
+
+	// update plc team LEDs with aggregated team status
+	// SetTeamRgb
+	for _, stationString := range []string{"R1", "R2", "B1", "B2"} {
+		station := arena.AllianceStations[stationString]
+
+		if station.Estop {
+			arena.Plc.SetTeamRgb(stationString, true, false, false) // red
+		} else if !station.aStopReset {
+			arena.Plc.SetTeamRgb(stationString, true, true, false) // yellow
+		} else if !station.Bypass && (station.DsConn == nil || !station.DsConn.RobotLinked) {
+			arena.Plc.SetTeamRgb(stationString, false, false, true) // blue
+		} else {
+			// all good!
+			arena.Plc.SetTeamRgb(stationString, false, true, false) // green
+		}
 	}
 }
 

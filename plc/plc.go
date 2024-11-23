@@ -55,14 +55,18 @@ const (
 	blueAstop1
 	blueEstop2
 	blueAstop2
-	redConnected1	// these and below aren't used by MAhem
+	fieldRedEstop1
+	fieldRedEstop2
+	fieldBlueEstop1
+	fieldBlueEstop2
+	redConnected1 // these and below aren't used by MAyhem
 	redConnected2
 	redConnected3
-	blueConnected1
+	blueConnected1 // 17th, this and following are ignored by plc
 	blueConnected2
 	blueConnected3
-	redEstop3	
-	redAstop3	// 17th, this and following are ignored by plc
+	redEstop3
+	redAstop3
 	blueEstop3
 	blueAstop3
 	inputCount
@@ -86,8 +90,8 @@ type coil int
 // only 0-15 are mapped to pins, 16 and above (max 32) are ignored
 // TODO: map team RGB lights to something
 const (
-	matchReset coil = iota
-	fieldResetLight
+	fieldResetLight coil = iota
+	fieldResetLightGreen
 	red1R
 	red1G
 	red1B
@@ -100,12 +104,13 @@ const (
 	blue2R
 	blue2G
 	blue2B
-	stackLightGreen		// this and below aren't used by MAhem
-	stackLightOrange	// 17th, this and following are ignored by plc
+	matchReset // this and below aren't used by MAyhem
+	stackLightGreen
+	stackLightOrange // 17th, this and following are ignored by plc
 	stackLightRed
 	stackLightBlue
 	stackLightBuzzer
-	heartbeat			// we don't really need this as plc activity over network already toggles arduino pin13 for blinkies
+	heartbeat // we don't really need this as plc activity over network already toggles arduino pin13 for blinkies
 	coilCount
 )
 
@@ -201,11 +206,11 @@ func (plc *Plc) GetFieldEstop() bool {
 func (plc *Plc) GetTeamEstops() ([3]bool, [3]bool) {
 	var redEstops, blueEstops [3]bool
 	if plc.IsEnabled() {
-		redEstops[0] = !plc.inputs[redEstop1]
-		redEstops[1] = !plc.inputs[redEstop2]
+		redEstops[0] = !plc.inputs[redEstop1] || !plc.inputs[fieldRedEstop1] // combine inputs from both player & field estops
+		redEstops[1] = !plc.inputs[redEstop2] || !plc.inputs[fieldRedEstop2]
 		redEstops[2] = !plc.inputs[redEstop3]
-		blueEstops[0] = !plc.inputs[blueEstop1]
-		blueEstops[1] = !plc.inputs[blueEstop2]
+		blueEstops[0] = !plc.inputs[blueEstop1] || !plc.inputs[fieldBlueEstop1]
+		blueEstops[1] = !plc.inputs[blueEstop2] || !plc.inputs[fieldBlueEstop2]
 		blueEstops[2] = !plc.inputs[blueEstop3]
 	}
 	return redEstops, blueEstops
@@ -251,6 +256,28 @@ func (plc *Plc) SetStackLights(red, blue, orange, green bool) {
 	plc.coils[stackLightBlue] = blue
 	plc.coils[stackLightOrange] = orange
 	plc.coils[stackLightGreen] = green
+}
+
+// Sets the team's RGB
+func (plc *Plc) SetTeamRgb(stationString string, red bool, green bool, blue bool) {
+	switch stationString {
+	case "R1":
+		plc.coils[red1R] = red
+		plc.coils[red1G] = green
+		plc.coils[red1B] = blue
+	case "R2":
+		plc.coils[red2R] = red
+		plc.coils[red2G] = green
+		plc.coils[red2B] = blue
+	case "B1":
+		plc.coils[blue1R] = red
+		plc.coils[blue1G] = green
+		plc.coils[blue1B] = blue
+	case "B2":
+		plc.coils[blue2R] = red
+		plc.coils[blue2G] = green
+		plc.coils[blue2B] = blue
+	}
 }
 
 // Triggers the "match ready" chime if the state is true.
