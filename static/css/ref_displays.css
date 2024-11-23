@@ -2,11 +2,14 @@ html {
     height: 100%;
     -webkit-user-select: none;
     -moz-user-select: none;
+    touch-action: manipulation;
 }
 
 body {
     height: 100%;
-    background-color: #222;
+    font-size: x-large;
+    background-color: #111;
+    font-weight: bold;
 }
 
 .container {
@@ -19,22 +22,12 @@ body {
     align-items: center;
 }
 
-#alliance {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 25px;
-    border: 1px solid #333;
+.red-alliance {
+    background-color: #900;
 }
 
-#alliance[data-alliance="red"] {
-    background-color: #322;
-}
-
-#alliance[data-alliance="blue"] {
-    background-color: #223;
+.blue-alliance {
+    background-color: #009;
 }
 
 .match-info {
@@ -49,7 +42,9 @@ body {
 }
 
 .scoring-header {
-    width: 25vw;
+    text-align: left;
+    width: 30vw;
+    font-size: 2.5vw;
     margin: 0.4vw 1vw 0.4vw 0.2vw;
 }
 
@@ -62,6 +57,10 @@ body {
     margin: 0.4vw 0.2vw;
 }
 
+.boolean {
+    border-radius: 1.5vw;
+}
+
 .boolean[data-value="false"] {
     background-color: #333;
 }
@@ -72,6 +71,7 @@ body {
 
 .taxi-status {
     width: 10vw;
+    border-radius: 1.5vw;
 }
 
 .taxi-status[data-value="0"] {
@@ -88,49 +88,34 @@ body {
 
 .section-header {
     height: 5vw;
-    width: 10vw;
-    margin: 0.4vw 0.4vw;
+    width: 20vw;
+    margin: 1.4vw 0.4vw;
     color: #888;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.shelf-period {
-    text-align: center;
-    color: #666;
-}
-
-.shelf {
-    width: 13vw;
-    height: 5vw;
-    margin: 0.4vw 3vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.number-button {
-    width: 4vw;
-    height: 4vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #666;
-    border-radius: 0.5vw;
-    font-size: 3vw;
+    text-decoration: underline;
 }
 
 .plus {
     background: #263;
-    width: 2vw;
+    width: 20px;
+    border-radius: 0.75vw;
 }
 
 .minus {
     background: #633;
-    width: 2vw;
+    width: 20px;
+    border-radius: 0.75vw;
 }
 
 #instructions {
     margin-top: 0.3vw;
 }
+
+#team {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
