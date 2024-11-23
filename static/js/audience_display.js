@@ -155,6 +155,7 @@ var handleScorePosted = function(data) {
   $("#" + redSide + "FinalAutoPoints").text(data.RedScoreSummary.AutoPoints);
   $("#" + redSide + "FinalTeleopPoints").text(data.RedScoreSummary.TeleopPoints);
   $("#" + redSide + "FinalEndgamePoints").text(data.RedScoreSummary.EndgamePoints);
+  $("#" + redSide + "FinalPenalties").text(data.RedScoreSummary.Penalties);
   $("#" + blueSide + "FinalScore").text(data.BlueScoreSummary.Score);
   $("#" + blueSide + "FinalTeam1").html(getRankingText(data.Match.Blue1, data.Rankings) + "" + data.Match.Blue1);
   $("#" + blueSide + "FinalTeam2").html(getRankingText(data.Match.Blue2, data.Rankings) + "" + data.Match.Blue2);
@@ -165,6 +166,7 @@ var handleScorePosted = function(data) {
   $("#" + blueSide + "FinalAutoPoints").text(data.BlueScoreSummary.AutoPoints);
   $("#" + blueSide + "FinalTeleopPoints").text(data.BlueScoreSummary.TeleopPoints);
   $("#" + blueSide + "FinalEndgamePoints").text(data.BlueScoreSummary.EndgamePoints);
+  $("#" + blueSide + "FinalPenalties").text(data.BlueScoreSummary.Penalties);
   $("#finalSeriesStatus").text(data.SeriesStatus);
   $("#finalSeriesStatus").attr("data-leader", data.SeriesLeader);
   $("#finalMatchName").text(data.MatchType + " " + data.Match.DisplayName);

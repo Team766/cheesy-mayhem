@@ -24,18 +24,10 @@
               <div id="leftTeam2"></div>
             </div>
             <div class="score reversible-left">
-              <div class="avatars">
-                <img class="avatar" id="leftTeam1Avatar" src="" />
-                <img class="avatar" id="leftTeam2Avatar" src="" />
-              </div>
               <div class="score-number" id="leftScoreNumber"></div>
             </div>
             <div class="score score-right reversible-right">
               <div class="score-number" id="rightScoreNumber"></div>
-              <div class="avatars">
-                <img class="avatar" id="rightTeam1Avatar" src="" />
-                <img class="avatar" id="rightTeam2Avatar" src="" />
-              </div>
             </div>
             <div class="teams" id="rightTeams">
               <div id="rightTeam1"></div>
@@ -71,28 +63,30 @@
         <div class="final-score reversible-left" id="leftFinalScore"></div>
         <div class="final-score reversible-right" id="rightFinalScore"></div>
         <div class="final-teams" id="leftFinalTeams">
-          <div class="final-team" id="leftFinalTeam1"></div><img class="final-avatar" id="leftFinalTeam1Avatar" src="" />
-          <div class="final-team" id="leftFinalTeam2"></div><img class="final-avatar" id="leftFinalTeam2Avatar" src="" />
+          <div class="final-team" id="leftFinalTeam1"></div>
+          <div class="final-team" id="leftFinalTeam2"></div>
         </div>
         <div class="final-teams" id="rightFinalTeams">
-          <div class="final-team" id="rightFinalTeam1"></div><img class="final-avatar" id="rightFinalTeam1Avatar" src="" />
-          <div class="final-team" id="rightFinalTeam2"></div><img class="final-avatar" id="rightFinalTeam2Avatar" src="" />
+          <div class="final-team" id="rightFinalTeam1"></div>
+          <div class="final-team" id="rightFinalTeam2"></div>
         </div>
         <div class="final-breakdown" id="leftFinalBreakdown">
           <span class="valign-cell">
             <span id="leftFinalAutoPoints"></span><br />
             <span id="leftFinalTeleopPoints"></span><br />
             <span id="leftFinalEndgamePoints"></span><br />
+            <i><span id="rightFinalPenalties"></span></i><br />
           </span>
         </div>
         <div class="final-breakdown" id="centerFinalBreakdown">
-          <span class="valign-cell">Auto<br />Teleop<br />Endgame</span>
+          <span class="valign-cell">Auto<br />Teleop<br />Endgame <br /><i>Opponent Penalties</i></span>
         </div>
         <div class="final-breakdown" id="rightFinalBreakdown">
           <span class="valign-cell">
             <span id="rightFinalAutoPoints"></span><br />
             <span id="rightFinalTeleopPoints"></span><br />
             <span id="rightFinalEndgamePoints"></span><br />
+            <i><span id="leftFinalPenalties"></span></i><br />
           </span>
         </div>
         <div id="finalEventMatchInfo">

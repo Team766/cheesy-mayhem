@@ -7,11 +7,12 @@ package web
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/game"
-	"github.com/Team254/cheesy-arena-lite/model"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/game"
+	"github.com/Team254/cheesy-arena-lite/model"
 )
 
 type RankedTeam struct {
@@ -35,6 +36,7 @@ func (web *Web) allianceSelectionGetHandler(w http.ResponseWriter, r *http.Reque
 // Updates the cache with the latest input from the client.
 func (web *Web) allianceSelectionPostHandler(w http.ResponseWriter, r *http.Request) {
 	if !web.userIsAdmin(w, r) {
+		web.renderAllianceSelection(w, r, "You do not have the ability to set up alliances.")
 		return
 	}
 
@@ -111,9 +113,9 @@ func (web *Web) allianceSelectionStartHandler(w http.ResponseWriter, r *http.Req
 
 	// Create a blank alliance set matching the event configuration.
 	web.arena.AllianceSelectionAlliances = make([]model.Alliance, web.arena.EventSettings.NumElimAlliances)
-	teamsPerAlliance := 3
+	teamsPerAlliance := 2
 	if web.arena.EventSettings.SelectionRound3Order != "" {
-		teamsPerAlliance = 4
+		teamsPerAlliance = 3
 	}
 	for i := 0; i < web.arena.EventSettings.NumElimAlliances; i++ {
 		web.arena.AllianceSelectionAlliances[i].Id = i + 1
@@ -211,7 +213,8 @@ func (web *Web) allianceSelectionFinalizeHandler(w http.ResponseWriter, r *http.
 		// the left, second pick on the right).
 		alliance.Lineup[0] = alliance.TeamIds[1]
 		alliance.Lineup[1] = alliance.TeamIds[0]
-		alliance.Lineup[2] = alliance.TeamIds[2]
+		// It doesn't matter since we're ignoring this
+		alliance.Lineup[2] = alliance.TeamIds[0]
 
 		err := web.arena.Database.CreateAlliance(&alliance)
 		if err != nil {
@@ -345,34 +348,5 @@ func (web *Web) determineNextCell() (int, int) {
 		}
 	}
 
-	// Check the third column.
-	if web.arena.EventSettings.SelectionRound2Order == "F" {
-		for i, alliance := range web.arena.AllianceSelectionAlliances {
-			if alliance.TeamIds[2] == 0 {
-				return i, 2
-			}
-		}
-	} else {
-		for i := len(web.arena.AllianceSelectionAlliances) - 1; i >= 0; i-- {
-			if web.arena.AllianceSelectionAlliances[i].TeamIds[2] == 0 {
-				return i, 2
-			}
-		}
-	}
-
-	// Check the fourth column.
-	if web.arena.EventSettings.SelectionRound3Order == "F" {
-		for i, alliance := range web.arena.AllianceSelectionAlliances {
-			if alliance.TeamIds[3] == 0 {
-				return i, 3
-			}
-		}
-	} else if web.arena.EventSettings.SelectionRound3Order == "L" {
-		for i := len(web.arena.AllianceSelectionAlliances) - 1; i >= 0; i-- {
-			if web.arena.AllianceSelectionAlliances[i].TeamIds[3] == 0 {
-				return i, 3
-			}
-		}
-	}
 	return -1, -1
 }
