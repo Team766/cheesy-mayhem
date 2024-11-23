@@ -59,14 +59,14 @@ const (
 	fieldRedEstop2
 	fieldBlueEstop1
 	fieldBlueEstop2
-	redConnected1	// these and below aren't used by MAyhem
+	redConnected1 // these and below aren't used by MAyhem
 	redConnected2
 	redConnected3
-	blueConnected1	// 17th, this and following are ignored by plc
-	blueConnected2 
+	blueConnected1 // 17th, this and following are ignored by plc
+	blueConnected2
 	blueConnected3
-	redEstop3	
-	redAstop3	
+	redEstop3
+	redAstop3
 	blueEstop3
 	blueAstop3
 	inputCount
@@ -104,13 +104,13 @@ const (
 	blue2R
 	blue2G
 	blue2B
-	matchReset 			// this and below aren't used by MAyhem
-	stackLightGreen		
-	stackLightOrange	// 17th, this and following are ignored by plc
+	matchReset // this and below aren't used by MAyhem
+	stackLightGreen
+	stackLightOrange // 17th, this and following are ignored by plc
 	stackLightRed
 	stackLightBlue
 	stackLightBuzzer
-	heartbeat			// we don't really need this as plc activity over network already toggles arduino pin13 for blinkies
+	heartbeat // we don't really need this as plc activity over network already toggles arduino pin13 for blinkies
 	coilCount
 )
 
@@ -259,8 +259,8 @@ func (plc *Plc) SetStackLights(red, blue, orange, green bool) {
 }
 
 // Sets the team's RGB
-func (plc *Plc) SetTeamRgb(teamId string, red bool, green bool, blue bool) {
-	switch teamId {
+func (plc *Plc) SetTeamRgb(stationString string, red bool, green bool, blue bool) {
+	switch stationString {
 	case "R1":
 		plc.coils[red1R] = red
 		plc.coils[red1G] = green
