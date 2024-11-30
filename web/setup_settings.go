@@ -7,7 +7,6 @@ package web
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/model"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -15,6 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/model"
 )
 
 // Shows the event settings editing page.
@@ -76,6 +77,7 @@ func (web *Web) settingsPostHandler(w http.ResponseWriter, r *http.Request) {
 	eventSettings.SwitchPassword = r.PostFormValue("switchPassword")
 	eventSettings.PlcAddress = r.PostFormValue("plcAddress")
 	eventSettings.AdminPassword = r.PostFormValue("adminPassword")
+	eventSettings.RefPassword = r.PostFormValue("refPassword")
 	eventSettings.WarmupDurationSec, _ = strconv.Atoi(r.PostFormValue("warmupDurationSec"))
 	eventSettings.AutoDurationSec, _ = strconv.Atoi(r.PostFormValue("autoDurationSec"))
 	eventSettings.PauseDurationSec, _ = strconv.Atoi(r.PostFormValue("pauseDurationSec"))

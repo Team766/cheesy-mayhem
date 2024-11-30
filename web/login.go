@@ -7,11 +7,12 @@ package web
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena-lite/model"
-	"github.com/google/uuid"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/Team254/cheesy-arena-lite/model"
+	"github.com/google/uuid"
 )
 
 // Shows the login form.
@@ -58,14 +59,24 @@ func (web *Web) renderLogin(w http.ResponseWriter, r *http.Request, errorMessage
 	}
 }
 
+func contains(slice []string, expected string) bool {
+	for _, s := range slice {
+		if s == expected {
+			return true
+		}
+	}
+	return false
+
+}
+
 // Returns true if the given user is authorized for admin operations. Used for HTTP cookie authentication.
-func (web *Web) userIsAdmin(w http.ResponseWriter, r *http.Request) bool {
+func (web *Web) userIsExpected(w http.ResponseWriter, r *http.Request, expectedUsers []string) bool {
 	if web.arena.EventSettings.AdminPassword == "" {
 		// Disable auth if there is no password configured.
 		return true
 	}
 	session := web.getUserSessionFromCookie(r)
-	if session != nil && session.Username == adminUser {
+	if session != nil && contains(expectedUsers, session.Username) {
 		return true
 	} else {
 		redirect := r.URL.Path
@@ -75,6 +86,14 @@ func (web *Web) userIsAdmin(w http.ResponseWriter, r *http.Request) bool {
 		http.Redirect(w, r, "/login?redirect="+url.QueryEscape(redirect), 307)
 		return false
 	}
+}
+
+func (web *Web) userIsAdmin(w http.ResponseWriter, r *http.Request) bool {
+	return web.userIsExpected(w, r, []string{adminUser})
+}
+
+func (web *Web) userIsRef(w http.ResponseWriter, r *http.Request) bool {
+	return web.userIsExpected(w, r, []string{refUser})
 }
 
 func (web *Web) getUserSessionFromCookie(r *http.Request) *model.UserSession {
@@ -88,6 +107,8 @@ func (web *Web) getUserSessionFromCookie(r *http.Request) *model.UserSession {
 
 func (web *Web) checkAuthPassword(user, password string) error {
 	if user == adminUser && password == web.arena.EventSettings.AdminPassword {
+		return nil
+	} else if user == refUser && password == web.arena.EventSettings.RefPassword {
 		return nil
 	} else {
 		return fmt.Errorf("Invalid login credentials.")

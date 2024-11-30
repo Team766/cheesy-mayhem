@@ -34,6 +34,7 @@ type EventSettings struct {
 	SwitchPassword              string
 	PlcAddress                  string
 	AdminPassword               string
+	RefPassword                 string
 	WarmupDurationSec           int
 	AutoDurationSec             int
 	PauseDurationSec            int
